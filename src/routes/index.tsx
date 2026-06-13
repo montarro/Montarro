@@ -281,7 +281,8 @@ function RevenueSparkline() {
     >
       <defs>
         <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.22" />
+          <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.16" />
+          <stop offset="55%" stopColor="rgb(16,185,129)" stopOpacity="0.06" />
           <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
         </linearGradient>
       </defs>
@@ -375,12 +376,8 @@ function RevenueCard() {
         </div>
 
         {/* animated revenue line */}
-        <div className="mt-5 h-16 w-full">
+        <div className="mt-6 h-24 w-full">
           <RevenueSparkline />
-        </div>
-
-        <div className="mt-3 text-center text-[10px] uppercase tracking-[0.18em] text-muted-foreground/45">
-          Example dashboard
         </div>
       </div>
     </motion.div>
@@ -963,7 +960,7 @@ function DemandViz() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-end justify-between">
-        <div>
+        <div className="transition-transform duration-500 group-hover:-translate-y-0.5">
           <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">ROAS</div>
           <div className="font-display text-2xl tracking-tight text-foreground tabular-nums">6.4x</div>
         </div>
@@ -1032,13 +1029,13 @@ function AttentionViz() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-end justify-between">
-        <div>
+        <div className="transition-transform duration-500 group-hover:-translate-y-0.5">
           <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">Reach</div>
           <div className="font-display text-2xl tracking-tight text-white tabular-nums">1.2M</div>
         </div>
         <span className="text-[11px] font-medium text-emerald-400">+38%</span>
       </div>
-      <div className="mt-2 flex min-h-0 flex-1 items-end gap-1.5">
+      <div className="mt-2 flex min-h-0 flex-1 items-end gap-1.5 origin-bottom transition-transform duration-500 group-hover:scale-[1.03]">
         {bars.map((h, i) => (
           <motion.span
             key={i}
@@ -1078,13 +1075,20 @@ function ModuleCard({
       className={`group relative flex h-full flex-col overflow-hidden rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-1 ${
         dark
           ? "border border-white/10 bg-gradient-to-b from-[#171717] to-[#0b0b0b] text-white shadow-[0_30px_80px_-42px_rgba(0,0,0,0.7)] hover:border-emerald-500/40 hover:shadow-[0_46px_100px_-45px_rgba(16,185,129,0.5)]"
-          : "border border-black/[0.08] bg-gradient-to-b from-white/95 to-white/70 text-foreground backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.7)_inset,0_22px_50px_-30px_rgba(0,0,0,0.18)] hover:border-emerald-500/40 hover:shadow-[0_46px_90px_-40px_rgba(16,185,129,0.3)]"
+          : "border border-black/[0.08] bg-gradient-to-b from-white via-white to-[#f3f4f6] text-foreground backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_-26px_55px_-44px_rgba(0,0,0,0.10)_inset,0_22px_50px_-30px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[0_46px_90px_-40px_rgba(16,185,129,0.32)]"
       }`}
     >
       <span
         aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100"
       />
+      {!dark && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70"
+          style={{ background: "radial-gradient(ellipse 70% 100% at 50% 0%, rgba(255,255,255,0.9), transparent 70%)" }}
+        />
+      )}
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
         <div
           className="absolute -top-32 left-1/2 h-64 w-[120%] -translate-x-1/2 rounded-full blur-3xl"
@@ -1094,23 +1098,28 @@ function ModuleCard({
 
       {/* live UI visual */}
       <div
-        className={`relative flex ${isLg ? "h-44 sm:h-52" : "h-36"} w-full flex-col overflow-hidden rounded-2xl border p-3 backdrop-blur ${
+        className={`relative flex ${isLg ? "h-48 sm:h-52" : "h-48"} w-full flex-col overflow-hidden rounded-2xl border p-3.5 backdrop-blur ${
           dark ? "border-white/10 bg-white/[0.03]" : "border-black/[0.06] bg-white/60"
         }`}
       >
-        <div className={`mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.16em] ${dark ? "text-white/50" : "text-muted-foreground"}`}>
+        <div className={`mb-2 flex items-center text-[10px] uppercase tracking-[0.16em] ${dark ? "text-white/50" : "text-muted-foreground"}`}>
           <span className="flex items-center gap-1.5"><LiveDot /> {eyebrow}</span>
-          <ArrowUpRight className={`h-3.5 w-3.5 opacity-0 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 ${dark ? "text-emerald-400" : "text-emerald-500"}`} />
         </div>
         <div className="relative min-h-0 flex-1">{children}</div>
       </div>
 
-      {/* heading + description */}
-      <div className="relative mt-5">
-        <h3 className={`font-display tracking-tight ${isLg ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} ${dark ? "text-white" : "text-foreground"}`}>
-          {title}
-        </h3>
-        <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/55" : "text-muted-foreground"}`}>{desc}</p>
+      {/* heading + description + micro-CTA */}
+      <div className="relative mt-5 flex items-end justify-between gap-4">
+        <div>
+          <h3 className={`font-display tracking-tight ${isLg ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} ${dark ? "text-white" : "text-foreground"}`}>
+            {title}
+          </h3>
+          <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/55" : "text-muted-foreground"}`}>{desc}</p>
+        </div>
+        <span className={`mb-0.5 inline-flex shrink-0 -translate-x-0.5 items-center gap-1 whitespace-nowrap text-[11px] font-medium opacity-45 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 ${dark ? "text-emerald-300" : "text-emerald-600"}`}>
+          View System
+          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
       </div>
     </Link>
   );

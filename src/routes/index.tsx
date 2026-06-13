@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import montarroLogo from "@/assets/montarro-logo.png.asset.json";
+const montarroLogo = "/montarro-logo.png";
 import { useEffect, useId, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, animate } from "motion/react";
 import {
@@ -117,9 +117,9 @@ function Nav() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2.5">
           <img
-            src={montarroLogo.url}
+            src={montarroLogo}
             alt="Montarro"
-            className="h-[52px] w-auto mix-blend-screen"
+            className="h-[52px] w-auto"
           />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
@@ -1045,7 +1045,7 @@ function Footer() {
             <div>
               <a href="#top" className="inline-block">
                 <img
-                  src={montarroLogo.url}
+                  src={montarroLogo}
                   alt="Montarro"
                   className="h-[34px] w-auto"
                 />

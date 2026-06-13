@@ -4,12 +4,6 @@ import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
 
-const NAV_LINKS = [
-  { label: "Services", href: "/#services" },
-  { label: "Case Study", href: "/#case" },
-  { label: "Pricing", href: "/#pricing" },
-];
-
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -20,35 +14,54 @@ export function SiteNav() {
   }, []);
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out ${
         scrolled
-          ? "backdrop-blur-xl bg-background/70 border-b border-border"
-          : "bg-transparent"
+          ? "border-b border-white/10 bg-[#0a0b0b]/70 backdrop-blur-xl shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)]"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-[52px] w-auto" />
+      <div
+        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
+          scrolled ? "h-14" : "h-16"
+        }`}
+      >
+        <Link to="/" className="flex items-center">
+          <img
+            src="/montarro-logo.png"
+            alt="Montarro"
+            className={`w-auto transition-all duration-500 ease-out ${
+              scrolled ? "h-9 invert" : "h-[52px]"
+            }`}
+          />
         </Link>
-        <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
-          <Link to="/" hash="services" className="hover:text-foreground transition-colors tracking-wide">
-            Services
-          </Link>
-          <Link to="/" hash="case" className="hover:text-foreground transition-colors tracking-wide">
-            Case Study
-          </Link>
-          <Link to="/" hash="pricing" className="hover:text-foreground transition-colors tracking-wide">
-            Pricing
-          </Link>
+        <nav className="hidden md:flex items-center gap-10 text-[13px]">
+          {[
+            ["Services", "services"],
+            ["Case Study", "case"],
+            ["Pricing", "pricing"],
+          ].map(([l, h]) => (
+            <Link
+              key={l}
+              to="/"
+              hash={h}
+              className={`tracking-wide transition-colors duration-300 ${
+                scrolled ? "text-white/65 hover:text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {l}
+            </Link>
+          ))}
         </nav>
         <Link
           to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
+          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px] ${
+            scrolled ? "ring-1 ring-emerald-400/25" : ""
+          }`}
         >
           Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        <MobileMenu links={NAV_LINKS} />
+        <MobileMenu scrolled={scrolled} />
       </div>
     </header>
   );

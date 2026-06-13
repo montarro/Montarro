@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useInView, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -1222,54 +1222,143 @@ function Services() {
 
 /* ------------------------------ RESULTS ------------------------------ */
 
-function Stat({ value, label }: { value: string; label: string }) {
+function useCountUp(target: number, enabled: boolean) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  useEffect(() => {
+    if (!enabled || !inView || !ref.current) return;
+    const node = ref.current;
+    const controls = animate(0, target, {
+      duration: 1.8,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate(v) {
+        node.textContent = Math.round(v).toLocaleString();
+      },
+      onComplete() {
+        node.textContent = target.toLocaleString();
+      },
+    });
+    return () => controls.stop();
+  }, [enabled, inView, target]);
+  return ref;
+}
+
+type Metric = {
+  display?: string;
+  numeric?: number;
+  suffix?: string;
+  label: string;
+  primary?: boolean;
+};
+
+function StatCard({ metric }: { metric: Metric }) {
+  const isNum = metric.numeric != null;
+  const ref = useCountUp(metric.numeric ?? 0, isNum);
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card/60 border border-black/[0.04] px-6 pt-8 pb-6 transition-all duration-500 ease-out hover:border-emerald-500/30 hover:shadow-[0_20px_60px_-25px_rgba(16,185,129,0.35)]">
-      <div
+    <div
+      className={`group relative h-full overflow-hidden rounded-2xl border px-6 pt-7 pb-6 backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-1 ${
+        metric.primary
+          ? "border-emerald-500/25 bg-gradient-to-b from-emerald-500/[0.04] to-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_24px_60px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/45 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_34px_80px_-34px_rgba(16,185,129,0.5)]"
+          : "border-black/[0.06] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/30 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-32px_rgba(16,185,129,0.32)]"
+      }`}
+    >
+      <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-10 h-32 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.06),transparent_70%)]"
+        className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent transition-opacity duration-500 ${
+          metric.primary ? "opacity-100" : "opacity-40 group-hover:opacity-100"
+        }`}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.12),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.10),transparent_60%)]"
       />
+      {metric.primary && (
+        <div className="absolute right-4 top-4 inline-flex items-center gap-1.5 text-[9px] font-medium uppercase tracking-[0.16em] text-emerald-600">
+          <LiveDot /> Live
+        </div>
+      )}
       <div className="relative font-display text-5xl md:text-6xl text-gradient-chrome tabular-nums">
-        {value}
+        {isNum ? (
+          <>
+            <span ref={ref}>0</span>
+            {metric.suffix}
+          </>
+        ) : (
+          metric.display
+        )}
       </div>
       <div className="relative mt-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground/80 font-medium">
-        {label}
+        {metric.label}
       </div>
     </div>
   );
 }
 
-function Results() {
+function BackgroundGraph() {
   return (
-    <section id="results" className="relative border-t border-black/[0.04] py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="h-full w-full">
+      <motion.path
+        d="M0,92 C160,84 250,62 400,56 C560,50 660,74 820,50 C980,28 1080,42 1200,18"
+        fill="none"
+        stroke="rgba(16,185,129,0.16)"
+        strokeWidth="1"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
+      />
+    </svg>
+  );
+}
+
+function Results() {
+  const metrics: Metric[] = [
+    { display: "24/7", label: "Always-on AI response", primary: true },
+    { display: "<1s", label: "Average response time", primary: true },
+    { numeric: 1000, suffix: "+", label: "Calls handled / client · month" },
+    { numeric: 5, suffix: "+", label: "Integrated growth services" },
+  ];
+  return (
+    <section id="results" className="relative overflow-hidden border-t border-black/[0.04] py-20 lg:py-28">
+      {/* layered background depth */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white via-[#fbfcfc] to-white" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[440px] max-w-4xl"
+        style={{ background: "radial-gradient(ellipse 55% 60% at 50% 0%, rgba(16,185,129,0.06), transparent 70%)" }}
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.02] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+        }}
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-16 -z-10 mx-auto h-28 max-w-5xl px-6">
+        <BackgroundGraph />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.05] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-emerald-700 backdrop-blur">
+            <LiveDot /> Live Infrastructure
+          </div>
           <h2 className="max-w-3xl font-display text-5xl md:text-7xl leading-[0.95] text-gradient-chrome">
             Engineered for performance.
           </h2>
-          <p className="mt-5 max-w-xl text-muted-foreground">
-            Built for long-term partnerships — capability you can rely on, not
-            vanity metrics.
+          <p className="mt-5 max-w-xl leading-relaxed text-muted-foreground">
+            Systems designed to capture, qualify, and compound demand at scale.
           </p>
         </Reveal>
 
         <div className="mt-12 md:mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Reveal delay={0.05}>
-            <Stat value="24/7" label="Always-on AI response" />
-          </Reveal>
-          <Reveal delay={0.15}>
-            <Stat value="<1s" label="Average response time" />
-          </Reveal>
-          <Reveal delay={0.25}>
-            <Stat value="1,000+" label="Calls handled / client / month" />
-          </Reveal>
-          <Reveal delay={0.35}>
-            <Stat value="5+" label="Integrated growth services" />
-          </Reveal>
+          {metrics.map((m, i) => (
+            <Reveal key={m.label} delay={0.05 + i * 0.1}>
+              <StatCard metric={m} />
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -1628,6 +1717,17 @@ function CaseStudy() {
           </div>
         </div>
       </section>
+
+      {/* smooth fade out of the dark environment into the next section */}
+      <div
+        aria-hidden
+        style={{
+          height: "110px",
+          marginTop: "-1px",
+          background:
+            "linear-gradient(180deg, #0a0c0b 0%, #161918 28%, #5b605e 56%, #d6d9d8 80%, #ffffff 100%)",
+        }}
+      />
     </>
   );
 }

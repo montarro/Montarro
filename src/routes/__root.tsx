@@ -94,6 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: [
+      {
+        src: "https://link.msgsndr.com/js/external-tracking.js",
+        "data-tracking-id": "tk_215d1d68b33c4d78854830beab1feb1d",
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

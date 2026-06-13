@@ -202,9 +202,15 @@ function ContactPage() {
           {/* backdrop */}
           <div className="absolute inset-0 -z-10 bg-grid opacity-[0.12] [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_75%)]" />
           <div className="absolute inset-0 -z-10 bg-radial-glow" />
-          <div
+          <motion.div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[16%] -z-10 h-[560px] w-[860px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.08),transparent_70%)] blur-3xl"
+            className="pointer-events-none absolute left-1/2 top-[16%] -z-10 h-[560px] w-[860px] -translate-x-1/2 rounded-full blur-3xl"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(16,185,129,0.08), transparent 70%)",
+            }}
+            animate={{ opacity: [0.65, 1, 0.65], scale: [1, 1.06, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
 
           <div className="mx-auto max-w-2xl px-6">
@@ -214,7 +220,7 @@ function ContactPage() {
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="text-center"
             >
-              <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground backdrop-blur">
+              <div className="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground backdrop-blur">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -233,7 +239,7 @@ function ContactPage() {
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mt-10"
+              className="relative mt-6 sm:mt-10"
             >
               {/* radial lighting behind the form card */}
               <div
@@ -243,6 +249,11 @@ function ContactPage() {
                   background:
                     "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.10), transparent 70%)",
                 }}
+              />
+              {/* ultra-light gradient texture behind the card */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-x-8 -top-8 bottom-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
               />
               <div className="relative overflow-hidden rounded-3xl border border-black/[0.07] bg-gradient-to-b from-white/90 via-white/80 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_-26px_55px_-44px_rgba(0,0,0,0.10)_inset,0_36px_90px_-45px_rgba(0,0,0,0.22)]">
                 {/* soft emerald lighting */}
@@ -260,9 +271,16 @@ function ContactPage() {
                       <motion.div
                         initial={false}
                         animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-500/70 via-emerald-500 to-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.55)]"
-                      />
+                        transition={{ type: "spring", stiffness: 110, damping: 20, mass: 0.6 }}
+                        className="absolute inset-y-0 left-0 overflow-hidden bg-gradient-to-r from-emerald-500/70 via-emerald-500 to-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.6)]"
+                      >
+                        <motion.span
+                          aria-hidden
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                          animate={{ x: ["-120%", "120%"] }}
+                          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                      </motion.div>
                     </div>
 
                     <form onSubmit={onSubmit} noValidate className="px-7 py-10 md:px-12 md:py-12">
@@ -403,7 +421,7 @@ function ContactPage() {
                             key="continue-step"
                             type="button"
                             onClick={handleNext}
-                            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-[12px] font-medium uppercase tracking-[0.22em] text-background transition-all duration-500 ease-out hover:-translate-y-[2px] hover:scale-[1.02] hover:shadow-[0_22px_55px_-20px_rgba(16,185,129,0.6),0_0_0_1px_rgba(16,185,129,0.15)]"
+                            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-[12px] font-medium uppercase tracking-[0.22em] text-background transition-all duration-500 ease-out hover:-translate-y-[2px] hover:scale-[1.02] hover:shadow-[0_22px_55px_-20px_rgba(16,185,129,0.6),0_0_0_1px_rgba(16,185,129,0.15)] active:scale-[0.98] active:translate-y-0"
                           >
                             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                             Continue
@@ -416,7 +434,7 @@ function ContactPage() {
                             data-final-submit="true"
                             onClick={handleFinalSubmit}
                             disabled={submitting || !finalStepReady}
-                            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-[12px] font-medium uppercase tracking-[0.22em] text-background transition-all duration-500 ease-out hover:-translate-y-[2px] hover:scale-[1.02] hover:shadow-[0_22px_55px_-20px_rgba(16,185,129,0.6),0_0_0_1px_rgba(16,185,129,0.15)] disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:scale-100"
+                            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-[12px] font-medium uppercase tracking-[0.22em] text-background transition-all duration-500 ease-out hover:-translate-y-[2px] hover:scale-[1.02] hover:shadow-[0_22px_55px_-20px_rgba(16,185,129,0.6),0_0_0_1px_rgba(16,185,129,0.15)] active:scale-[0.98] active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:scale-100"
                           >
                             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                             {submitting ? (
@@ -526,7 +544,7 @@ function Field({
           inputMode={inputMode}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`peer block w-full border-0 border-b bg-transparent px-0 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/50 transition-colors duration-500 focus:outline-none focus:ring-0 ${
+          className={`peer block w-full border-0 border-b bg-transparent px-0 py-3 text-[15px] text-foreground caret-emerald-500 selection:bg-emerald-500/20 placeholder:text-muted-foreground/50 transition-colors duration-500 focus:outline-none focus:ring-0 ${
             error ? "border-destructive/60" : "border-black/[0.10] focus:border-emerald-500/70"
           }`}
         />

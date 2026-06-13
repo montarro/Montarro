@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-const montarroLogo = "/montarro-logo.png";
+import { MLogo } from "@/components/MLogo";
 import { useEffect, useId, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, animate } from "motion/react";
 import {
@@ -115,12 +115,8 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2.5">
-          <img
-            src={montarroLogo}
-            alt="Montarro"
-            className="h-[52px] w-auto"
-          />
+        <a href="#top" className="flex items-center">
+          <MLogo className="h-7 w-auto text-foreground/90" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           {[
@@ -293,6 +289,123 @@ function RotatingCardStage({ cards }: { cards: React.ReactNode[] }) {
   );
 }
 
+/* --------------------- live revenue dashboard card --------------------- */
+
+function RevenueSparkline() {
+  const gradientId = useId();
+  const line =
+    "M0,54 L36,48 L72,52 L108,38 L144,42 L180,26 L216,30 L252,16 L288,18 L320,8";
+  return (
+    <svg
+      viewBox="0 0 320 64"
+      preserveAspectRatio="none"
+      className="h-full w-full"
+      aria-hidden
+    >
+      <defs>
+        <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <motion.path
+        d={`${line} L320,64 L0,64 Z`}
+        fill={`url(#${gradientId})`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 1 }}
+      />
+      <motion.path
+        d={line}
+        fill="none"
+        stroke="rgb(5,150,105)"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ delay: 0.95, duration: 1.7, ease: [0.16, 1, 0.3, 1] }}
+      />
+    </svg>
+  );
+}
+
+function RevenueCard() {
+  const metrics = [
+    { label: "Missed Calls Recovered", value: "128" },
+    { label: "Jobs Booked", value: "34" },
+    { label: "Avg Response Time", value: "0.8s" },
+    { label: "Follow-ups Sent", value: "412" },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 1.1, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="relative mx-auto mt-12 w-full max-w-md"
+    >
+      {/* ambient emerald glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-6 -z-10 rounded-[34px] blur-2xl"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(16,185,129,0.14), transparent 70%)",
+        }}
+      />
+      <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-card/80 p-5 text-left backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.6)_inset,0_40px_80px_-30px_rgba(0,0,0,0.28),0_0_0_1px_rgba(0,0,0,0.02)] sm:p-6">
+        {/* top emerald accent line */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
+        />
+
+        {/* header */}
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            Revenue Captured
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-emerald-600">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            </span>
+            Live System
+          </span>
+        </div>
+
+        {/* main number */}
+        <div className="mt-4 font-display text-5xl tracking-tight text-foreground tabular-nums sm:text-6xl">
+          $42.8K
+        </div>
+        <div className="mt-1.5 flex items-center gap-1.5 text-[13px] font-medium text-emerald-600">
+          <TrendingUp className="h-3.5 w-3.5" />
+          +31% recovered this month
+        </div>
+
+        {/* mini metrics */}
+        <div className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06]">
+          {metrics.map((m) => (
+            <div key={m.label} className="bg-card/95 px-3.5 py-3">
+              <div className="text-lg font-semibold tracking-tight text-foreground tabular-nums">
+                {m.value}
+              </div>
+              <div className="mt-0.5 text-[10px] uppercase leading-tight tracking-[0.1em] text-muted-foreground">
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* animated revenue line */}
+        <div className="mt-5 h-16 w-full">
+          <RevenueSparkline />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ------------------------------- HERO ------------------------------- */
 
 function Hero() {
@@ -311,188 +424,93 @@ function Hero() {
       className="relative isolate min-h-screen overflow-hidden pt-24"
     >
       {/* backdrop */}
-      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.18] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.11] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <div className="absolute inset-0 -z-10 bg-radial-glow" />
+      {/* subtle emerald radial lighting from the top */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[560px] max-w-5xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.07), transparent 70%)",
+        }}
+      />
       <div className="absolute inset-x-0 top-1/3 -z-10 mx-auto h-[420px] max-w-4xl rounded-full bg-black/[0.04] blur-3xl" />
 
       <motion.div
         style={{ y, opacity }}
-        className="relative mx-auto flex max-w-7xl flex-col items-center px-6 pt-16 pb-20 text-center"
+        className="relative mx-auto flex max-w-7xl flex-col items-center px-6 pt-8 pb-16 text-center sm:pt-14 sm:pb-20"
       >
         <Reveal delay={0.05}>
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
             </span>
-            NOW SCALING 100+ BRANDS
+            RECOVERING REVENUE 24/7
           </div>
         </Reveal>
 
         <Reveal delay={0.15} className="w-full">
-          <h1 className="font-display text-balance mx-auto max-w-[12ch] text-[clamp(3rem,9vw,8.5rem)] leading-[0.92] tracking-[-0.05em]">
-            <span className="block text-gradient-chrome">BUILT TO</span>
-            <span className="block text-gradient-chrome">SCALE.</span>
+          <h1 className="font-display text-balance mx-auto max-w-[14ch] text-[clamp(2.85rem,9vw,8rem)] leading-[0.92] tracking-[-0.05em]">
+            <span className="block text-gradient-chrome">NEVER MISS</span>
+            <span className="block text-gradient-chrome">A LEAD.</span>
           </h1>
         </Reveal>
 
         <Reveal delay={0.3}>
-          <p className="mt-8 max-w-xl text-pretty text-base md:text-lg text-muted-foreground">
-            Systems built to capture, qualify, and convert leads.
+          <p className="mt-6 max-w-2xl text-pretty text-base md:text-lg text-muted-foreground">
+            AI revenue systems that capture calls, qualify leads, book jobs, and
+            scale revenue without hiring more staff.
           </p>
         </Reveal>
 
         <Reveal delay={0.45}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/contact"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-all duration-300 ease-out hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-              How We Scale Brands
+              Get Revenue Audit
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <a
               href="#services"
               className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
             >
-              See How It Works
+              See The System
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </Reveal>
 
-        {/* Card bodies — reused between mobile inline row and desktop floating */}
-        {(() => {
-          const cardA = (
-            <>
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <Phone className="h-3 w-3" /> Live AI Call
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
-                  00:42
-                </span>
-              </div>
-              <div className="mt-3 flex items-end gap-1">
-                {Array.from({ length: 18 }).map((_, i) => (
-                  <span
-                    key={i}
-                    className={`w-1 rounded-full ${i % 2 === 0 ? "bg-emerald-500" : "bg-black/70"}`}
-                    style={{ height: `${10 + Math.abs(Math.sin(i * 0.9)) * 22}px` }}
-                  />
-                ))}
-              </div>
-              <div className="mt-3 text-xs text-foreground/80">
-                "Booking confirmed for Thursday at 3pm."
-              </div>
-            </>
-          );
-          const cardB = (
-            <>
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                <span>Ad Spend</span>
-                <span>ROAS 4.8x</span>
-              </div>
-              <div className="mt-3 text-center text-3xl font-bold tracking-tight text-foreground">
-                $284K
-              </div>
-              <div className="mt-4 flex items-center justify-center gap-1.5">
-                {["Meta", "Google", "TikTok"].map((p) => (
-                  <span
-                    key={p}
-                    className="rounded-full border border-emerald-500 px-2.5 py-1 text-[10px] text-muted-foreground"
-                  >
-                    {p}
-                  </span>
-                ))}
-              </div>
-            </>
-          );
-          const cardC = (
-            <>
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                <span>Bookings</span>
-                <span className="normal-case tracking-normal">Today</span>
-              </div>
-              <div className="mt-2 text-center text-3xl font-bold tracking-tight text-foreground">
-                128
-              </div>
-              <div className="mt-1 text-center text-[11px] text-muted-foreground">
-                +24% vs yesterday
-              </div>
-              <svg viewBox="0 0 200 50" className="mt-3 h-12 w-full" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="bk-fill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.28" />
-                    <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0,38 L28,30 L56,34 L84,22 L112,26 L140,14 L168,20 L200,12 L200,50 L0,50 Z"
-                  fill="url(#bk-fill)"
-                />
-                <path
-                  d="M0,38 L28,30 L56,34 L84,22 L112,26 L140,14 L168,20 L200,12"
-                  fill="none"
-                  stroke="rgb(16,185,129)"
-                  strokeWidth="1.75"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </>
-          );
-          const cardD = (
-            <>
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                <span>Leads</span>
-                <span>30D</span>
-              </div>
-              <div className="mt-2 text-center text-3xl font-bold tracking-tight text-foreground">
-                12,480
-              </div>
-              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-black/10">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "68%" }}
-                  transition={{ delay: 1.2, duration: 1.4, ease: "easeOut" }}
-                  className="h-full rounded-full bg-emerald-500"
-                />
-              </div>
-            </>
-          );
+        {/* Premium live revenue dashboard card */}
+        <RevenueCard />
 
-          const cards = [cardA, cardB, cardC, cardD];
-          const floatPositions = [
-            { className: "left-4 top-28 w-[210px] xl:left-6 xl:w-[230px]", delay: 0.6, float: "slow" as const },
-            { className: "right-4 top-28 w-[210px] xl:right-6 xl:w-[240px]", delay: 0.75, float: "slower" as const },
-            { className: "left-4 bottom-10 w-[210px] xl:left-6 xl:w-[220px]", delay: 0.9, float: "slower" as const },
-            { className: "right-4 bottom-10 w-[210px] xl:right-6 xl:w-[230px]", delay: 1.05, float: "slow" as const },
-          ];
-
-          return (
-            <>
-              {/* Mobile / tablet: 3D rotating card carousel */}
-              <Reveal delay={0.6} className="w-full lg:hidden">
-                <RotatingCardStage cards={cards} />
-              </Reveal>
-
-              {/* Desktop: floating dashboard elements pinned to corners */}
-              {cards.map((c, i) => (
-                <FloatingCard
-                  key={i}
-                  className={floatPositions[i].className}
-                  delay={floatPositions[i].delay}
-                  float={floatPositions[i].float}
-                >
-                  {c}
-                </FloatingCard>
-              ))}
-            </>
-          );
-        })()}
+        {/* Proof bar */}
+        <Reveal delay={0.7} className="w-full">
+          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06] sm:grid-cols-4">
+            {[
+              ["24/7", "AI Response"],
+              ["128", "Missed Calls Recovered"],
+              ["34", "Jobs Booked"],
+              ["$42.8K", "Revenue Captured"],
+            ].map(([v, l]) => (
+              <div
+                key={l}
+                className="bg-background/85 px-4 py-4 text-center backdrop-blur"
+              >
+                <div className="font-display text-xl tracking-tight text-foreground tabular-nums">
+                  {v}
+                </div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                  {l}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </motion.div>
 
 
@@ -504,15 +522,110 @@ function Hero() {
 
 
 function Trust() {
+  const industries = [
+    "HVAC",
+    "DENTAL",
+    "LEGAL",
+    "MEDICAL",
+    "PLUMBING",
+    "AUTOMOTIVE",
+    "CONSTRUCTION",
+  ];
   return (
-    <section className="relative bg-graphite py-12 flex items-center justify-center overflow-hidden">
+    <section className="relative bg-graphite py-14 overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px divider-emerald-glow" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px divider-emerald-glow opacity-60" />
-      <Reveal>
-        <h2 className="text-center text-xs uppercase tracking-[0.32em] text-white/80">
-          Infrastructure trusted by ambitious operators
-        </h2>
-      </Reveal>
+      <div className="mx-auto max-w-5xl px-6 text-center">
+        <Reveal>
+          <h2 className="text-base md:text-xl font-medium uppercase tracking-[0.22em] text-white/85">
+            Revenue Infrastructure for Ambitious Operators
+          </h2>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.26em] text-white/45 sm:text-xs">
+            {industries.map((it, i) => (
+              <span key={it} className="flex items-center gap-4">
+                {i !== 0 && (
+                  <span aria-hidden className="text-emerald-500/50">
+                    •
+                  </span>
+                )}
+                {it}
+              </span>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------- MISSED REVENUE --------------------------- */
+
+function MissedRevenue() {
+  const cards = [
+    {
+      icon: Phone,
+      title: "Capture Every Call",
+      desc: "AI answers after-hours, during busy periods, and when staff are unavailable.",
+    },
+    {
+      icon: CalendarCheck,
+      title: "Book More Jobs",
+      desc: "Qualified leads are routed into bookings, reminders, and follow-up flows.",
+    },
+    {
+      icon: TrendingUp,
+      title: "Scale Without Hiring",
+      desc: "Increase response speed and capacity without adding receptionist overhead.",
+    },
+  ];
+  return (
+    <section className="relative py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="max-w-3xl">
+          <Reveal>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                The Problem
+              </span>
+            </div>
+            <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
+              MISSED CALLS ARE LOST REVENUE.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
+              Every unanswered call is a customer choosing someone else. Our AI
+              receptionist answers instantly, qualifies the lead, books the
+              appointment, and pushes everything into your CRM.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {cards.map((c, i) => {
+            const Icon = c.icon;
+            return (
+              <Reveal key={c.title} delay={i * 0.08}>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-black/[0.08] bg-card/60 p-6 lg:p-8 backdrop-blur transition-all duration-500 ease-out hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_30px_80px_-30px_rgba(16,185,129,0.28)] shadow-[0_1px_0_0_rgba(0,0,0,0.02),0_10px_40px_-20px_rgba(0,0,0,0.08)]">
+                  <span className="absolute left-0 top-0 h-px w-0 bg-gradient-to-r from-transparent via-emerald-500/70 to-transparent transition-all duration-700 ease-out group-hover:w-full" />
+                  <div className="inline-flex rounded-full border border-black/[0.08] p-2.5 transition-all duration-500 ease-out group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)]">
+                    <Icon className="h-5 w-5 text-foreground/70 transition-colors duration-500 group-hover:text-emerald-600" />
+                  </div>
+                  <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">
+                    {c.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {c.desc}
+                  </p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }
@@ -1044,11 +1157,7 @@ function Footer() {
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
               <a href="#top" className="inline-block">
-                <img
-                  src={montarroLogo}
-                  alt="Montarro"
-                  className="h-[34px] w-auto"
-                />
+                <MLogo className="h-6 w-auto text-foreground/80" />
               </a>
               <p className="mt-2 text-[13px] leading-relaxed text-black/40">
                 AI infrastructure for modern companies.
@@ -1191,6 +1300,7 @@ function Landing() {
       <main>
         <Hero />
         <Trust />
+        <MissedRevenue />
         <Services />
         <Results />
         <CaseStudy />

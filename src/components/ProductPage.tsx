@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Check, type LucideIcon } from "lucide-react";
 import { SiteNav, SiteFooter } from "./SiteChrome";
@@ -52,6 +53,11 @@ export type ProductPageProps = {
 };
 
 export function ProductPage(p: ProductPageProps) {
+  // Always land at the top when opening a product/package page.
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, [p.kind, p.title]);
+
   const Icon = p.icon;
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">

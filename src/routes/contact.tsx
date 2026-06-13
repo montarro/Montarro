@@ -48,11 +48,17 @@ const INDUSTRIES = [
   "Real Estate",
   "E-Commerce",
   "Service-Based",
-  "Enterprise",
+  "Multi-Location",
   "Other",
 ];
 
-const STAGES = ["Launching", "Growing", "Scaling", "Established", "Enterprise"];
+const STAGES = [
+  "Pre-Revenue",
+  "Early Growth",
+  "Scaling Operations",
+  "Established Brand",
+  "Multi-Location / Enterprise",
+];
 
 const GOALS = [
   "Lead Generation",
@@ -60,10 +66,10 @@ const GOALS = [
   "Content Creation",
   "Paid Advertising",
   "Automation",
-  "Full Growth Infrastructure",
+  "Complete Revenue System",
 ];
 
-const BUDGETS = ["$2k–5k", "$5k–10k", "$10k–25k", "$25k+", "Not Sure Yet"];
+const BUDGETS = ["$2k–5k", "$5k–10k", "$10k–25k", "$25k+", "Need Guidance"];
 
 const TOTAL_STEPS = 6;
 
@@ -107,8 +113,8 @@ const STEP_TITLES: Record<number, { eyebrow: string; heading: string }> = {
   2: { eyebrow: "Industry", heading: "What best describes your business?" },
   3: { eyebrow: "Stage", heading: "What stage is your company currently at?" },
   4: { eyebrow: "Focus", heading: "What are you looking to solve?" },
-  5: { eyebrow: "Budget", heading: "What monthly marketing budget are you operating with?" },
-  6: { eyebrow: "Goals", heading: "Tell us about your goals." },
+  5: { eyebrow: "Budget", heading: "What growth investment range are you currently comfortable with?" },
+  6: { eyebrow: "Goals", heading: "What's currently limiting growth?" },
 };
 
 function ContactPage() {
@@ -225,13 +231,16 @@ function ContactPage() {
                   <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 </span>
-                Private Application
+                Private Infrastructure Audit
               </div>
               <h1 className="font-display text-balance mx-auto max-w-[16ch] text-[clamp(2.25rem,6.2vw,4.75rem)] leading-[0.98] tracking-[-0.045em] text-gradient-chrome">
-                Apply To Work With Montarro.
+                Scale With Montarro.
               </h1>
               <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base text-muted-foreground leading-relaxed">
                 Infrastructure engineered to capture, qualify, and compound revenue.
+              </p>
+              <p className="mx-auto mt-4 max-w-md text-[12px] tracking-wide text-muted-foreground/55">
+                We partner with a limited number of operators each quarter.
               </p>
             </motion.div>
 
@@ -396,7 +405,7 @@ function ContactPage() {
                                   value={form.notes}
                                   onChange={(e) => update("notes", e.target.value)}
                                   rows={6}
-                                  placeholder="We're looking to improve lead flow, automate enquiries, and scale customer acquisition across multiple locations…"
+                                  placeholder="Missed calls, inconsistent lead flow, poor follow-up systems, low conversion rates, operational bottlenecks, scaling limitations…"
                                   className="w-full resize-none rounded-2xl border border-black/[0.06] bg-card/40 p-6 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/50 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] transition-all duration-500 hover:border-black/[0.12] hover:shadow-[0_4px_20px_-6px_rgba(0,0,0,0.08)] focus:border-emerald-500/40 focus:bg-card/60 focus:shadow-[0_0_30px_-8px_rgba(16,185,129,0.28),0_4px_20px_-6px_rgba(0,0,0,0.08)] focus:outline-none"
                                 />
                               </div>
@@ -489,11 +498,11 @@ function SuccessScreen() {
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
       </div>
       <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Your application has been received.
+        Infrastructure Audit Submitted.
       </h2>
       <p className="mt-5 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
-        A member of the Montarro team will reach out shortly to discuss your
-        growth strategy.
+        A Montarro strategist will review your systems and reach out with
+        next-step recommendations.
       </p>
       <Link
         to="/"
@@ -590,7 +599,7 @@ function ChoiceGrid({
               type="button"
               onClick={() => onChange(opt)}
               aria-pressed={selected}
-              className={`group relative flex items-center justify-between overflow-hidden rounded-2xl border px-5 py-4 text-left text-[14px] backdrop-blur transition-all duration-500 ease-out hover:-translate-y-0.5 ${
+              className={`group relative flex items-center justify-between overflow-hidden rounded-2xl border px-5 py-4 text-left text-[14px] backdrop-blur transition-all duration-500 ease-out hover:-translate-y-0.5 active:scale-[0.99] ${
                 selected
                   ? "border-emerald-500/50 bg-emerald-500/[0.06] text-foreground shadow-[0_18px_50px_-25px_rgba(16,185,129,0.5)]"
                   : "border-black/[0.07] bg-background/40 text-muted-foreground hover:text-foreground hover:border-emerald-500/30 hover:shadow-[0_16px_40px_-25px_rgba(16,185,129,0.4)]"

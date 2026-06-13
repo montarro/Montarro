@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowUpRight, Check, type LucideIcon } from "lucide-react";
 import { SiteNav, SiteFooter } from "./SiteChrome";
+import { primaryCta } from "@/lib/cta";
 
 function Reveal({
   children,
@@ -90,9 +91,9 @@ export function ProductPage(p: ProductPageProps) {
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background transition-transform duration-300 hover:scale-[1.03]"
+                  className={`${primaryCta} inline-flex px-6 py-3 text-sm`}
                 >
-                  {p.ctaLabel}
+                  Book a Free Consultation
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
                 <Link
@@ -356,10 +357,10 @@ export function ProductPage(p: ProductPageProps) {
                 <div className="mt-7">
                   <Link
                     to="/contact"
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-black shadow-[0_8px_30px_-10px_rgba(0,0,0,0.25)] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] hover:shadow-[0_20px_60px_-14px_rgba(0,0,0,0.35)]"
+                    className={`${primaryCta} inline-flex px-8 py-4 text-sm`}
                   >
-                    {p.ctaLabel}
-                    <ArrowUpRight className="h-3.5 w-3.5 text-black/40 transition-transform duration-700 group-hover:text-emerald-500/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    Book a Free Consultation
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Link>
                 </div>
               </Reveal>

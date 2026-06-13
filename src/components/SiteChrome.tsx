@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/MobileMenu";
+import { primaryCta } from "@/lib/cta";
 
 const NAV_LINKS = [
   { label: "Services", href: "/#services" },
@@ -46,9 +47,9 @@ export function SiteNav() {
         </nav>
         <Link
           to="/contact"
-          className="group hidden md:inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.14em] text-background transition-transform duration-300 hover:scale-[1.03]"
+          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
         >
-          Book a Call
+          Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         <MobileMenu links={NAV_LINKS} />
@@ -103,7 +104,7 @@ export function SiteFooter() {
               </h4>
               <ul className="mt-4 space-y-2">
                 <li><Link to="/contact" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Contact</Link></li>
-                <li><Link to="/contact" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Book A Call</Link></li>
+                <li><Link to="/contact" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Book a Free Consultation</Link></li>
                 <li><a href="https://instagram.com/montarroaii" target="_blank" rel="noopener noreferrer" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Instagram</a></li>
               </ul>
             </div>

@@ -1444,10 +1444,10 @@ function Pricing() {
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
                 to={t.href}
-                className={`group relative block h-full overflow-hidden rounded-2xl border p-8 backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-1 ${
+                className={`group relative block h-full overflow-hidden rounded-2xl border p-8 backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 hover:scale-[1.02] active:scale-[0.99] ${
                   t.featured
-                    ? "border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.06] to-white/55 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/55 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_42px_90px_-34px_rgba(16,185,129,0.5)]"
-                    : "border-black/[0.08] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/30 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_34px_80px_-34px_rgba(16,185,129,0.3)]"
+                    ? "border-emerald-500/45 bg-gradient-to-b from-emerald-500/[0.06] to-white/55 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/60 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_48px_100px_-34px_rgba(16,185,129,0.55)]"
+                    : "border-black/[0.08] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_40px_90px_-32px_rgba(16,185,129,0.38)]"
                 }`}
               >
                 {t.featured && (
@@ -1457,6 +1457,12 @@ function Pricing() {
                     style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.10), transparent 65%)" }}
                   />
                 )}
+                {/* soft emerald glow on hover (this card only) */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{ background: "radial-gradient(ellipse 85% 55% at 50% 0%, rgba(16,185,129,0.10), transparent 65%)" }}
+                />
                 <div className="relative flex h-full flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="font-display text-5xl tracking-tight text-gradient-chrome">
@@ -1485,17 +1491,18 @@ function Pricing() {
                     ))}
                   </ul>
 
-                  <span
-                    style={{ marginTop: "auto" }}
-                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 pt-3 text-[13px] transition-all duration-300 ${
-                      t.featured
-                        ? "bg-gradient-to-b from-emerald-600 to-emerald-700 font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_12px_30px_-14px_rgba(5,150,105,0.6)] group-hover:from-emerald-500 group-hover:to-emerald-600 group-hover:shadow-[0_20px_44px_-16px_rgba(5,150,105,0.65)]"
-                        : "border border-black/[0.12] font-medium text-foreground/80 group-hover:border-emerald-500/40 group-hover:text-foreground"
-                    }`}
-                  >
-                    {t.cta}
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </span>
+                  <div style={{ marginTop: "auto" }} className="pt-10">
+                    <span
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[13px] transition-all duration-300 ${
+                        t.featured
+                          ? "bg-gradient-to-b from-emerald-600 to-emerald-700 font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_12px_30px_-14px_rgba(5,150,105,0.6)] group-hover:from-emerald-500 group-hover:to-emerald-600 group-hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)]"
+                          : "border border-black/[0.12] font-medium text-foreground/80 group-hover:border-emerald-500/45 group-hover:bg-emerald-500/[0.04] group-hover:text-foreground"
+                      }`}
+                    >
+                      {t.cta}
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
                 </div>
               </Link>
             </Reveal>

@@ -1737,11 +1737,17 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <div className="bg-background px-4 pt-10 pb-16 sm:px-6 lg:px-8 lg:pt-14 lg:pb-24">
+    <div className="bg-background px-4 pt-10 pb-16 sm:px-6 lg:px-8 lg:pt-16 lg:pb-24">
       <section
         id="cta"
-        className="relative isolate overflow-hidden rounded-[28px] border border-white/[0.04] bg-[#111111] pt-16 pb-20 lg:pt-20 lg:pb-24 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.5),0_1px_0_0_rgba(255,255,255,0.03)_inset]"
+        className="relative isolate overflow-hidden rounded-[28px] border border-white/[0.06] bg-gradient-to-b from-[#171717] to-[#0a0a0a] pt-20 pb-20 lg:pt-24 lg:pb-24 shadow-[0_50px_120px_-50px_rgba(0,0,0,0.7),0_1px_0_0_rgba(255,255,255,0.04)_inset]"
       >
+        {/* top emerald hairline */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.4), transparent)" }}
+        />
         {/* faint grid texture */}
         <div
           aria-hidden
@@ -1752,14 +1758,20 @@ function CTA() {
             backgroundSize: "72px 72px",
           }}
         />
-        {/* layered atmospheric lighting */}
+        {/* layered atmospheric + emerald lighting */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 50% 40% at 50% 60%, rgba(46,204,113,0.02), transparent 65%), radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.03), transparent 70%)",
+              "radial-gradient(ellipse 60% 50% at 50% 16%, rgba(16,185,129,0.07), transparent 60%), radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.04), transparent 70%)",
           }}
+        />
+        {/* soft vignette edges */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.5) 100%)" }}
         />
         {/* soft grain */}
         <div
@@ -1772,26 +1784,28 @@ function CTA() {
         />
 
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <Reveal delay={0.1}>
-            <h2 className="font-display text-gradient-white-grey text-[clamp(2.25rem,7.5vw,5.25rem)] leading-[0.95] tracking-[-0.035em]">
-              READY TO GROW?
+          <Reveal delay={0.05}>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+              <LiveDot /> Begin Deployment
+            </div>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <h2 className="font-display text-gradient-white-grey text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.92] tracking-[-0.04em]">
+              ENGINEER YOUR GROWTH.
             </h2>
           </Reveal>
-          <Reveal delay={0.22}>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
-              We'll show you exactly how to scale.
+          <Reveal delay={0.24}>
+            <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
+              Systems designed for companies scaling beyond manual growth.
             </p>
           </Reveal>
           <Reveal delay={0.36}>
-            <div className="relative mt-7 inline-block">
+            <div className="relative mt-8 inline-block">
               {/* ambient emerald halo behind button */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-3xl"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(46,204,113,0.02), transparent 70%)",
-                }}
+                style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
               />
               <Link
                 to="/contact"
@@ -1812,23 +1826,29 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-black/[0.06] bg-background">
-      <div className="mx-auto max-w-7xl px-6 pt-10 pb-8 lg:pt-12 lg:pb-10">
+    <footer className="relative border-t border-black/[0.06] bg-gradient-to-b from-white to-[#fafbfb]">
+      {/* subtle emerald divider + ambient depth */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.22), transparent)" }}
+      />
+      <div className="mx-auto max-w-7xl px-6 pt-14 pb-10 lg:pt-20 lg:pb-12">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
           {/* LEFT — refined brand */}
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
               <a href="#top" className="inline-block">
-                <img src="/montarro-logo.png" alt="Montarro" className="h-[34px] w-auto" />
+                <img src="/montarro-logo.png" alt="Montarro" className="h-9 w-auto" />
               </a>
-              <p className="mt-3 text-[13px] leading-relaxed text-black/40">
-                AI infrastructure for modern companies.
+              <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-black/40">
+                AI revenue infrastructure for modern companies.
               </p>
-              <p className="mt-2 text-[12px] font-medium text-black/55">
+              <p className="mt-3 text-[12px] font-medium text-black/55">
                 Melbourne-based · Australian-owned
               </p>
             </div>
-            <p className="mt-6 text-[11px] tracking-[0.12em] uppercase text-black/20 lg:mt-0">
+            <p className="mt-8 text-[11px] tracking-[0.12em] uppercase text-black/20 lg:mt-0">
               Built for companies scaling through AI.
             </p>
           </div>
@@ -1924,9 +1944,12 @@ function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/[0.06] pt-6 text-[12px] text-black/25 md:flex-row md:items-center">
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-black/[0.06] pt-6 text-[12px] text-black/30 md:flex-row md:items-center lg:mt-16">
           <div>© 2025 Montarro. All rights reserved.</div>
-          <div className="text-black/25">Melbourne, Australia</div>
+          <div className="flex items-center gap-2 text-black/30">
+            <span className="h-1 w-1 rounded-full bg-emerald-500/60" />
+            Melbourne, Australia
+          </div>
         </div>
       </div>
     </footer>

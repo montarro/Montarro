@@ -12,8 +12,13 @@ import {
   MonitorSmartphone,
   Workflow,
   Check,
+  CheckCircle2,
   Activity,
   CalendarCheck,
+  PhoneCall,
+  Bot,
+  Database,
+  Clock,
   BarChart3,
   Users,
   PlayCircle,
@@ -545,68 +550,344 @@ function Trust() {
 
 /* --------------------------- MISSED REVENUE --------------------------- */
 
-function MissedRevenue() {
-  const cards = [
-    {
-      icon: Phone,
-      title: "Capture Every Call",
-      desc: "AI answers after-hours, during busy periods, and when staff are unavailable.",
-    },
-    {
-      icon: CalendarCheck,
-      title: "Book More Jobs",
-      desc: "Qualified leads are routed into bookings, reminders, and follow-up flows.",
-    },
-    {
-      icon: TrendingUp,
-      title: "Scale Without Hiring",
-      desc: "Increase response speed and capacity without adding receptionist overhead.",
-    },
+function Waveform({ count = 5, className = "" }: { count?: number; className?: string }) {
+  return (
+    <div className={`flex h-4 items-end gap-[3px] ${className}`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <motion.span
+          key={i}
+          className="w-[3px] rounded-full bg-emerald-500"
+          style={{ height: "35%" }}
+          animate={{ height: ["35%", "100%", "55%", "85%", "35%"] }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.13,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function LiveDot({ className = "" }: { className?: string }) {
+  return (
+    <span className={`relative flex h-1.5 w-1.5 ${className}`}>
+      <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+    </span>
+  );
+}
+
+function PanelAccent() {
+  return (
+    <span
+      aria-hidden
+      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
+    />
+  );
+}
+
+const cardShell =
+  "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/[0.08] bg-gradient-to-b from-white/95 to-white/65 p-5 backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_44px_90px_-40px_rgba(16,185,129,0.32)] shadow-[0_1px_0_0_rgba(255,255,255,0.7)_inset,0_22px_50px_-30px_rgba(0,0,0,0.18)]";
+const miniPanel =
+  "rounded-xl border border-black/[0.06] bg-white/70 p-3 backdrop-blur";
+const pill =
+  "rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-700";
+
+/* Right-side live AI receptionist workflow */
+function LiveWorkflow() {
+  const steps = [
+    { icon: PhoneCall, label: "Incoming Call", meta: "+61 4•• ••• 218", right: <Waveform /> },
+    { icon: Bot, label: "AI Receptionist Answers", meta: "0.8s response time", right: <LiveDot /> },
+    { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing", right: <span className={pill}>Qualified</span> },
+    { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM", right: <span className={pill}>Confirmed</span> },
+    { icon: Database, label: "CRM Updated", meta: "GoHighLevel · synced", right: <CheckCircle2 className="h-4 w-4 text-emerald-500" /> },
   ];
   return (
-    <section className="relative py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-3xl">
-          <Reveal>
-            <div className="mb-6 flex items-center gap-3">
-              <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                The Problem
+    <div className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-6 -z-10 rounded-[36px] blur-3xl"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(16,185,129,0.13), transparent 70%)",
+        }}
+      />
+      <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-gradient-to-b from-white/95 to-white/72 p-5 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.7)_inset,0_44px_90px_-35px_rgba(0,0,0,0.26)] sm:p-6">
+        <PanelAccent />
+        {/* header */}
+        <div className="flex items-center justify-between border-b border-black/[0.06] pb-3">
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <LiveDot /> AI Receptionist · Live
+          </div>
+          <span className="text-[11px] tabular-nums text-muted-foreground">00:42</span>
+        </div>
+
+        {/* pipeline */}
+        <div className="relative mt-5">
+          <div aria-hidden className="absolute left-[17px] top-5 bottom-5 w-px bg-black/10" />
+          <motion.div
+            aria-hidden
+            className="absolute left-[17px] top-5 w-px origin-top bg-gradient-to-b from-emerald-500 via-emerald-500/70 to-emerald-500/0"
+            style={{ bottom: 20 }}
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          />
+          <div className="space-y-3">
+            {steps.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <motion.div
+                  key={s.label}
+                  className="relative flex items-center gap-3"
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ delay: 0.25 + i * 0.16, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-white shadow-[0_0_0_4px_rgba(255,255,255,1),0_8px_20px_-8px_rgba(16,185,129,0.45)]">
+                    <Icon className="h-4 w-4 text-emerald-600" />
+                  </div>
+                  <div className="flex flex-1 items-center justify-between rounded-lg border border-black/[0.06] bg-white/75 px-3 py-2 backdrop-blur">
+                    <div>
+                      <div className="text-[13px] font-medium leading-tight text-foreground">{s.label}</div>
+                      <div className="text-[11px] text-muted-foreground">{s.meta}</div>
+                    </div>
+                    {s.right}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* footer */}
+        <div className="mt-5 flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-3">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-emerald-700/80">Revenue recovered</span>
+          <span className="flex items-center gap-2">
+            <span className="font-display text-xl tabular-nums text-foreground">$42.8K</span>
+            <span className="text-[11px] font-medium text-emerald-600">+31%</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CaptureCard() {
+  return (
+    <div className={cardShell}>
+      <PanelAccent />
+      <div className={miniPanel}>
+        <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="flex items-center gap-1.5"><LiveDot /> Live Calls</span>
+          <span className="tabular-nums">03</span>
+        </div>
+        <div className="mt-3 flex items-center gap-2.5 rounded-lg border border-black/[0.06] bg-white px-2.5 py-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10">
+            <PhoneCall className="h-3.5 w-3.5 text-emerald-600" />
+          </span>
+          <div className="flex-1">
+            <div className="text-[12px] font-medium leading-tight text-foreground">Incoming · +61 4•• 218</div>
+            <div className="text-[10px] text-muted-foreground">AI answering…</div>
+          </div>
+          <Waveform />
+        </div>
+        <div className="mt-2 flex items-center justify-between rounded-lg bg-emerald-500/[0.07] px-2.5 py-1.5">
+          <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-700">
+            <CheckCircle2 className="h-3.5 w-3.5" /> Lead Qualified
+          </span>
+          <span className="text-[10px] text-emerald-600">0.8s</span>
+        </div>
+      </div>
+      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Capture Every Call</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        AI answers after-hours, during busy periods, and when staff are unavailable.
+      </p>
+      <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+        <TrendingUp className="h-3.5 w-3.5 text-emerald-500" /> 128 recovered this month
+      </div>
+    </div>
+  );
+}
+
+function BookingCard() {
+  return (
+    <div className={cardShell}>
+      <PanelAccent />
+      <div className={miniPanel}>
+        <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span>Bookings</span>
+          <span>Today</span>
+        </div>
+        <div className="mt-3 space-y-2">
+          <div className="flex items-center justify-between rounded-lg border border-black/[0.06] bg-white px-2.5 py-2">
+            <span className="flex items-center gap-2 text-[12px] text-foreground">
+              <CalendarCheck className="h-3.5 w-3.5 text-emerald-600" /> Thu · 3:00 PM
+            </span>
+            <span className={pill}>Confirmed</span>
+          </div>
+          <div className="flex items-center justify-between rounded-lg border border-black/[0.06] bg-white px-2.5 py-2">
+            <span className="flex items-center gap-2 text-[12px] text-foreground">
+              <Clock className="h-3.5 w-3.5 text-muted-foreground" /> Reminder sent
+            </span>
+            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+          </div>
+        </div>
+        <div className="mt-3">
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+            <span>Pipeline</span>
+            <span className="tabular-nums">68%</span>
+          </div>
+          <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-black/10">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+              initial={{ width: 0 }}
+              whileInView={{ width: "68%" }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 1.3, ease: "easeOut", delay: 0.2 }}
+            />
+          </div>
+        </div>
+      </div>
+      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Book More Jobs</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        Qualified leads are routed into bookings, reminders, and follow-up flows.
+      </p>
+      <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+        <CalendarCheck className="h-3.5 w-3.5 text-emerald-500" /> 34 jobs booked this week
+      </div>
+    </div>
+  );
+}
+
+function ScaleCard() {
+  const convos = [
+    { n: "HVAC · Call", s: "Qualifying" },
+    { n: "Dental · Call", s: "Booking" },
+    { n: "Legal · Call", s: "Answering" },
+  ];
+  return (
+    <div className={cardShell}>
+      <PanelAccent />
+      <div className={miniPanel}>
+        <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="flex items-center gap-1.5"><LiveDot /> Active Conversations</span>
+          <span className="tabular-nums">12</span>
+        </div>
+        <div className="mt-3 space-y-1.5">
+          {convos.map((c, i) => (
+            <div key={c.n} className="flex items-center gap-2.5 rounded-lg border border-black/[0.06] bg-white px-2.5 py-1.5">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-semibold text-emerald-700">
+                {i + 1}
               </span>
+              <span className="flex-1 text-[12px] text-foreground">{c.n}</span>
+              <span className={pill}>{c.s}</span>
             </div>
-            <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
-              MISSED CALLS ARE LOST REVENUE.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
-              Every unanswered call is a customer choosing someone else. Our AI
-              receptionist answers instantly, qualifies the lead, books the
-              appointment, and pushes everything into your CRM.
-            </p>
+          ))}
+        </div>
+        <div className="mt-3 flex items-center justify-between border-t border-black/[0.06] pt-2.5">
+          <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Avg response</span>
+          <span className="flex items-center gap-2">
+            <span className="block h-5 w-16"><RevenueSparkline /></span>
+            <span className="text-[12px] font-semibold tabular-nums text-foreground">0.8s</span>
+          </span>
+        </div>
+      </div>
+      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Scale Without Hiring</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        Increase response speed and capacity without adding receptionist overhead.
+      </p>
+      <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
+        <Activity className="h-3.5 w-3.5 text-emerald-500" /> 5+ services automated
+      </div>
+    </div>
+  );
+}
+
+function MissedRevenue() {
+  return (
+    <section className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
+      {/* tonal background + radial lighting for section rhythm and depth */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-[#fafafb] via-white to-[#f6f7f8]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 40% at 85% 12%, rgba(16,185,129,0.07), transparent 70%)",
+        }}
+      />
+      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]" />
+
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* LEFT */}
+          <div>
+            <Reveal>
+              <div className="mb-6 flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-500/70" />
+                <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                  The Problem
+                </span>
+              </div>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
+                MISSED CALLS ARE LOST REVENUE.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
+                Every unanswered call is a customer choosing someone else. Our AI
+                receptionist answers instantly, qualifies the lead, books the
+                appointment, and pushes everything into your CRM.
+              </p>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <div className="mt-8 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06]">
+                {[
+                  ["100%", "Calls answered"],
+                  ["0.8s", "Avg response"],
+                  ["24/7", "Coverage"],
+                ].map(([v, l]) => (
+                  <div key={l} className="bg-white/85 px-3 py-3 text-center backdrop-blur">
+                    <div className="font-display text-lg tracking-tight text-foreground tabular-nums">{v}</div>
+                    <div className="mt-0.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{l}</div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.26}>
+              <Link
+                to="/contact"
+                className="group mt-8 inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-all duration-300 ease-out hover:scale-[1.02]"
+              >
+                Get Revenue Audit
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Reveal>
+          </div>
+
+          {/* RIGHT — live workflow */}
+          <Reveal delay={0.15}>
+            <LiveWorkflow />
           </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {cards.map((c, i) => {
-            const Icon = c.icon;
-            return (
-              <Reveal key={c.title} delay={i * 0.08}>
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-black/[0.08] bg-card/60 p-6 lg:p-8 backdrop-blur transition-all duration-500 ease-out hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_30px_80px_-30px_rgba(16,185,129,0.28)] shadow-[0_1px_0_0_rgba(0,0,0,0.02),0_10px_40px_-20px_rgba(0,0,0,0.08)]">
-                  <span className="absolute left-0 top-0 h-px w-0 bg-gradient-to-r from-transparent via-emerald-500/70 to-transparent transition-all duration-700 ease-out group-hover:w-full" />
-                  <div className="inline-flex rounded-full border border-black/[0.08] p-2.5 transition-all duration-500 ease-out group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)]">
-                    <Icon className="h-5 w-5 text-foreground/70 transition-colors duration-500 group-hover:text-emerald-600" />
-                  </div>
-                  <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">
-                    {c.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {c.desc}
-                  </p>
-                </div>
-              </Reveal>
-            );
-          })}
+        {/* three live-UI cards */}
+        <div className="mt-14 grid gap-4 md:grid-cols-3 lg:mt-20">
+          <Reveal delay={0.05}>
+            <CaptureCard />
+          </Reveal>
+          <Reveal delay={0.13}>
+            <BookingCard />
+          </Reveal>
+          <Reveal delay={0.21}>
+            <ScaleCard />
+          </Reveal>
         </div>
       </div>
     </section>

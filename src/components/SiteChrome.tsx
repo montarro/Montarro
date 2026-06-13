@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { MLogo } from "@/components/MLogo";
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,7 +21,7 @@ export function SiteNav() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2.5">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-[52px] w-auto" />
+          <MLogo className="h-7 w-auto text-foreground/90" />
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           <Link to="/" hash="services" className="hover:text-foreground transition-colors tracking-wide">
@@ -56,7 +57,7 @@ export function SiteFooter() {
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
               <Link to="/" className="inline-block">
-                <img src="/montarro-logo.png" alt="Montarro" className="h-[34px] w-auto" />
+                <MLogo className="h-6 w-auto text-foreground/80" />
               </Link>
               <p className="mt-2 text-[13px] leading-relaxed text-black/40">
                 AI infrastructure for modern companies.

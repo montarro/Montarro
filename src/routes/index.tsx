@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { MLogo } from "@/components/MLogo";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform, animate } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -43,33 +44,6 @@ export const Route = createFileRoute("/")({
 });
 
 /* ----------------------------- helpers ----------------------------- */
-
-function useCountUp(target: number, duration = 2) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  useEffect(() => {
-    if (!inView || !ref.current) return;
-    const node = ref.current;
-    // For very small targets, Math.floor would show "0" for nearly the entire
-    // animation. Show the final value immediately instead.
-    if (target <= 1) {
-      node.textContent = target.toLocaleString();
-      return;
-    }
-    const controls = animate(0, target, {
-      duration,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate(v) {
-        node.textContent = Math.floor(v).toLocaleString();
-      },
-      onComplete() {
-        node.textContent = target.toLocaleString();
-      },
-    });
-    return () => controls.stop();
-  }, [inView, target, duration]);
-  return ref;
-}
 
 function Reveal({
   children,
@@ -114,8 +88,8 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2.5">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-[52px] w-auto" />
+        <a href="#top" className="flex items-center">
+          <MLogo className="h-7 w-auto text-foreground/90" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           {[
@@ -400,6 +374,10 @@ function RevenueCard() {
         <div className="mt-5 h-16 w-full">
           <RevenueSparkline />
         </div>
+
+        <div className="mt-3 text-center text-[10px] uppercase tracking-[0.18em] text-muted-foreground/45">
+          Example dashboard
+        </div>
       </div>
     </motion.div>
   );
@@ -460,7 +438,13 @@ function Hero() {
         <Reveal delay={0.3}>
           <p className="mt-6 max-w-2xl text-pretty text-base md:text-lg text-muted-foreground">
             AI revenue systems that capture calls, qualify leads, book jobs, and
-            scale revenue without hiring more staff.
+            scale revenue — without hiring more staff.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.38}>
+          <p className="mt-3 text-[12px] tracking-wide text-muted-foreground/70">
+            Aussie-trained AI voice. Privacy Act compliant. Local data handling.
           </p>
         </Reveal>
 
@@ -653,7 +637,7 @@ const SERVICES = [
   },
   {
     title: "Paid Advertising",
-    desc: "Performance driven by data.",
+    desc: "Performance-driven ads across Meta, Google & TikTok.",
     icon: Megaphone,
     href: "/services/paid-advertising" as const,
   },
@@ -735,31 +719,21 @@ function Services() {
 
 /* ------------------------------ RESULTS ------------------------------ */
 
-function Stat({
-  value,
-  suffix,
-  label,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-}) {
-  const ref = useCountUp(value, 2.4);
+function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card/60 border border-black/[0.04] px-6 pt-8 pb-6 transition-all duration-500 ease-out hover:border-emerald-500/30 hover:shadow-[0_20px_60px_-25px_rgba(46,204,113,0.35)]">
+    <div className="group relative overflow-hidden rounded-2xl bg-card/60 border border-black/[0.04] px-6 pt-8 pb-6 transition-all duration-500 ease-out hover:border-emerald-500/30 hover:shadow-[0_20px_60px_-25px_rgba(16,185,129,0.35)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 -top-10 h-32 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.06),transparent_70%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(46,204,113,0.12),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.12),transparent_60%)]"
       />
-      <div className="relative flex items-baseline gap-0.5 font-display text-6xl md:text-7xl text-gradient-chrome tabular-nums">
-        <span ref={ref}>{value.toLocaleString()}</span>
-        <span>{suffix}</span>
+      <div className="relative font-display text-5xl md:text-6xl text-gradient-chrome tabular-nums">
+        {value}
       </div>
-      <div className="relative mt-2 text-[11px] uppercase tracking-[0.32em] text-muted-foreground/80 font-medium">
+      <div className="relative mt-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground/80 font-medium">
         {label}
       </div>
     </div>
@@ -772,22 +746,26 @@ function Results() {
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <h2 className="max-w-3xl font-display text-5xl md:text-7xl leading-[0.95] text-gradient-chrome">
-            Numbers that compound.
+            Engineered for performance.
           </h2>
+          <p className="mt-5 max-w-xl text-muted-foreground">
+            Built for long-term partnerships — capability you can rely on, not
+            vanity metrics.
+          </p>
         </Reveal>
 
         <div className="mt-12 md:mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Reveal delay={0.05}>
-            <Stat value={100} suffix="+" label="Companies Integrated" />
+            <Stat value="24/7" label="Always-on AI response" />
           </Reveal>
           <Reveal delay={0.15}>
-            <Stat value={1} suffix="M+" label="Leads Generated" />
+            <Stat value="<1s" label="Average response time" />
           </Reveal>
           <Reveal delay={0.25}>
-            <Stat value={98} suffix="%" label="Client Retention" />
+            <Stat value="1,000+" label="Calls handled / client / month" />
           </Reveal>
           <Reveal delay={0.35}>
-            <Stat value={1} suffix="M+" label="Ad Spend Managed" />
+            <Stat value="5+" label="Integrated growth services" />
           </Reveal>
         </div>
       </div>
@@ -847,6 +825,11 @@ function Pricing() {
               Packages tailored to your{" "}
               <span className="text-emerald-500">growth.</span>
             </h2>
+            <Reveal delay={0.1}>
+              <p className="mt-5 text-[12px] uppercase tracking-[0.22em] text-emerald-600">
+                Now onboarding founding Melbourne clients.
+              </p>
+            </Reveal>
           </div>
         </Reveal>
 
@@ -993,24 +976,7 @@ function CaseStudy() {
               <TrendingUp className="h-6 w-6 text-emerald-400" />
             </div>
             <div className="mt-2 text-sm uppercase tracking-[0.24em] text-white/50">
-              Increase in Booked Calls
-            </div>
-
-            <div className="mt-8 rounded-2xl border border-hairline-light bg-graphite-elevated p-6 backdrop-blur transition-all duration-500 hover:border-emerald-500/20 glow-emerald-soft">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-white/30 to-white/10" />
-                <div>
-                  <div className="text-sm font-medium text-white">Daniel Rhodes</div>
-                  <div className="text-xs text-white/50">
-                    CEO, Nordhaus Studio
-                  </div>
-                </div>
-              </div>
-              <p className="mt-4 text-pretty text-white/80">
-                "Montarro rebuilt our entire acquisition engine. We tripled
-                qualified bookings in a single quarter — without lifting a
-                finger."
-              </p>
+              Illustrative · booked-call uplift
             </div>
           </Reveal>
 
@@ -1022,7 +988,7 @@ function CaseStudy() {
               <div className="flex items-center justify-between border-b border-hairline-light pb-4">
                 <div className="flex items-center gap-2 text-xs text-white/50">
                   <span aria-hidden className="text-sm leading-none">⚡</span>
-                  Performance · Last 90 days
+                  Example performance · illustrative
                 </div>
                 <div className="flex gap-1.5">
                   <span className="h-2 w-2 rounded-full bg-white/20" />
@@ -1156,10 +1122,13 @@ function Footer() {
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
               <a href="#top" className="inline-block">
-                <img src="/montarro-logo.png" alt="Montarro" className="h-[34px] w-auto" />
+                <MLogo className="h-6 w-auto text-foreground/80" />
               </a>
-              <p className="mt-2 text-[13px] leading-relaxed text-black/40">
+              <p className="mt-3 text-[13px] leading-relaxed text-black/40">
                 AI infrastructure for modern companies.
+              </p>
+              <p className="mt-2 text-[12px] font-medium text-black/55">
+                Melbourne-based · Australian-owned
               </p>
             </div>
             <p className="mt-6 text-[11px] tracking-[0.12em] uppercase text-black/20 lg:mt-0">
@@ -1244,17 +1213,7 @@ function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
+                    href="https://x.com/montarroaii"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80"
@@ -1270,23 +1229,37 @@ function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/[0.06] pt-6 text-[12px] text-black/25 md:flex-row md:items-center">
           <div>© 2025 Montarro. All rights reserved.</div>
-          <div className="flex gap-6">
-            <a
-              href="#"
-              className="transition-colors duration-300 hover:text-black/60"
-            >
-              Privacy
-            </a>
-            <a
-              href="#"
-              className="transition-colors duration-300 hover:text-black/60"
-            >
-              Terms
-            </a>
-          </div>
+          <div className="text-black/25">Melbourne, Australia</div>
         </div>
       </div>
     </footer>
+  );
+}
+
+/* ---------------------------- INTEGRATIONS ---------------------------- */
+
+function Integrations() {
+  const tools = ["GoHighLevel", "Cal.com", "Twilio", "Google Calendar"];
+  return (
+    <section className="relative border-t border-black/[0.04] py-12">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70">
+            Integrates with your stack
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {tools.map((t) => (
+              <span
+                key={t}
+                className="text-sm font-medium tracking-tight text-foreground/65 transition-colors duration-300 hover:text-foreground"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1300,6 +1273,7 @@ function Landing() {
         <Hero />
         <Trust />
         <MissedRevenue />
+        <Integrations />
         <Services />
         <Results />
         <CaseStudy />

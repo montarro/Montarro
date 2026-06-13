@@ -85,7 +85,6 @@ function ContactNav() {
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           {[
             ["Services", "/#services"],
-            ["Results", "/#results"],
             ["Pricing", "/#pricing"],
             ["Case Study", "/#case"],
           ].map(([l, h]) => (
@@ -108,7 +107,6 @@ function ContactNav() {
         <MobileMenu
           links={[
             { label: "Services", href: "/#services" },
-            { label: "Results", href: "/#results" },
             { label: "Pricing", href: "/#pricing" },
             { label: "Case Study", href: "/#case" },
           ]}

@@ -87,17 +87,27 @@ function Nav() {
   }, []);
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out ${
         scrolled
-          ? "backdrop-blur-xl bg-background/70 border-b border-border"
-          : "bg-transparent"
+          ? "border-b border-white/10 bg-[#0a0b0b]/70 backdrop-blur-xl shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)]"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2.5">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-[52px] w-auto" />
+      <div
+        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
+          scrolled ? "h-14" : "h-16"
+        }`}
+      >
+        <a href="#top" className="flex items-center">
+          <img
+            src="/montarro-logo.png"
+            alt="Montarro"
+            className={`w-auto transition-all duration-500 ease-out ${
+              scrolled ? "h-9 invert" : "h-[52px]"
+            }`}
+          />
         </a>
-        <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
+        <nav className="hidden md:flex items-center gap-10 text-[13px]">
           {[
             ["Services", "#services"],
             ["Case Study", "#case"],
@@ -106,7 +116,9 @@ function Nav() {
             <a
               key={l}
               href={h}
-              className="hover:text-foreground transition-colors tracking-wide"
+              className={`tracking-wide transition-colors duration-300 ${
+                scrolled ? "text-white/65 hover:text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {l}
             </a>
@@ -114,18 +126,14 @@ function Nav() {
         </nav>
         <Link
           to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
+          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px] ${
+            scrolled ? "ring-1 ring-emerald-400/25" : ""
+          }`}
         >
           Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        <MobileMenu
-          links={[
-            { label: "Services", href: "#services" },
-            { label: "Case Study", href: "#case" },
-            { label: "Pricing", href: "#pricing" },
-          ]}
-        />
+        <MobileMenu scrolled={scrolled} />
       </div>
     </header>
   );
@@ -814,7 +822,7 @@ function ScaleCard() {
 
 function MissedRevenue() {
   return (
-    <section className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
+    <section id="how-it-works" className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
       {/* tonal background + radial lighting for section rhythm and depth */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-[#fafafb] via-white to-[#f6f7f8]" />
       <div

@@ -896,101 +896,306 @@ function MissedRevenue() {
 
 /* ----------------------------- SERVICES ----------------------------- */
 
-const SERVICES = [
-  {
-    title: "AI Receptionists",
-    desc: "Every lead, handled.",
-    icon: Phone,
-    href: "/services/ai-receptionists" as const,
-  },
-  {
-    title: "Content Creation",
-    desc: "Content engineered for attention.",
-    icon: Sparkles,
-    href: "/services/content-creation" as const,
-  },
-  {
-    title: "Automation Systems",
-    desc: "Built to scale operations.",
-    icon: Workflow,
-    href: "/services/automation-systems" as const,
-  },
-  {
-    title: "Paid Advertising",
-    desc: "Performance-driven ads across Meta, Google & TikTok.",
-    icon: Megaphone,
-    href: "/services/paid-advertising" as const,
-  },
-];
+/* -------------------------- INFRASTRUCTURE MODULES -------------------------- */
+
+function ModuleAreaChart() {
+  const id = useId();
+  const line =
+    "M0,46 C20,44 30,40 46,34 C64,27 76,30 92,22 C110,13 124,16 140,10 C156,5 176,5 200,3";
+  return (
+    <svg viewBox="0 0 200 56" preserveAspectRatio="none" className="h-full w-full">
+      <defs>
+        <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.26" />
+          <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <motion.path
+        d={`${line} L200,56 L0,56 Z`}
+        fill={`url(#${id})`}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="transition-opacity duration-500 group-hover:opacity-90"
+      />
+      <motion.path
+        d={line}
+        fill="none"
+        stroke="rgb(5,150,105)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+      />
+    </svg>
+  );
+}
+
+function RevenueCaptureViz() {
+  return (
+    <div className="flex h-full flex-col justify-center gap-1.5">
+      <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1.5">
+        <PhoneCall className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+        <span className="flex-1 truncate text-[11px] text-white/80">Incoming · +61 4•• 218</span>
+        <Waveform />
+      </div>
+      <div className="flex items-center justify-between rounded-lg border border-emerald-500/20 bg-emerald-500/[0.08] px-2.5 py-1.5">
+        <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-300">
+          <CheckCircle2 className="h-3.5 w-3.5" /> Lead Qualified
+        </span>
+        <span className="text-[10px] text-emerald-300/80">0.8s</span>
+      </div>
+      <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1.5">
+        <span className="flex items-center gap-1.5 text-[11px] text-white/80">
+          <CalendarCheck className="h-3.5 w-3.5 text-emerald-400" /> Appointment Booked
+        </span>
+        <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-medium text-emerald-300">Thu 3:00 PM</span>
+      </div>
+    </div>
+  );
+}
+
+function DemandViz() {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-end justify-between">
+        <div>
+          <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">ROAS</div>
+          <div className="font-display text-2xl tracking-tight text-foreground tabular-nums">6.4x</div>
+        </div>
+        <span className="text-[11px] font-medium text-emerald-600">+92%</span>
+      </div>
+      <div className="relative mt-1 min-h-0 flex-1 origin-bottom transition-transform duration-500 group-hover:scale-[1.03]">
+        <ModuleAreaChart />
+      </div>
+      <div className="mt-1 flex justify-between text-[10px] text-muted-foreground tabular-nums">
+        <span>Spend $48.2K</span>
+        <span>Conv 4.8%</span>
+        <span>CPL $4.20</span>
+      </div>
+    </div>
+  );
+}
+
+function AutomationViz() {
+  const nodes = [
+    { icon: Activity, label: "Trigger" },
+    { icon: Bot, label: "AI Engine" },
+    { icon: Database, label: "CRM" },
+  ];
+  return (
+    <div className="flex h-full flex-col justify-center gap-3">
+      <div className="flex items-center">
+        {nodes.map((n, i) => {
+          const Icon = n.icon;
+          return (
+            <div key={n.label} className="flex flex-1 items-center last:flex-none">
+              <div className="flex flex-col items-center gap-1">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-emerald-600 transition-all duration-500 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_18px_-4px_rgba(16,185,129,0.5)]">
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span className="text-[9px] uppercase tracking-wider text-muted-foreground">{n.label}</span>
+              </div>
+              {i < nodes.length - 1 && (
+                <div className="relative mx-1 mb-4 h-px flex-1 bg-emerald-500/25">
+                  <motion.span
+                    className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                    animate={{ left: ["-4px", "100%"] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between rounded-lg border border-black/[0.06] bg-white px-2.5 py-1.5 text-[11px] text-foreground">
+          <span className="flex items-center gap-1.5"><Workflow className="h-3.5 w-3.5 text-emerald-600" /> Webhook received</span>
+          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        </div>
+        <div className="flex items-center justify-between rounded-lg border border-black/[0.06] bg-white px-2.5 py-1.5 text-[11px] text-foreground">
+          <span className="flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-emerald-600" /> Contact synced · GoHighLevel</span>
+          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AttentionViz() {
+  const bars = [38, 54, 46, 68, 58, 82, 96];
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-end justify-between">
+        <div>
+          <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">Reach</div>
+          <div className="font-display text-2xl tracking-tight text-white tabular-nums">1.2M</div>
+        </div>
+        <span className="text-[11px] font-medium text-emerald-400">+38%</span>
+      </div>
+      <div className="mt-2 flex min-h-0 flex-1 items-end gap-1.5">
+        {bars.map((h, i) => (
+          <motion.span
+            key={i}
+            className="flex-1 rounded-sm bg-gradient-to-t from-emerald-500/30 to-emerald-400"
+            initial={{ height: 0 }}
+            whileInView={{ height: `${h}%` }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 + i * 0.06, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ModuleCard({
+  dark = false,
+  href,
+  eyebrow,
+  title,
+  desc,
+  size = "lg",
+  children,
+}: {
+  dark?: boolean;
+  href: string;
+  eyebrow: string;
+  title: string;
+  desc: string;
+  size?: "lg" | "sm";
+  children: React.ReactNode;
+}) {
+  const isLg = size === "lg";
+  return (
+    <Link
+      to={href}
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-1 ${
+        dark
+          ? "border border-white/10 bg-gradient-to-b from-[#171717] to-[#0b0b0b] text-white shadow-[0_30px_80px_-42px_rgba(0,0,0,0.7)] hover:border-emerald-500/40 hover:shadow-[0_46px_100px_-45px_rgba(16,185,129,0.5)]"
+          : "border border-black/[0.08] bg-gradient-to-b from-white/95 to-white/70 text-foreground backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.7)_inset,0_22px_50px_-30px_rgba(0,0,0,0.18)] hover:border-emerald-500/40 hover:shadow-[0_46px_90px_-40px_rgba(16,185,129,0.3)]"
+      }`}
+    >
+      <span
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+        <div
+          className="absolute -top-32 left-1/2 h-64 w-[120%] -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.18), transparent 60%)" }}
+        />
+      </div>
+
+      {/* live UI visual */}
+      <div
+        className={`relative flex ${isLg ? "h-44 sm:h-52" : "h-36"} w-full flex-col overflow-hidden rounded-2xl border p-3 backdrop-blur ${
+          dark ? "border-white/10 bg-white/[0.03]" : "border-black/[0.06] bg-white/60"
+        }`}
+      >
+        <div className={`mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.16em] ${dark ? "text-white/50" : "text-muted-foreground"}`}>
+          <span className="flex items-center gap-1.5"><LiveDot /> {eyebrow}</span>
+          <ArrowUpRight className={`h-3.5 w-3.5 opacity-0 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 ${dark ? "text-emerald-400" : "text-emerald-500"}`} />
+        </div>
+        <div className="relative min-h-0 flex-1">{children}</div>
+      </div>
+
+      {/* heading + description */}
+      <div className="relative mt-5">
+        <h3 className={`font-display tracking-tight ${isLg ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} ${dark ? "text-white" : "text-foreground"}`}>
+          {title}
+        </h3>
+        <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/55" : "text-muted-foreground"}`}>{desc}</p>
+      </div>
+    </Link>
+  );
+}
 
 function Services() {
   return (
-    <section id="services" className="relative py-20 lg:py-24">
+    <section id="services" className="relative py-20 lg:py-28">
       {/* cinematic emerald glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px] overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(46,204,113,0.10),transparent_65%)] blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_65%)] blur-3xl" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="flex items-end justify-between gap-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-emerald-500/70" />
                 <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  Systems
+                  Modules
                 </span>
               </div>
               <h2 className="font-display text-5xl md:text-7xl leading-[1.05] tracking-tight text-gradient-chrome">
-                Growth Infrastructure.
+                Infrastructure Modules
               </h2>
             </div>
-            <p className="hidden md:block max-w-sm text-muted-foreground leading-relaxed">
-              AI systems engineered for modern growth.
+            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
+              AI-powered systems engineered to capture, convert, and compound revenue.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-10 md:mt-12 lg:mt-16 grid gap-4 md:grid-cols-2">
-          {SERVICES.map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <Reveal key={s.title} delay={i * 0.08}>
-                <Link
-                  to={s.href}
-                  className="group relative block overflow-hidden rounded-2xl border border-black/[0.08] bg-card/60 p-5 sm:p-6 lg:p-8 backdrop-blur transition-all duration-500 ease-out hover:border-emerald-500/40 hover:-translate-y-1 hover:shadow-[0_30px_80px_-30px_rgba(46,204,113,0.28)] shadow-[0_1px_0_0_rgba(0,0,0,0.02),0_10px_40px_-20px_rgba(0,0,0,0.08)]"
-                >
-                  {/* top emerald accent line */}
-                  <span className="absolute left-0 top-0 h-px w-0 bg-gradient-to-r from-transparent via-emerald-500/70 to-transparent transition-all duration-700 ease-out group-hover:w-full" />
+        {/* top row — two large featured modules */}
+        <div className="mt-10 grid gap-4 lg:mt-16 lg:grid-cols-2">
+          <Reveal>
+            <ModuleCard
+              dark
+              href="/services/ai-receptionists"
+              eyebrow="Voice · Live"
+              title="Revenue Capture"
+              desc="AI voice systems engineered to answer, qualify and convert inbound demand."
+              size="lg"
+            >
+              <RevenueCaptureViz />
+            </ModuleCard>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <ModuleCard
+              href="/services/paid-advertising"
+              eyebrow="Performance · Live"
+              title="Demand Acquisition"
+              desc="Performance media systems designed to generate scalable demand."
+              size="lg"
+            >
+              <DemandViz />
+            </ModuleCard>
+          </Reveal>
+        </div>
 
-                  {/* hover emerald glow */}
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100">
-                    <div className="absolute -top-40 left-1/2 h-72 w-[120%] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(46,204,113,0.18),transparent_60%)] blur-3xl" />
-                  </div>
-
-                  <div className="relative flex flex-col gap-5 sm:gap-6">
-                    <div className="flex items-start justify-between">
-                      <ArrowUpRight className="h-4 w-4 text-foreground/30 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:text-emerald-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      <div className="rounded-full border border-black/[0.08] p-2 transition-all duration-500 ease-out group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_-4px_rgba(46,204,113,0.45)]">
-                        <Icon className="h-4 w-4 text-foreground/70 transition-colors duration-500 group-hover:text-emerald-500" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight text-foreground">
-                        {s.title.split(" ").map((word, i) => (
-                          <span key={i} className="block">
-                            {word}
-                          </span>
-                        ))}
-                      </h3>
-                      <p className="mt-2 text-sm sm:text-base text-muted-foreground">{s.desc}</p>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            );
-          })}
+        {/* bottom row — two supporting modules */}
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <Reveal>
+            <ModuleCard
+              href="/services/automation-systems"
+              eyebrow="Pipeline"
+              title="Operational Automation"
+              desc="Backend workflows that eliminate friction across your pipeline."
+              size="sm"
+            >
+              <AutomationViz />
+            </ModuleCard>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <ModuleCard
+              dark
+              href="/services/content-creation"
+              eyebrow="Distribution"
+              title="Attention Systems"
+              desc="Content infrastructure designed to compound reach and intent."
+              size="sm"
+            >
+              <AttentionViz />
+            </ModuleCard>
+          </Reveal>
         </div>
       </div>
     </section>

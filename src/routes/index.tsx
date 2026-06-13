@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { MLogo } from "@/components/MLogo";
 import { useEffect, useId, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
@@ -93,8 +92,8 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center">
-          <MLogo className="h-7 w-auto text-foreground/90" />
+        <a href="#top" className="flex items-center gap-2.5">
+          <img src="/montarro-logo.png" alt="Montarro" className="h-[52px] w-auto" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           {[
@@ -1403,7 +1402,7 @@ function Footer() {
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
               <a href="#top" className="inline-block">
-                <MLogo className="h-6 w-auto text-foreground/80" />
+                <img src="/montarro-logo.png" alt="Montarro" className="h-[34px] w-auto" />
               </a>
               <p className="mt-3 text-[13px] leading-relaxed text-black/40">
                 AI infrastructure for modern companies.

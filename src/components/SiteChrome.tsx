@@ -6,7 +6,6 @@ import { primaryCta } from "@/lib/cta";
 
 const NAV_LINKS = [
   { label: "Services", href: "/#services" },
-  { label: "Results", href: "/#results" },
   { label: "Case Study", href: "/#case" },
   { label: "Pricing", href: "/#pricing" },
 ];
@@ -34,9 +33,6 @@ export function SiteNav() {
         <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
           <Link to="/" hash="services" className="hover:text-foreground transition-colors tracking-wide">
             Services
-          </Link>
-          <Link to="/" hash="results" className="hover:text-foreground transition-colors tracking-wide">
-            Results
           </Link>
           <Link to="/" hash="case" className="hover:text-foreground transition-colors tracking-wide">
             Case Study

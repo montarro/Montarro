@@ -79,16 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Montarro — Built to Scale" },
       { name: "description", content: "Montarro builds AI receptionists, content, paid ads, and high-converting websites for modern brands. Never miss a lead. Built to scale." },
-      { name: "author", content: "Lovable" },
+      { name: "author", content: "Montarro" },
       { property: "og:title", content: "Montarro — Built to Scale" },
       { property: "og:description", content: "Montarro builds AI receptionists, content, paid ads, and high-converting websites for modern brands. Never miss a lead. Built to scale." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@montarroaii" },
       { name: "twitter:title", content: "Montarro — Built to Scale" },
       { name: "twitter:description", content: "Montarro builds AI receptionists, content, paid ads, and high-converting websites for modern brands. Never miss a lead. Built to scale." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/34f514f8-fbd4-4111-81bf-cb1b4454f16a/id-preview-5fc680a6--6b07c5c1-a251-4a8a-8bbe-b78803d5921f.lovable.app-1781008520687.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/34f514f8-fbd4-4111-81bf-cb1b4454f16a/id-preview-5fc680a6--6b07c5c1-a251-4a8a-8bbe-b78803d5921f.lovable.app-1781008520687.png" },
     ],
     links: [
       {

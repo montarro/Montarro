@@ -1370,46 +1370,60 @@ function Results() {
 const TIERS = [
   {
     name: "Starter",
-    tagline: "Foundations to capture every lead.",
+    tagline: "Core infrastructure to capture every lead.",
     href: "/packages/starter" as const,
+    cta: "View Infrastructure",
     features: [
-      "AI Receptionist",
+      "AI Reception System",
       "CRM Setup",
-      "Lead Capture",
+      "Lead Capture Flows",
+      "Call & Form Routing",
+      "Appointment Automation",
       "Monthly Reporting",
     ],
   },
   {
     name: "Growth",
-    tagline: "Full-stack acquisition and optimisation.",
+    tagline: "Full acquisition and revenue systems, engineered.",
     featured: true,
     href: "/packages/growth" as const,
+    cta: "Scale With Montarro",
     features: [
-      "AI Receptionist",
-      "Content Creation",
-      "Meta Ads",
-      "Google Ads",
+      "Everything in Starter",
+      "CRM Automation Systems",
       "Website Optimisation",
+      "Paid Acquisition Systems",
+      "Content Infrastructure",
+      "Follow-Up Sequences",
+      "Conversion Tracking",
     ],
   },
   {
     name: "Scale",
-    tagline: "An in-house growth team, fully managed.",
+    tagline: "A complete revenue operation, fully managed.",
     href: "/packages/scale" as const,
+    cta: "Apply For Partnership",
     features: [
-      "Everything Included",
+      "Full Revenue Infrastructure",
       "Dedicated Strategy",
+      "Multi-Channel Acquisition",
       "Funnel Systems",
       "Conversion Optimisation",
-      "Weekly Calls",
+      "Weekly Growth Reviews",
+      "Priority Support",
+      "Ongoing System Expansion",
     ],
   },
 ];
 
 function Pricing() {
   return (
-    <section id="pricing" className="relative border-t border-border py-20 lg:py-24">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-px h-6 bg-gradient-to-b from-transparent to-white/60" />
+    <section id="pricing" className="relative overflow-hidden border-t border-border py-20 lg:py-28">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[420px] max-w-4xl"
+        style={{ background: "radial-gradient(ellipse 55% 60% at 50% 0%, rgba(16,185,129,0.05), transparent 70%)" }}
+      />
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="text-center">
@@ -1425,43 +1439,46 @@ function Pricing() {
           </div>
         </Reveal>
 
-        <div className="mt-12 md:mt-16 grid gap-5 lg:grid-cols-3">
+        <div className="mt-12 md:mt-16 grid items-stretch gap-5 lg:grid-cols-3">
           {TIERS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
                 to={t.href}
-                className={`group relative block h-full overflow-hidden rounded-2xl border p-8 transition-all duration-500 hover:-translate-y-1 ${
+                className={`group relative block h-full overflow-hidden rounded-2xl border p-8 backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-1 ${
                   t.featured
-                    ? "border-emerald-500/40 bg-card/80 glow-ring"
-                    : "border-border bg-card/30 hover:border-foreground/30 hover:bg-card/60"
+                    ? "border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.06] to-white/55 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/55 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_42px_90px_-34px_rgba(16,185,129,0.5)]"
+                    : "border-black/[0.08] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/30 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_34px_80px_-34px_rgba(16,185,129,0.3)]"
                 }`}
               >
                 {t.featured && (
-                  <div className="pointer-events-none absolute inset-0">
-                    <div className="absolute -top-40 left-1/2 h-80 w-[140%] -translate-x-1/2 rounded-full bg-black/[0.08] blur-3xl" />
-                  </div>
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[140%] -translate-x-1/2 rounded-full blur-3xl"
+                    style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.10), transparent 65%)" }}
+                  />
                 )}
                 <div className="relative flex h-full flex-col">
-                  {t.featured && (
-                    <span className="absolute right-2 top-2 sm:right-3 sm:top-3 lg:right-4 lg:top-4 animate-pulse rounded-full bg-emerald-500 px-3 py-1 text-xs font-medium uppercase tracking-widest text-white shadow-[0_0_20px_-4px_oklch(0.7_0.18_155/0.6)]">
-                      Most Popular
-                    </span>
-                  )}
-
-                  <div className="font-display text-5xl tracking-tight text-gradient-chrome">
-                    {t.name}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="font-display text-5xl tracking-tight text-gradient-chrome">
+                      {t.name}
+                    </div>
+                    {t.featured && (
+                      <span className="mt-1.5 shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-700">
+                        Most Popular
+                      </span>
+                    )}
                   </div>
                   <p className="mt-3 text-sm text-muted-foreground">
                     {t.tagline}
                   </p>
 
-                  <div className="my-8 h-px w-full bg-border" />
+                  <div className="my-8 h-px w-full bg-black/[0.07]" />
 
-                  <ul className="space-y-4 text-sm">
+                  <ul className="space-y-3.5 text-sm">
                     {t.features.map((f) => (
                       <li key={f} className="flex items-center gap-3">
-                        <span className={`flex h-5 w-5 items-center justify-center rounded-full border ${t.featured ? "border-emerald-500/50" : "border-border"}`}>
-                          <Check className={`h-3 w-3 ${t.featured ? "text-emerald-400" : ""}`} />
+                        <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${t.featured ? "border-emerald-500/50" : "border-black/[0.12]"}`}>
+                          <Check className={`h-3 w-3 ${t.featured ? "text-emerald-600" : "text-foreground/50"}`} />
                         </span>
                         <span className="text-foreground/90">{f}</span>
                       </li>
@@ -1469,14 +1486,15 @@ function Pricing() {
                   </ul>
 
                   <span
-                    className={`mt-10 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-all duration-300 ${
+                    style={{ marginTop: "auto" }}
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 pt-3 text-[13px] transition-all duration-300 ${
                       t.featured
-                        ? "bg-foreground text-background group-hover:scale-[1.02]"
-                        : "border border-border group-hover:border-foreground/40 group-hover:bg-card"
+                        ? "bg-gradient-to-b from-emerald-600 to-emerald-700 font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_12px_30px_-14px_rgba(5,150,105,0.6)] group-hover:from-emerald-500 group-hover:to-emerald-600 group-hover:shadow-[0_20px_44px_-16px_rgba(5,150,105,0.65)]"
+                        : "border border-black/[0.12] font-medium text-foreground/80 group-hover:border-emerald-500/40 group-hover:text-foreground"
                     }`}
                   >
-                    Explore Package
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    {t.cta}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </span>
                 </div>
               </Link>

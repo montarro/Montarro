@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -121,11 +122,58 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Global scroll handling. Every internal navigation lands at the top of the
+ * destination page; hash navigations scroll to the matching element. Router
+ * scrollRestoration is disabled so this is the single, deterministic source of
+ * truth (fixes package pages occasionally opening part-way down).
+ */
+function ScrollToTop() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hash = useRouterState({ select: (s) => s.location.hash });
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let raf = 0;
+    let timer = 0;
+    const go = () => {
+      if (hash) {
+        const el = document.getElementById(hash.replace(/^#/, ""));
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return true;
+        }
+        return false;
+      }
+      window.scrollTo({ top: 0, left: 0 });
+      return true;
+    };
+    if (!go()) {
+      raf = requestAnimationFrame(() => {
+        if (!go()) timer = window.setTimeout(go, 120);
+      });
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+    };
+  }, [pathname, hash]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollToTop />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>

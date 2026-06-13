@@ -52,7 +52,7 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               onClick={() => setOpen(false)}
               aria-hidden
-              className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm"
+              className="fixed inset-0 z-[60] bg-black/55 backdrop-blur-sm"
             />
 
             {/* drawer */}
@@ -66,17 +66,23 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-y-0 right-0 z-[70] flex w-[82%] max-w-sm flex-col border-l border-black/[0.08] bg-gradient-to-b from-white via-white to-[#f4f5f7] shadow-[0_0_80px_-20px_rgba(0,0,0,0.35)]"
+              className="fixed inset-y-0 right-0 z-[70] flex w-[82%] max-w-sm flex-col border-l border-white/10 bg-[#0b0b0c]/95 backdrop-blur-2xl shadow-[0_0_90px_-10px_rgba(0,0,0,0.7)]"
             >
+              {/* subtle emerald top hairline */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-px"
+                style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.35), transparent)" }}
+              />
               <div className="flex items-center justify-between px-6 pt-6">
                 <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
-                  <img src="/montarro-logo.png" alt="Montarro" className="h-9 w-auto" />
+                  <img src="/montarro-logo.png" alt="Montarro" className="h-9 w-auto opacity-90 invert" />
                 </Link>
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={() => setOpen(false)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[0.08] text-foreground transition-colors duration-300 hover:border-foreground/30"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors duration-300 hover:border-white/35 hover:text-white"
                 >
                   <X className="h-[18px] w-[18px]" />
                 </button>
@@ -91,10 +97,10 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
                     initial={{ opacity: 0, x: 18 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.08 + i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="group flex items-center justify-between border-b border-black/[0.06] py-4 text-lg tracking-tight text-foreground/80 transition-colors duration-300 hover:text-foreground"
+                    className="group flex items-center justify-between border-b border-white/[0.08] py-4 text-lg tracking-tight text-white/70 transition-colors duration-300 hover:text-white"
                   >
                     {l.label}
-                    <ArrowUpRight className="h-4 w-4 text-foreground/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-emerald-500" />
+                    <ArrowUpRight className="h-4 w-4 text-white/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-emerald-400" />
                   </motion.a>
                 ))}
               </nav>

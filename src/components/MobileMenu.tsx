@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { primaryCta } from "@/lib/cta";
 
 export type NavLink = { label: string; href: string };
 
@@ -102,9 +103,9 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
                 <Link
                   to="/contact"
                   onClick={() => setOpen(false)}
-                  className="group flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-[13px] font-medium uppercase tracking-[0.16em] text-background transition-all duration-300 hover:shadow-[0_18px_50px_-20px_rgba(16,185,129,0.55)]"
+                  className={`${primaryCta} flex w-full px-6 py-3.5 text-sm`}
                 >
-                  Get Revenue Audit
+                  Book a Free Consultation
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>

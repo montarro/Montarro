@@ -26,6 +26,7 @@ import {
   Facebook,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
+import { primaryCta } from "@/lib/cta";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,9 +115,9 @@ function Nav() {
         </nav>
         <Link
           to="/contact"
-          className="group hidden md:inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.14em] text-background transition-transform duration-300 hover:scale-[1.03]"
+          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
         >
-          Book a Call
+          Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         <MobileMenu
@@ -462,10 +463,9 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/contact"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-all duration-300 ease-out hover:scale-[1.02]"
+              className={`${primaryCta} inline-flex px-6 py-3 text-sm`}
             >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-              Get Revenue Audit
+              Book a Free Consultation
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <a
@@ -868,9 +868,9 @@ function MissedRevenue() {
             <Reveal delay={0.26}>
               <Link
                 to="/contact"
-                className="group mt-8 inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-all duration-300 ease-out hover:scale-[1.02]"
+                className={`${primaryCta} mt-8 inline-flex px-6 py-3 text-sm`}
               >
-                Get Revenue Audit
+                Book a Free Consultation
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </Reveal>
@@ -1695,11 +1695,10 @@ function CTA() {
               />
               <Link
                 to="/contact"
-                className="group relative inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-black shadow-[0_8px_30px_-10px_rgba(0,0,0,0.25)] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] hover:shadow-[0_20px_60px_-14px_rgba(0,0,0,0.35)] hover:bg-white/90"
+                className={`${primaryCta} inline-flex px-8 py-4 text-sm`}
               >
-                <PlayCircle className="h-[16px] w-[16px] text-black/40 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-emerald-500/60 group-hover:rotate-[6deg]" />
-                Book a Free Strategy Call
-                <ArrowUpRight className="h-3.5 w-3.5 text-black/40 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-emerald-500/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                Book a Free Consultation
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
           </Reveal>
@@ -1787,7 +1786,7 @@ function Footer() {
                     to="/contact"
                     className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80"
                   >
-                    Book A Call
+                    Book a Free Consultation
                   </Link>
                 </li>
               </ul>

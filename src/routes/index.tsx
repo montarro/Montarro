@@ -329,13 +329,6 @@ function Hero() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
-          <div className="mb-6 inline-flex items-center gap-2 text-xs font-medium tracking-[0.01em] text-muted-foreground/70">
-            <span className="h-1 w-1 rounded-full bg-emerald-500/70" />
-            Trusted by 100+ businesses
-          </div>
-        </Reveal>
-
         <Reveal delay={0.15} className="w-full">
           <h1 className="font-display text-balance mx-auto max-w-[12ch] text-[clamp(3rem,9vw,8.5rem)] leading-[0.92] tracking-[-0.05em]">
             <span className="block text-gradient-chrome">BUILT TO</span>
@@ -353,18 +346,18 @@ function Hero() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/contact"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background transition-transform duration-300 hover:scale-[1.03]"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-all duration-300 ease-out hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-              <Phone className="h-4 w-4" />
-              Book a Call
+              How We Scale Brands
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <a
               href="#services"
-              className="group inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-6 py-3.5 text-sm font-medium backdrop-blur transition-all duration-300 hover:border-foreground/40 hover:bg-card"
+              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
             >
-              View Services
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              See How It Works
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </Reveal>

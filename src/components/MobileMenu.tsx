@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { primaryCta } from "@/lib/cta";
@@ -12,6 +13,14 @@ export type NavLink = { label: string; href: string };
  */
 export function MobileMenu({ links }: { links: NavLink[] }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => setMounted(true), []);
+  // close the drawer whenever the route changes
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -40,10 +49,12 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
         <Menu className="h-[18px] w-[18px]" />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* backdrop overlay */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <>
+                {/* backdrop overlay */}
             <motion.div
               key="overlay"
               initial={{ opacity: 0 }}
@@ -118,7 +129,9 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
             </motion.aside>
           </>
         )}
-      </AnimatePresence>
+          </AnimatePresence>,
+          document.body,
+        )}
     </div>
   );
 }

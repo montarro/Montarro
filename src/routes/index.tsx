@@ -25,6 +25,7 @@ import {
   Instagram,
   Facebook,
 } from "lucide-react";
+import { MobileMenu } from "@/components/MobileMenu";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -113,11 +114,19 @@ function Nav() {
         </nav>
         <Link
           to="/contact"
-          className="group inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.14em] text-background transition-transform duration-300 hover:scale-[1.03]"
+          className="group hidden md:inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.14em] text-background transition-transform duration-300 hover:scale-[1.03]"
         >
           Book a Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
+        <MobileMenu
+          links={[
+            { label: "Services", href: "#services" },
+            { label: "Results", href: "#results" },
+            { label: "Case Study", href: "#case" },
+            { label: "Pricing", href: "#pricing" },
+          ]}
+        />
       </div>
     </header>
   );

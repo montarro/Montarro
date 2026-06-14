@@ -1229,7 +1229,7 @@ function Services() {
 /* --------------------- EXPERIENCE THE INFRASTRUCTURE --------------------- */
 
 // Replace with your real Retell AI receptionist phone number.
-const RECEPTIONIST_TEL = "+61000000000";
+const RECEPTIONIST_TEL = "+610345145084";
 
 function TranscriptPanel() {
   const msgs: { who: "ai" | "caller"; text: string; t: string }[] = [

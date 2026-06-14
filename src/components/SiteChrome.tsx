@@ -42,7 +42,16 @@ export function SiteNav() {
             return (
               <>
                 <Link to="/" hash="services" className={cls}>Services</Link>
-                <Link to="/demo" className={cls}>Live Demo</Link>
+                <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
+                  AI Receptionist
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#0b0b0c]/95 px-2.5 py-1 text-[10px] font-normal tracking-tight text-white/80 opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:opacity-100">
+                    Test the infrastructure live
+                  </span>
+                </Link>
                 <Link to="/" hash="pricing" className={cls}>Pricing</Link>
               </>
             );

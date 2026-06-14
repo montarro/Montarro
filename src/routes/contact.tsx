@@ -85,7 +85,7 @@ function ContactNav() {
         <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium text-muted-foreground">
           {[
             ["Services", "/#services"],
-            ["Live Demo", "/demo"],
+            ["AI Receptionist", "/services/ai-receptionists"],
             ["Pricing", "/#pricing"],
           ].map(([l, h]) => (
             <a

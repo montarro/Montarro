@@ -97,6 +97,9 @@ export type ProductPageProps = {
   liveModule?: boolean;
   /** Phone number for the "Call the AI Receptionist" action. */
   tel?: string;
+  /** Optional override for the hero's secondary CTA (defaults to "Back to Overview" → "/"). */
+  secondaryCtaLabel?: string;
+  secondaryCtaTo?: string;
 };
 
 /* ----------------------- live infrastructure panels ----------------------- */
@@ -332,10 +335,10 @@ export function ProductPage(p: ProductPageProps) {
                       <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                     <Link
-                      to="/"
+                      to={p.secondaryCtaTo ?? "/"}
                       className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3 text-sm font-medium backdrop-blur transition-all duration-300 hover:border-foreground/40 hover:bg-card"
                     >
-                      Back to Overview
+                      {p.secondaryCtaLabel ?? "Back to Overview"}
                     </Link>
                   </>
                 )}

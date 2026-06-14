@@ -75,6 +75,8 @@ export const Route = createFileRoute("/services/ai-receptionists")({
       ]}
       ctaLabel="Build Your System"
       ctaSub="Deploy your AI front desk in days. We'll show you how."
+      secondaryCtaLabel="View Live Demo"
+      secondaryCtaTo="/demo"
     />
   ),
 });

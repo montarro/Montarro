@@ -52,6 +52,7 @@ export function SiteNav() {
                     Test the infrastructure live
                   </span>
                 </Link>
+                <Link to="/demo" className={cls}>Live Demo</Link>
                 <Link to="/" hash="pricing" className={cls}>Pricing</Link>
               </>
             );

@@ -30,6 +30,7 @@ const NAV: NavItem[] = [
     ],
   },
   { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true },
+  { kind: "link", label: "Live Demo", to: "/demo" },
   { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
   { kind: "link", label: "Book a Free Consultation", to: "/contact" },
 ];

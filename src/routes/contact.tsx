@@ -86,6 +86,7 @@ function ContactNav() {
           {[
             ["Services", "/#services"],
             ["AI Receptionist", "/services/ai-receptionists"],
+            ["Live Demo", "/demo"],
             ["Pricing", "/#pricing"],
           ].map(([l, h]) => (
             <a

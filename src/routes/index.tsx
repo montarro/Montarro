@@ -125,6 +125,7 @@ function Nav() {
                     Test the infrastructure live
                   </span>
                 </Link>
+                <Link to="/demo" className={cls}>Live Demo</Link>
                 <a href="#pricing" className={cls}>Pricing</a>
               </>
             );
@@ -1431,13 +1432,13 @@ function ExperienceInfra() {
                   <Phone className="h-4 w-4" />
                   Call The AI Receptionist
                 </a>
-                <a
-                  href="#case"
+                <Link
+                  to="/demo"
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
                   View System Demo
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                </Link>
               </div>
             </div>
           </Reveal>

@@ -35,22 +35,18 @@ export function SiteNav() {
           />
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
-          {[
-            ["Services", "services"],
-            ["Live Demo", "experience"],
-            ["Pricing", "pricing"],
-          ].map(([l, h]) => (
-            <Link
-              key={l}
-              to="/"
-              hash={h}
-              className={`tracking-tight transition-colors duration-300 ${
-                scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {l}
-            </Link>
-          ))}
+          {(() => {
+            const cls = `tracking-tight transition-colors duration-300 ${
+              scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+            }`;
+            return (
+              <>
+                <Link to="/" hash="services" className={cls}>Services</Link>
+                <Link to="/demo" className={cls}>Live Demo</Link>
+                <Link to="/" hash="pricing" className={cls}>Pricing</Link>
+              </>
+            );
+          })()}
         </nav>
         <Link
           to="/contact"

@@ -226,7 +226,7 @@ function HeroStatCard({ value, label, index }: { value: string; label: string; i
   );
 }
 
-function LiveSystemModule() {
+function LiveSystemModule({ tel }: { tel?: string }) {
   return (
     <>
       <div aria-hidden style={{ height: "90px", marginBottom: "-1px", background: "linear-gradient(180deg, #ffffff 0%, #d6d9d8 55%, #0a0c0b 100%)" }} />
@@ -250,6 +250,16 @@ function LiveSystemModule() {
             <Reveal><LiveTranscript /></Reveal>
             <Reveal delay={0.1}><LiveCrmFeed /></Reveal>
           </div>
+          {tel && (
+            <Reveal delay={0.2}>
+              <div className="mt-9 text-center">
+                <a href={`tel:${tel}`} className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
+                  <Phone className="h-4 w-4" />
+                  Call The AI Receptionist
+                </a>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
       <div aria-hidden style={{ height: "90px", marginTop: "-1px", background: "linear-gradient(180deg, #0a0c0b 0%, #d6d9d8 55%, #ffffff 100%)" }} />
@@ -394,7 +404,7 @@ export function ProductPage(p: ProductPageProps) {
         </section>
 
         {/* LIVE SYSTEM MODULE (when not already in hero) */}
-        {p.liveModule && !p.heroLive && <LiveSystemModule />}
+        {p.liveModule && !p.heroLive && <LiveSystemModule tel={p.tel} />}
 
         {/* DETAIL SECTIONS */}
         <section className="relative border-t border-black/[0.05] py-20 lg:py-24">

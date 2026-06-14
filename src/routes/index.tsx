@@ -1079,6 +1079,7 @@ function ModuleCard({
   title,
   desc,
   size = "lg",
+  status,
   children,
 }: {
   dark?: boolean;
@@ -1087,6 +1088,7 @@ function ModuleCard({
   title: string;
   desc: string;
   size?: "lg" | "sm";
+  status?: string[];
   children: React.ReactNode;
 }) {
   const isLg = size === "lg";
@@ -1142,6 +1144,30 @@ function ModuleCard({
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </span>
       </div>
+
+      {/* operational status — softly revealed on hover */}
+      {status && (
+        <div className="relative grid grid-rows-[0fr] transition-all duration-500 ease-out group-hover:grid-rows-[1fr]">
+          <div className="overflow-hidden">
+            <div
+              className={`mt-4 flex flex-wrap gap-x-4 gap-y-1.5 border-t pt-3 ${
+                dark ? "border-white/10" : "border-black/[0.06]"
+              }`}
+            >
+              {status.map((s) => (
+                <span
+                  key={s}
+                  className={`inline-flex items-center gap-1.5 text-[11px] ${
+                    dark ? "text-white/55" : "text-muted-foreground"
+                  }`}
+                >
+                  <LiveDot /> {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </Link>
   );
 }
@@ -1184,6 +1210,7 @@ function Services() {
               title="Revenue Capture"
               desc="AI voice systems engineered to answer, qualify and convert inbound demand."
               size="lg"
+              status={["Revenue tracking active", "Lead attribution synced", "Conversion pipeline monitored"]}
             >
               <RevenueCaptureViz />
             </ModuleCard>
@@ -1195,6 +1222,7 @@ function Services() {
               title="Demand Acquisition"
               desc="Performance media systems designed to generate scalable demand."
               size="lg"
+              status={["Inbound velocity +38%", "Campaign optimization active", "Cost-per-lead monitoring"]}
             >
               <DemandViz />
             </ModuleCard>
@@ -1210,6 +1238,7 @@ function Services() {
               title="Operational Automation"
               desc="Backend workflows that eliminate friction across your pipeline."
               size="sm"
+              status={["Pipeline sync active", "14 automations running", "Lead routing operational"]}
             >
               <AutomationViz />
             </ModuleCard>
@@ -1222,6 +1251,7 @@ function Services() {
               title="Attention Systems"
               desc="Content infrastructure designed to compound reach and intent."
               size="sm"
+              status={["Content distribution active", "Asset pipeline synced", "Publishing queue operational"]}
             >
               <AttentionViz />
             </ModuleCard>

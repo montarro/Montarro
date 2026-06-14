@@ -107,7 +107,7 @@ function Nav() {
             }`}
           />
         </a>
-        <nav className="hidden md:flex items-center gap-10 text-[13px]">
+        <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
           {[
             ["Services", "#services"],
             ["Case Study", "#case"],
@@ -116,8 +116,8 @@ function Nav() {
             <a
               key={l}
               href={h}
-              className={`tracking-wide transition-colors duration-300 ${
-                scrolled ? "text-white/65 hover:text-white" : "text-muted-foreground hover:text-foreground"
+              className={`tracking-tight transition-colors duration-300 ${
+                scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {l}

@@ -82,16 +82,16 @@ function ContactNav() {
         <Link to="/" className="flex items-center gap-2.5">
           <img src="/montarro-logo.png" alt="Montarro" className="h-12 w-auto" />
         </Link>
-        <nav className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
+        <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium text-muted-foreground">
           {[
             ["Services", "/#services"],
+            ["Live Demo", "/#experience"],
             ["Pricing", "/#pricing"],
-            ["Case Study", "/#case"],
           ].map(([l, h]) => (
             <a
               key={l}
               href={h}
-              className="hover:text-foreground transition-colors tracking-wide"
+              className="tracking-tight transition-colors duration-300 hover:text-foreground"
             >
               {l}
             </a>

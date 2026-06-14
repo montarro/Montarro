@@ -29,9 +29,9 @@ const NAV: NavItem[] = [
       { label: "Web Systems", to: "/", hash: "services" },
     ],
   },
-  { kind: "link", label: "Case Study", to: "/", hash: "case" },
+  { kind: "link", label: "Live Demo", to: "/", hash: "experience" },
   { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
-  { kind: "link", label: "Contact / Book Consultation", to: "/contact" },
+  { kind: "link", label: "Book a Free Consultation", to: "/contact" },
 ];
 
 export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {

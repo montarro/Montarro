@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesPaidAdvertisingRouteImport } from './routes/services.paid-advertising'
@@ -19,6 +20,11 @@ import { Route as PackagesStarterRouteImport } from './routes/packages.starter'
 import { Route as PackagesScaleRouteImport } from './routes/packages.scale'
 import { Route as PackagesGrowthRouteImport } from './routes/packages.growth'
 
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -69,6 +75,7 @@ const PackagesGrowthRoute = PackagesGrowthRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
+  '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
+  '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
+  '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/contact'
+    | '/demo'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/contact'
+    | '/demo'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/contact'
+    | '/demo'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -139,6 +151,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactRoute: typeof ContactRoute
+  DemoRoute: typeof DemoRoute
   PackagesGrowthRoute: typeof PackagesGrowthRoute
   PackagesScaleRoute: typeof PackagesScaleRoute
   PackagesStarterRoute: typeof PackagesStarterRoute
@@ -150,6 +163,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -219,6 +239,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactRoute: ContactRoute,
+  DemoRoute: DemoRoute,
   PackagesGrowthRoute: PackagesGrowthRoute,
   PackagesScaleRoute: PackagesScaleRoute,
   PackagesStarterRoute: PackagesStarterRoute,

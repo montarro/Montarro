@@ -108,21 +108,18 @@ function Nav() {
           />
         </a>
         <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
-          {[
-            ["Services", "#services"],
-            ["Live Demo", "#experience"],
-            ["Pricing", "#pricing"],
-          ].map(([l, h]) => (
-            <a
-              key={l}
-              href={h}
-              className={`tracking-tight transition-colors duration-300 ${
-                scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {l}
-            </a>
-          ))}
+          {(() => {
+            const cls = `tracking-tight transition-colors duration-300 ${
+              scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+            }`;
+            return (
+              <>
+                <a href="#services" className={cls}>Services</a>
+                <Link to="/demo" className={cls}>Live Demo</Link>
+                <a href="#pricing" className={cls}>Pricing</a>
+              </>
+            );
+          })()}
         </nav>
         <Link
           to="/contact"

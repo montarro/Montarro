@@ -29,7 +29,7 @@ const NAV: NavItem[] = [
       { label: "Web Systems", to: "/", hash: "services" },
     ],
   },
-  { kind: "link", label: "Live Demo", to: "/", hash: "experience" },
+  { kind: "link", label: "Live Demo", to: "/demo" },
   { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
   { kind: "link", label: "Book a Free Consultation", to: "/contact" },
 ];

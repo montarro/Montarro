@@ -115,6 +115,16 @@ function Nav() {
             return (
               <>
                 <a href="#services" className={cls}>Services</a>
+                <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
+                  AI Receptionist
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#0b0b0c]/95 px-2.5 py-1 text-[10px] font-normal tracking-tight text-white/80 opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:opacity-100">
+                    Test the infrastructure live
+                  </span>
+                </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
                 <a href="#pricing" className={cls}>Pricing</a>
               </>
@@ -1070,6 +1080,7 @@ function ModuleCard({
   title,
   desc,
   size = "lg",
+  status,
   children,
 }: {
   dark?: boolean;
@@ -1078,6 +1089,7 @@ function ModuleCard({
   title: string;
   desc: string;
   size?: "lg" | "sm";
+  status?: string[];
   children: React.ReactNode;
 }) {
   const isLg = size === "lg";
@@ -1133,6 +1145,30 @@ function ModuleCard({
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </span>
       </div>
+
+      {/* operational status — softly revealed on hover */}
+      {status && (
+        <div className="relative grid grid-rows-[0fr] transition-all duration-500 ease-out group-hover:grid-rows-[1fr]">
+          <div className="overflow-hidden">
+            <div
+              className={`mt-4 flex flex-wrap gap-x-4 gap-y-1.5 border-t pt-3 ${
+                dark ? "border-white/10" : "border-black/[0.06]"
+              }`}
+            >
+              {status.map((s) => (
+                <span
+                  key={s}
+                  className={`inline-flex items-center gap-1.5 text-[11px] ${
+                    dark ? "text-white/55" : "text-muted-foreground"
+                  }`}
+                >
+                  <LiveDot /> {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </Link>
   );
 }
@@ -1175,6 +1211,7 @@ function Services() {
               title="Revenue Capture"
               desc="AI voice systems engineered to answer, qualify and convert inbound demand."
               size="lg"
+              status={["Revenue tracking active", "Lead attribution synced", "Conversion pipeline monitored"]}
             >
               <RevenueCaptureViz />
             </ModuleCard>
@@ -1186,6 +1223,7 @@ function Services() {
               title="Demand Acquisition"
               desc="Performance media systems designed to generate scalable demand."
               size="lg"
+              status={["Inbound velocity +38%", "Campaign optimization active", "Cost-per-lead monitoring"]}
             >
               <DemandViz />
             </ModuleCard>
@@ -1201,6 +1239,7 @@ function Services() {
               title="Operational Automation"
               desc="Backend workflows that eliminate friction across your pipeline."
               size="sm"
+              status={["Pipeline sync active", "14 automations running", "Lead routing operational"]}
             >
               <AutomationViz />
             </ModuleCard>
@@ -1213,6 +1252,7 @@ function Services() {
               title="Attention Systems"
               desc="Content infrastructure designed to compound reach and intent."
               size="sm"
+              status={["Content distribution active", "Asset pipeline synced", "Publishing queue operational"]}
             >
               <AttentionViz />
             </ModuleCard>
@@ -1392,13 +1432,13 @@ function ExperienceInfra() {
                   <Phone className="h-4 w-4" />
                   Call The AI Receptionist
                 </a>
-                <a
-                  href="#case"
+                <Link
+                  to="/demo"
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
                   View System Demo
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                </Link>
               </div>
             </div>
           </Reveal>

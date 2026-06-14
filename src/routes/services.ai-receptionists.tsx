@@ -19,6 +19,8 @@ export const Route = createFileRoute("/services/ai-receptionists")({
       titleAccent="handled."
       tagline="An always-on AI front desk that answers, qualifies, and books every inbound call — at the speed of software, with the polish of a senior operator."
       icon={Phone}
+      heroLive
+      tel="+610345145084"
       heroStats={[
         { value: "<1s", label: "Pickup Time" },
         { value: "24/7", label: "Coverage" },
@@ -36,6 +38,7 @@ export const Route = createFileRoute("/services/ai-receptionists")({
             "Custom qualification per service line",
             "Bilingual support out of the box",
           ],
+          metric: "92% qualification accuracy",
         },
         {
           eyebrow: "How it scales you",
@@ -47,6 +50,7 @@ export const Route = createFileRoute("/services/ai-receptionists")({
             "Routing to humans on high-intent calls",
             "Real-time performance dashboards",
           ],
+          metric: "12 concurrent calls · realtime routing",
         },
         {
           eyebrow: "The problem we solve",
@@ -60,12 +64,12 @@ export const Route = createFileRoute("/services/ai-receptionists")({
         },
       ]}
       forWho={[
-        "Service businesses doing >100 inbound calls/month",
-        "Multi-location operators losing calls between branches",
-        "Founders capped by reception headcount",
-        "Healthcare, legal, real estate, automotive, home services",
-        "High-ticket sales teams running paid traffic",
-        "Anyone tired of voicemail killing their funnel",
+        { label: "High-volume inbound operators", reveal: "Overflow calls hit voicemail during peak hours — pipeline leaks before anyone picks up." },
+        { label: "Multi-location service brands", reveal: "Branch routing breaks down and response times go inconsistent across sites." },
+        { label: "Teams scaling faster than headcount", reveal: "Demand outpaces the front desk — booked revenue caps at human capacity." },
+        { label: "Revenue teams running paid acquisition", reveal: "Paid leads call once. Miss it and the ad spend is gone." },
+        { label: "Operators losing leads after-hours", reveal: "Nights and weekends quietly drain inbound demand to competitors." },
+        { label: "Healthcare, legal, automotive & home services", reveal: "High-intent calls with zero margin for a missed connection." },
       ]}
       outcomes={[
         "Recover 30–50% of previously missed inbound revenue.",

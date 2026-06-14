@@ -7,7 +7,7 @@ import { primaryCta } from "@/lib/cta";
 
 type SubItem = { label: string; to: string; hash?: string };
 type NavItem =
-  | { kind: "link"; label: string; to: string; hash?: string }
+  | { kind: "link"; label: string; to: string; hash?: string; live?: boolean }
   | { kind: "group"; label: string; items: SubItem[] };
 
 /**
@@ -29,7 +29,7 @@ const NAV: NavItem[] = [
       { label: "Web Systems", to: "/", hash: "services" },
     ],
   },
-  { kind: "link", label: "Live Demo", to: "/demo" },
+  { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true },
   { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
   { kind: "link", label: "Book a Free Consultation", to: "/contact" },
 ];
@@ -139,7 +139,15 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                             onClick={() => setOpen(false)}
                             className="group/row flex items-center justify-between border-b border-white/[0.07] px-1 py-4 text-[15px] font-medium text-white/85 transition-colors duration-200 hover:text-white active:text-white"
                           >
-                            {item.label}
+                            <span className="flex items-center gap-2">
+                              {item.label}
+                              {item.live && (
+                                <span className="relative flex h-1.5 w-1.5">
+                                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                </span>
+                              )}
+                            </span>
                             <ArrowUpRight className="h-4 w-4 text-white/25 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />
                           </Link>
                         );

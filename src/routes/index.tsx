@@ -110,7 +110,7 @@ function Nav() {
         <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
           {[
             ["Services", "#services"],
-            ["Case Study", "#case"],
+            ["Live Demo", "#experience"],
             ["Pricing", "#pricing"],
           ].map(([l, h]) => (
             <a

@@ -36,6 +36,7 @@ export const Route = createFileRoute("/services/automation-systems")({
             "Automated onboarding & client comms",
             "Reporting pipelines that run themselves",
           ],
+          metric: "14 automations running · realtime",
         },
         {
           eyebrow: "How we scale you",
@@ -47,6 +48,7 @@ export const Route = createFileRoute("/services/automation-systems")({
             "Real-time monitoring + failure alerts",
             "Documented, owned, handed over",
           ],
+          metric: "20–40 hrs/week reclaimed · per team",
         },
         {
           eyebrow: "The problem we solve",
@@ -60,12 +62,12 @@ export const Route = createFileRoute("/services/automation-systems")({
         },
       ]}
       forWho={[
-        "Operators capped by admin and ops overhead",
-        "Teams running 3+ tools that don't talk to each other",
-        "Agencies, clinics, firms drowning in fulfilment",
-        "Companies scaling past 10 employees rapidly",
-        "Founders still doing $20/hr work daily",
-        "Anyone hiring to fix what should be automated",
+        { label: "Operators capped by admin and ops overhead", reveal: "Manual handoffs and copy-paste work cap how fast the team can move." },
+        { label: "Teams running 3+ tools that don't talk", reveal: "Data falls between systems; nothing reconciles without a human." },
+        { label: "Agencies, clinics & firms drowning in fulfilment", reveal: "Delivery scales linearly with headcount — margin erodes as you grow." },
+        { label: "Companies scaling past 10 employees fast", reveal: "Process breaks faster than you can document or hire for it." },
+        { label: "Founders still doing $20/hr work daily", reveal: "Owner time goes to admin instead of strategy and sales." },
+        { label: "Anyone hiring to fix what should be automated", reveal: "Headcount papering over a process that should be infrastructure." },
       ]}
       outcomes={[
         "Eliminate 20–40 hours/week of manual work per team.",

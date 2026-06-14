@@ -19,7 +19,7 @@ export const Route = createFileRoute("/services/ai-receptionists")({
       titleAccent="handled."
       tagline="An always-on AI front desk that answers, qualifies, and books every inbound call — at the speed of software, with the polish of a senior operator."
       icon={Phone}
-      heroLive
+      liveModule
       tel="+610345145084"
       heroStats={[
         { value: "<1s", label: "Pickup Time" },

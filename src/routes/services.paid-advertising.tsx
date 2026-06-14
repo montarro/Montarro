@@ -14,7 +14,7 @@ export const Route = createFileRoute("/services/paid-advertising")({
   component: () => (
     <ProductPage
       kind="service"
-      eyebrow="Paid Advertising"
+      eyebrow="Demand Acquisition"
       title="Performance"
       titleAccent="driven by data."
       tagline="A full-stack paid acquisition engine — creative, media buying, tracking, and optimisation — engineered to compound qualified pipeline month over month."
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/services/paid-advertising")({
             "Server-side tracking + attribution rebuild",
             "Landing pages + offer engineering",
           ],
+          metric: "ROAS 6.4× · live optimisation",
         },
         {
           eyebrow: "How we scale you",
@@ -47,6 +48,7 @@ export const Route = createFileRoute("/services/paid-advertising")({
             "Audience + offer testing matrix",
             "Transparent reporting — no smoke",
           ],
+          metric: "CPL −38% · spend scaling",
         },
         {
           eyebrow: "The problem we solve",
@@ -60,12 +62,12 @@ export const Route = createFileRoute("/services/paid-advertising")({
         },
       ]}
       forWho={[
-        "Brands spending $5k–250k/month on paid",
-        "Operators scaling past agencies who plateaued",
-        "DTC, info, services, and lead-gen businesses",
-        "Founders ready to consolidate creative + media buying",
-        "Anyone bleeding budget on broken attribution",
-        "Companies whose growth is capped by CAC",
+        { label: "Brands spending $5k–250k/month on paid", reveal: "Budget at scale magnifies every tracking gap and creative miss." },
+        { label: "Operators scaling past plateaued agencies", reveal: "Generalist vendors cap out; performance flattens and CAC creeps." },
+        { label: "DTC, info, services & lead-gen businesses", reveal: "High-intent traffic with no margin for leaked attribution." },
+        { label: "Founders consolidating creative + media buying", reveal: "Disconnected vendors mean no single feedback loop." },
+        { label: "Anyone bleeding budget on broken attribution", reveal: "You can't optimise what you can't measure server-side." },
+        { label: "Companies whose growth is capped by CAC", reveal: "Unit economics break before spend can scale." },
       ]}
       outcomes={[
         "Lift ROAS by 2–4× within the first 90 days.",

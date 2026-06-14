@@ -14,7 +14,7 @@ export const Route = createFileRoute("/services/content-creation")({
   component: () => (
     <ProductPage
       kind="service"
-      eyebrow="Content Creation"
+      eyebrow="Content Infrastructure"
       title="Content engineered"
       titleAccent="for attention."
       tagline="A managed content engine that produces short-form, long-form, and conversion-grade assets at the cadence the algorithm rewards — without the chaos."
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/services/content-creation")({
             "Direct-response ad creative",
             "On-brand graphics + carousels",
           ],
+          metric: "Publishing queue · 60+ assets/mo",
         },
         {
           eyebrow: "How we scale you",
@@ -47,6 +48,7 @@ export const Route = createFileRoute("/services/content-creation")({
             "Hooks & scripts built from data",
             "Cross-platform repurposing engine",
           ],
+          metric: "10× output velocity · pipeline synced",
         },
         {
           eyebrow: "The problem we solve",
@@ -60,12 +62,12 @@ export const Route = createFileRoute("/services/content-creation")({
         },
       ]}
       forWho={[
-        "Founders who are the face of the brand",
-        "Service businesses competing in noisy local markets",
-        "DTC and e-commerce operators chasing ad fatigue",
-        "Coaches, creators, and personal brands scaling reach",
-        "B2B companies productising their expertise",
-        "Anyone whose content output has plateaued",
+        { label: "Founders who are the face of the brand", reveal: "Personal reach stalls without a system behind the output." },
+        { label: "Service brands in noisy local markets", reveal: "Inconsistent posting loses share of attention to competitors." },
+        { label: "DTC & e-commerce chasing ad fatigue", reveal: "Creative burns out faster than it can be replaced." },
+        { label: "Coaches, creators & personal brands", reveal: "Output plateaus the moment it depends on one person." },
+        { label: "B2B companies productising expertise", reveal: "Knowledge stays trapped instead of compounding as distribution." },
+        { label: "Anyone whose content output has plateaued", reveal: "No pipeline means cadence collapses under real workload." },
       ]}
       outcomes={[
         "Ship 4–8× more on-brand content per month.",

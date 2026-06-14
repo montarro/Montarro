@@ -1226,6 +1226,209 @@ function Services() {
   );
 }
 
+/* --------------------- EXPERIENCE THE INFRASTRUCTURE --------------------- */
+
+// Replace with your real Retell AI receptionist phone number.
+const RECEPTIONIST_TEL = "+61000000000";
+
+function TranscriptPanel() {
+  const msgs: { who: "ai" | "caller"; text: string; t: string }[] = [
+    { who: "ai", text: "Thanks for calling Montarro — how can I help today?", t: "0:01" },
+    { who: "caller", text: "Hi, I need to book a roof inspection.", t: "0:05" },
+    { who: "ai", text: "Happy to help. What day works best for you?", t: "0:09" },
+    { who: "caller", text: "Thursday afternoon, if possible.", t: "0:13" },
+    { who: "ai", text: "Booked — Thursday at 3:00 PM. Confirmation sent.", t: "0:16" },
+  ];
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] p-5 backdrop-blur-xl shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)] sm:p-6">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }} />
+      <div className="flex items-center justify-between border-b border-white/[0.06] pb-3.5">
+        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/55">
+          <PhoneCall className="h-3.5 w-3.5 text-emerald-400" /> AI Receptionist
+          <LiveDot />
+        </div>
+        <div className="flex items-center gap-2.5">
+          <Waveform />
+          <span className="text-[11px] tabular-nums text-white/35">00:16</span>
+        </div>
+      </div>
+
+      <div className="mt-4 space-y-3">
+        {msgs.map((m, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: 0.15 + i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className={`flex ${m.who === "caller" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 ${
+                m.who === "ai"
+                  ? "border-emerald-500/15 bg-emerald-500/[0.05]"
+                  : "border-white/10 bg-white/[0.05]"
+              }`}
+            >
+              <div className="text-[13px] leading-snug text-white/85">{m.text}</div>
+              <div className="mt-1 text-[10px] tabular-nums text-white/30">
+                {m.who === "ai" ? "Montarro AI" : "Caller"} · {m.t}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-3 text-[11px] text-white/45">
+        <Waveform /> AI speaking…
+      </div>
+    </div>
+  );
+}
+
+function CrmFeedPanel() {
+  const events = [
+    { icon: PhoneCall, label: "Incoming Call", meta: "+61 4•• ••• 218", live: true },
+    { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing" },
+    { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM" },
+    { icon: Database, label: "CRM Updated", meta: "GoHighLevel · synced" },
+    { icon: Workflow, label: "Follow-Up Triggered", meta: "SMS sequence" },
+  ];
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] p-5 backdrop-blur-xl shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)] sm:p-6">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }} />
+      <div className="flex items-center justify-between border-b border-white/[0.06] pb-3.5 text-[11px] uppercase tracking-[0.18em] text-white/55">
+        <span className="flex items-center gap-2"><LiveDot /> CRM Activity</span>
+        <span className="tabular-nums text-white/35">Live</span>
+      </div>
+
+      <div className="mt-4 space-y-2">
+        {events.map((e, i) => {
+          const Icon = e.icon;
+          return (
+            <motion.div
+              key={e.label}
+              initial={{ opacity: 0, x: -6 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: 0.2 + i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] px-3 py-2.5 transition-colors duration-300 hover:border-emerald-500/20 hover:bg-white/[0.035]"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-emerald-400">
+                <Icon className="h-4 w-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 text-[13px] text-white/85">
+                  <span className="truncate">{e.label}</span>
+                  {e.live && <LiveDot />}
+                </div>
+                <div className="truncate text-[10.5px] text-white/40">{e.meta}</div>
+              </div>
+              {e.live ? (
+                <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-emerald-300">
+                  Live
+                </span>
+              ) : (
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ExperienceInfra() {
+  return (
+    <>
+      {/* fade into the dark environment */}
+      <div
+        aria-hidden
+        style={{
+          height: "90px",
+          marginBottom: "-1px",
+          background: "linear-gradient(180deg, #ffffff 0%, #d6d9d8 55%, #0a0c0b 100%)",
+        }}
+      />
+      <section
+        id="experience"
+        className="relative overflow-hidden py-20 lg:py-24"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
+        }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+        />
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
+          animate={{ opacity: [0.5, 0.85, 0.5] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-6">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+                <LiveDot /> Live System
+              </div>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
+                <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
+                  Experience The Infrastructure.
+                </span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
+                Test the AI receptionist powering Montarro's revenue systems.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                <a href={`tel:${RECEPTIONIST_TEL}`} className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
+                  <Phone className="h-4 w-4" />
+                  Call The AI Receptionist
+                </a>
+                <a
+                  href="#case"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
+                >
+                  View System Demo
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            <Reveal>
+              <TranscriptPanel />
+            </Reveal>
+            <Reveal delay={0.1}>
+              <CrmFeedPanel />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+      {/* fade back out into the light section */}
+      <div
+        aria-hidden
+        style={{
+          height: "90px",
+          marginTop: "-1px",
+          background: "linear-gradient(180deg, #0a0c0b 0%, #d6d9d8 55%, #ffffff 100%)",
+        }}
+      />
+    </>
+  );
+}
+
 /* ------------------------------ RESULTS ------------------------------ */
 
 function useCountUp(target: number, enabled: boolean) {
@@ -2026,6 +2229,7 @@ function Landing() {
         <MissedRevenue />
         <Integrations />
         <Services />
+        <ExperienceInfra />
         <Results />
         <CaseStudy />
         <Pricing />

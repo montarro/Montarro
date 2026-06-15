@@ -83,25 +83,25 @@ export async function forwardLeadToGhl(lead: LeadInput): Promise<GhlForwardResul
 
   // 1) Widget form-submit endpoint (PRIMARY) — fires the form's own trigger.
   if (locationId) {
+    // Only fields confirmed to exist on the GHL form. Custom fields (budget,
+    // interested_service, industry, stage, operational_bottleneck) are
+    // intentionally omitted for now, until their exact GHL field IDs are
+    // confirmed — sending unknown keys is what makes the submit fail.
+    const formFields: Record<string, string> = {
+      first_name: first,
+      last_name: last,
+      full_name: lead.fullName,
+      email: lead.email,
+      phone: lead.phone,
+      company_name: lead.company,
+      goals_notes: lead.notes,
+    };
     const fd = new FormData();
     fd.set("formId", GHL_FORM_ID);
     fd.set("locationId", locationId);
-    for (const [key, value] of Object.entries(mapped)) {
+    for (const [key, value] of Object.entries(formFields)) {
       fd.set(key, value ?? "");
     }
-    // Bundle every answer into a single note too, so nothing is lost even if
-    // the GHL form's custom-field keys differ from the mapping above.
-    fd.set(
-      "message",
-      [
-        `Company: ${lead.company}`,
-        `Budget / Monthly revenue: ${lead.budget}`,
-        `Interested service: ${lead.goal}`,
-        `Industry: ${lead.industry}`,
-        `Stage: ${lead.stage}`,
-        `Goals / current growth limitations: ${lead.notes}`,
-      ].join("\n"),
-    );
     fd.set(
       "eventData",
       JSON.stringify({

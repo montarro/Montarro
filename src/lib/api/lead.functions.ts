@@ -24,6 +24,7 @@ const leadSchema = z.object({
 export const submitLead = createServerFn({ method: "POST" })
   .inputValidator(leadSchema)
   .handler(async ({ data }) => {
-    await forwardLeadToGhl(data);
-    return { ok: true as const };
+    // Returns the diagnostic GhlForwardResult (ok + exact endpoint/status/body
+    // on failure) so the caller can surface the real GHL response.
+    return await forwardLeadToGhl(data);
   });

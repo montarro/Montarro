@@ -28,15 +28,15 @@ function splitName(full: string): { first: string; last: string } {
 }
 
 /**
- * Forward a Montarro lead into GoHighLevel so it triggers the Montarro
- * Consultation Form / Lead Management workflow.
+ * Forward a Montarro lead into GoHighLevel so it fires the existing
+ * "Form submitted" workflow trigger on form TycKFwq8GrSYOxNlQGaE.
  *
- * Two server-configured paths (no secrets in frontend):
- *   1. GHL_WEBHOOK_URL  — POST JSON to a GHL Inbound Webhook trigger.
- *                         Recommended: reliable, keeps every field by name.
- *   2. GHL_LOCATION_ID  — POST to the GHL widget form-submit endpoint for
- *                         form TycKFwq8GrSYOxNlQGaE, so the form's own
- *                         "Form submitted" workflow fires.
+ * Server-configured paths (no secrets in frontend), in priority order:
+ *   1. GHL_LOCATION_ID  — PRIMARY. POST to the GHL widget form-submit endpoint
+ *                         for the form, so the form's own "Form submitted"
+ *                         workflow trigger fires (and the lead lands on that
+ *                         form's submissions).
+ *   2. GHL_WEBHOOK_URL  — FALLBACK. POST JSON to a GHL Inbound Webhook trigger.
  * Override the submit endpoint with GHL_FORM_SUBMIT_URL if needed.
  */
 export async function forwardLeadToGhl(lead: LeadInput): Promise<void> {
@@ -52,6 +52,7 @@ export async function forwardLeadToGhl(lead: LeadInput): Promise<void> {
     first_name: first,
     last_name: last,
     full_name: lead.fullName,
+    name: lead.fullName,
     email: lead.email,
     phone: lead.phone,
     company_name: lead.company,
@@ -65,20 +66,8 @@ export async function forwardLeadToGhl(lead: LeadInput): Promise<void> {
     form_id: GHL_FORM_ID,
   };
 
-  // 1) Inbound Webhook (recommended).
-  if (webhookUrl) {
-    const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(mapped),
-    });
-    if (!res.ok) {
-      throw new Error(`GoHighLevel webhook responded ${res.status}`);
-    }
-    return;
-  }
-
-  // 2) Widget form-submit endpoint (fires the form's own workflow).
+  // 1) Widget form-submit endpoint (PRIMARY) — fires the form's own
+  //    "Form submitted" workflow trigger.
   if (locationId) {
     const fd = new FormData();
     fd.set("formId", GHL_FORM_ID);
@@ -101,7 +90,14 @@ export async function forwardLeadToGhl(lead: LeadInput): Promise<void> {
     );
     fd.set(
       "eventData",
-      JSON.stringify({ source: "montarro-website", type: "page", formId: GHL_FORM_ID }),
+      JSON.stringify({
+        source: "montarro-website",
+        type: "page",
+        formId: GHL_FORM_ID,
+        mediaId: GHL_FORM_ID,
+        version: "v3",
+        timestamp: Date.now(),
+      }),
     );
 
     const res = await fetch(formSubmitUrl, { method: "POST", body: fd });
@@ -111,8 +107,21 @@ export async function forwardLeadToGhl(lead: LeadInput): Promise<void> {
     return;
   }
 
+  // 2) Inbound Webhook (FALLBACK).
+  if (webhookUrl) {
+    const res = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(mapped),
+    });
+    if (!res.ok) {
+      throw new Error(`GoHighLevel webhook responded ${res.status}`);
+    }
+    return;
+  }
+
   // Neither configured: fail loudly server-side so the UI shows its error state.
   throw new Error(
-    "GoHighLevel is not configured. Set GHL_WEBHOOK_URL (recommended) or GHL_LOCATION_ID.",
+    "GoHighLevel is not configured. Set GHL_LOCATION_ID (form-submitted trigger) or GHL_WEBHOOK_URL.",
   );
 }

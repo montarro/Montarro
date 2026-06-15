@@ -202,7 +202,7 @@ function ContactPage() {
     setSubmitting(true);
     setSubmitError(false);
     try {
-      await submitLead({
+      const result = await submitLead({
         data: {
           fullName: form.fullName,
           email: form.email,
@@ -215,8 +215,15 @@ function ContactPage() {
           notes: form.notes,
         },
       });
-      setSubmitted(true);
-    } catch {
+      if (result.ok) {
+        setSubmitted(true);
+      } else {
+        // Surface the exact GHL response for debugging (no UI change).
+        console.error("[Montarro] GHL submission failed:", result);
+        setSubmitError(true);
+      }
+    } catch (err) {
+      console.error("[Montarro] GHL submission threw:", err);
       setSubmitError(true);
     } finally {
       setSubmitting(false);

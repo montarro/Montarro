@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Check, Mail, Phone, Instagram, Loader2 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
+import { submitLead } from "@/lib/api/lead.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -136,6 +137,7 @@ function ContactPage() {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [finalStepReady, setFinalStepReady] = useState(false);
 
   useEffect(() => {
@@ -192,13 +194,33 @@ function ContactPage() {
     e.preventDefault();
     e.stopPropagation();
     if (step !== TOTAL_STEPS || !finalStepReady) return;
+    // Prevent duplicate submissions (in-flight or already submitted).
+    if (submitting || submitted) return;
     const v = validateStep(step);
     setErrors(v);
     if (Object.keys(v).length) return;
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSubmitted(true);
+    setSubmitError(false);
+    try {
+      await submitLead({
+        data: {
+          fullName: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          company: form.company,
+          industry: form.industry,
+          stage: form.stage,
+          goal: form.goal,
+          budget: form.budget,
+          notes: form.notes,
+        },
+      });
+      setSubmitted(true);
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const progress = (step / TOTAL_STEPS) * 100;
@@ -416,6 +438,15 @@ function ContactPage() {
                           </div>
                         </motion.div>
                       </AnimatePresence>
+
+                      {step === TOTAL_STEPS && submitError && (
+                        <p
+                          role="alert"
+                          className="mt-6 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600"
+                        >
+                          Something went wrong submitting your application. Please try again — if it keeps happening, email us at montarromedia@outlook.com.
+                        </p>
+                      )}
 
                       {/* Footer controls */}
                       <div className="mt-10 flex items-center justify-between gap-4 border-t border-black/[0.05] pt-6">

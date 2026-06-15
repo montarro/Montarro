@@ -17,6 +17,11 @@ dist-ssr
 .vercel
 *.local
 
+# Local env (never commit real secrets; .env.example is tracked)
+.env
+.env.*
+!.env.example
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Check, Mail, Phone, Instagram, Loader2 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -297,7 +297,7 @@ function ContactPage() {
                 />
 
                 {submitted ? (
-                  <SuccessScreen />
+                  <BookingScreen />
                 ) : (
                   <div className="relative">
                     {/* Progress bar */}
@@ -519,7 +519,138 @@ function ContactPage() {
   );
 }
 
-function SuccessScreen() {
+// Public calendar embed URL (no secret — embeds are public). Set
+// VITE_GHL_CALENDAR_URL in the environment to enable in-page booking.
+const GHL_CALENDAR_URL = (
+  import.meta.env as Record<string, string | undefined>
+).VITE_GHL_CALENDAR_URL;
+
+const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
+
+/**
+ * Final stage of the consultation flow. After the form submits to GoHighLevel
+ * the user smoothly transitions here to book a time on the GHL calendar —
+ * without leaving the page. Booking completion (detected via the calendar's
+ * postMessage) reveals a premium confirmation state.
+ */
+function BookingScreen() {
+  const [booked, setBooked] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Cinematic entrance: bring the booking stage into view smoothly.
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      rootRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  // Load the GHL embed helper once (responsive iframe auto-resize).
+  useEffect(() => {
+    if (!GHL_CALENDAR_URL) return;
+    if (document.querySelector(`script[src="${GHL_EMBED_SCRIPT}"]`)) return;
+    const s = document.createElement("script");
+    s.src = GHL_EMBED_SCRIPT;
+    s.async = true;
+    document.body.appendChild(s);
+  }, []);
+
+  // Detect a completed booking from the GHL calendar iframe (best-effort).
+  // Conservative matching avoids resize/height chatter triggering it early.
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (!/leadconnectorhq\.com|msgsndr\.com|gohighlevel\.com/.test(e.origin || "")) {
+        return;
+      }
+      let text = "";
+      try {
+        text = typeof e.data === "string" ? e.data : JSON.stringify(e.data ?? "");
+      } catch {
+        return;
+      }
+      if (/height|resize|scroll|form_embed|hsform/i.test(text)) return;
+      if (/appointment|booking|booked|scheduled/i.test(text)) setBooked(true);
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  if (booked) return <BookingConfirmation />;
+
+  return (
+    <motion.div
+      ref={rootRef}
+      initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
+      className="relative px-7 py-12 text-center md:px-12 md:py-14"
+    >
+      {/* subtle emerald accent lighting */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
+      />
+
+      <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
+        <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
+        Details received
+      </div>
+
+      <h2 className="mx-auto font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+        Book Your Infrastructure Consultation
+      </h2>
+      <p className="mx-auto mt-5 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
+        Choose a time to discuss your current operations, lead flow, and AI
+        infrastructure opportunities with the Montarro team.
+      </p>
+
+      {/* glass panel around the calendar */}
+      <div className="relative mx-auto mt-10 max-w-xl">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.12), transparent 70%)",
+          }}
+        />
+        <div className="relative overflow-hidden rounded-2xl border border-black/[0.07] bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
+          {/* emerald top hairline */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)",
+            }}
+          />
+          {GHL_CALENDAR_URL ? (
+            <iframe
+              title="Book your Montarro consultation"
+              src={GHL_CALENDAR_URL}
+              id="ghl-consultation-calendar"
+              scrolling="no"
+              className="block h-[680px] w-full md:h-[720px]"
+              style={{ border: "none" }}
+            />
+          ) : (
+            <div className="flex min-h-[320px] flex-col items-center justify-center px-7 py-16 text-center">
+              <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
+                <Check className="relative h-5 w-5 text-emerald-500" strokeWidth={2.2} />
+              </div>
+              <p className="mt-6 max-w-sm text-[14.5px] text-muted-foreground leading-relaxed">
+                Your details are in. A Montarro strategist will reach out shortly
+                to schedule your infrastructure consultation.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function BookingConfirmation() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
@@ -532,11 +663,15 @@ function SuccessScreen() {
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
       </div>
       <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Infrastructure Audit Submitted.
+        Consultation Confirmed.
       </h2>
       <p className="mt-5 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
-        A Montarro strategist will review your systems and reach out with
-        next-step recommendations.
+        Our team will review your business infrastructure before the call to
+        identify operational bottlenecks, automation opportunities, and revenue
+        recovery potential.
+      </p>
+      <p className="mt-6 max-w-sm text-[12px] uppercase tracking-[0.18em] text-muted-foreground/60">
+        Check your inbox for the calendar invite and confirmation details.
       </p>
       <Link
         to="/"

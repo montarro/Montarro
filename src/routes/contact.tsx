@@ -230,7 +230,7 @@ function ContactPage() {
         industry: form.industry,
         stage: form.stage,
         operational_bottleneck: form.notes,
-        source: "Montarro Website — Consultation Form",
+        source: "Montarro Website",
       };
       const res = await fetch(LEAD_WEBHOOK_URL, {
         method: "POST",

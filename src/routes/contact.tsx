@@ -4,7 +4,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Check, Mail, Phone, Instagram, Loader2 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
-import { submitLead } from "@/lib/api/lead.functions";
+
+// Generic lead webhook (public — handled by Make/Zapier/GHL automation
+// separately). The Montarro form POSTs its payload straight here.
+const LEAD_WEBHOOK_URL = (
+  import.meta.env as Record<string, string | undefined>
+).VITE_MONTARRO_LEAD_WEBHOOK_URL;
+
+function splitName(full: string): { first: string; last: string } {
+  const parts = full.trim().split(/\s+/).filter(Boolean);
+  if (parts.length <= 1) return { first: parts[0] ?? "", last: "" };
+  return { first: parts[0], last: parts.slice(1).join(" ") };
+}
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -202,28 +213,36 @@ function ContactPage() {
     setSubmitting(true);
     setSubmitError(false);
     try {
-      const result = await submitLead({
-        data: {
-          fullName: form.fullName,
-          email: form.email,
-          phone: form.phone,
-          company: form.company,
-          industry: form.industry,
-          stage: form.stage,
-          goal: form.goal,
-          budget: form.budget,
-          notes: form.notes,
-        },
-      });
-      if (result.ok) {
-        setSubmitted(true);
-      } else {
-        // Surface the exact GHL response for debugging (no UI change).
-        console.error("[Montarro] GHL submission failed:", result);
-        setSubmitError(true);
+      if (!LEAD_WEBHOOK_URL) {
+        throw new Error("VITE_MONTARRO_LEAD_WEBHOOK_URL is not configured");
       }
+      const { first, last } = splitName(form.fullName);
+      const payload = {
+        full_name: form.fullName,
+        first_name: first,
+        last_name: last,
+        email: form.email,
+        phone: form.phone,
+        company_name: form.company,
+        goals_notes: form.notes,
+        budget_monthly_revenue: form.budget,
+        interested_service: form.goal,
+        industry: form.industry,
+        stage: form.stage,
+        operational_bottleneck: form.notes,
+        source: "Montarro Website — Consultation Form",
+      };
+      const res = await fetch(LEAD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error(`Lead webhook responded ${res.status}`);
+      }
+      setSubmitted(true);
     } catch (err) {
-      console.error("[Montarro] GHL submission threw:", err);
+      console.error("[Montarro] Lead webhook submission failed:", err);
       setSubmitError(true);
     } finally {
       setSubmitting(false);

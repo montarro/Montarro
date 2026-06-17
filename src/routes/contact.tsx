@@ -560,7 +560,7 @@ const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
  * postMessage) reveals a premium confirmation state.
  */
 function BookingScreen() {
-  const [booked, setBooked] = useState(false);
+  const [outcome, setOutcome] = useState<"booked" | "callback" | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
   // Cinematic entrance: bring the booking stage into view smoothly.
@@ -595,13 +595,14 @@ function BookingScreen() {
         return;
       }
       if (/height|resize|scroll|form_embed|hsform/i.test(text)) return;
-      if (/appointment|booking|booked|scheduled/i.test(text)) setBooked(true);
+      if (/appointment|booking|booked|scheduled/i.test(text)) setOutcome("booked");
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  if (booked) return <BookingConfirmation />;
+  if (outcome === "booked") return <BookingConfirmation />;
+  if (outcome === "callback") return <CallbackConfirmation />;
 
   return (
     <motion.div
@@ -623,11 +624,11 @@ function BookingScreen() {
       </div>
 
       <h2 className="mx-auto font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Book Your Infrastructure Consultation
+        Book Your Free Consultation
       </h2>
       <p className="mx-auto mt-5 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
-        Choose a time to discuss your current operations, lead flow, and AI
-        infrastructure opportunities with the Montarro team.
+        Choose a time to discuss your current lead flow, missed calls, and AI
+        receptionist setup with the Montarro team.
       </p>
 
       {/* glass panel around the calendar */}
@@ -665,11 +666,24 @@ function BookingScreen() {
                 <Check className="relative h-5 w-5 text-emerald-500" strokeWidth={2.2} />
               </div>
               <p className="mt-6 max-w-sm text-[14.5px] text-muted-foreground leading-relaxed">
-                Your details are in. A Montarro strategist will reach out shortly
-                to schedule your infrastructure consultation.
+                Your details are in. A Montarro strategist will reach out shortly.
               </p>
             </div>
           )}
+        </div>
+
+        {/* fallback: prefer a callback instead of booking */}
+        <div className="mt-8 flex flex-col items-center">
+          <button
+            type="button"
+            onClick={() => setOutcome("callback")}
+            className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
+          >
+            Prefer We Call You?
+          </button>
+          <p className="mt-3 max-w-sm text-[13px] text-muted-foreground leading-relaxed">
+            No problem — our team will follow up if you don't book a time.
+          </p>
         </div>
       </div>
     </motion.div>
@@ -698,6 +712,36 @@ function BookingConfirmation() {
       </p>
       <p className="mt-6 max-w-sm text-[12px] uppercase tracking-[0.18em] text-muted-foreground/60">
         Check your inbox for the calendar invite and confirmation details.
+      </p>
+      <Link
+        to="/"
+        className="mt-10 inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
+      >
+        Back to home
+        <ArrowUpRight className="h-3.5 w-3.5" />
+      </Link>
+    </motion.div>
+  );
+}
+
+function CallbackConfirmation() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      className="relative flex flex-col items-center px-7 py-20 text-center md:px-12"
+    >
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.25),transparent_70%)] blur-md" />
+        <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
+      </div>
+      <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+        We'll Be In Touch.
+      </h2>
+      <p className="mt-5 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
+        Your details are in — a Montarro strategist will reach out shortly to set
+        up your consultation.
       </p>
       <Link
         to="/"

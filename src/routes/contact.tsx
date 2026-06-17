@@ -659,23 +659,19 @@ function BookingScreen() {
         </span>
       </div>
 
-      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
+      <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
         <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
         Details Received
       </div>
-      <p className="mx-auto max-w-md text-[14px] text-muted-foreground leading-relaxed">
-        We&rsquo;ve received your information and created your profile.
-      </p>
 
-      <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
+      <p className="text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
         One Final Step
       </p>
       <h2 className="mx-auto mt-2.5 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Book Your Free Consultation
+        Book Your Consultation
       </h2>
       <p className="mx-auto mt-4 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
-        Choose a time to discuss your current lead flow, missed calls and AI
-        receptionist setup.
+        Choose a time below.
       </p>
 
       {/* thin emerald accent line above the booking container */}
@@ -739,17 +735,21 @@ function BookingScreen() {
           ))}
         </ul>
 
-        {/* prefer a callback instead of booking — beneath the calendar section */}
-        <div className="mt-6 flex flex-col items-center">
+        {/* secondary CTA — request a callback (equal-weight emerald button) */}
+        <div className="mt-8 flex flex-col items-center gap-3">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70">
+            Can&rsquo;t Talk Right Now?
+          </p>
           <button
             type="button"
             onClick={() => setOutcome("callback")}
-            className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
+            className={`${primaryCta} inline-flex px-6 py-3 text-sm`}
           >
-            Prefer We Call You?
+            Request A Callback
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
-          <p className="mt-3 max-w-sm text-[13px] text-muted-foreground leading-relaxed">
-            No problem — our team will follow up if you don't book a time.
+          <p className="max-w-sm text-[13px] text-muted-foreground leading-relaxed">
+            We&rsquo;ll reach out personally and help you choose a time.
           </p>
         </div>
       </div>

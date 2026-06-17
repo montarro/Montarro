@@ -545,10 +545,27 @@ function ContactPage() {
 }
 
 // Public calendar embed URL (no secret — embeds are public). Set
-// VITE_GHL_CALENDAR_URL in the environment to enable in-page booking.
-// Referenced as import.meta.env.VITE_* so Vite statically inlines it at build;
-// .trim() so an empty/whitespace value falls back instead of rendering blank.
-const GHL_CALENDAR_URL = import.meta.env.VITE_GHL_CALENDAR_URL?.trim();
+// VITE_GHL_CALENDAR_URL may hold EITHER a bare booking URL OR a full GHL embed
+// snippet (<iframe …></iframe><script …>). We extract the booking src either
+// way, so whatever is pasted into the env var works. Referenced as
+// import.meta.env.VITE_* so Vite statically inlines it at build.
+function extractCalendarSrc(raw?: string): string | undefined {
+  const value = raw?.trim();
+  if (!value) return undefined;
+  // Full embed snippet → pull the booking iframe's src (ignore the
+  // form_embed.js <script> src, which we load ourselves below).
+  const srcs = [...value.matchAll(/src\s*=\s*["']([^"']+)["']/gi)]
+    .map((m) => m[1])
+    .filter((u) => !/form_embed\.js/i.test(u));
+  if (srcs.length) {
+    return srcs.find((u) => /\/(widget\/)?booking\//i.test(u)) ?? srcs[0];
+  }
+  // Bare URL.
+  if (/^https?:\/\//i.test(value)) return value;
+  return undefined;
+}
+
+const GHL_CALENDAR_URL = extractCalendarSrc(import.meta.env.VITE_GHL_CALENDAR_URL);
 
 const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
@@ -618,16 +635,16 @@ function BookingScreen() {
       initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
-      className="relative px-7 py-12 text-center md:px-12 md:py-14"
+      className="relative px-7 py-8 text-center md:px-12 md:py-9"
     >
-      {/* subtle emerald accent lighting */}
+      {/* emerald accent lighting behind the header — stronger for hierarchy */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
+        className="pointer-events-none absolute -top-20 left-1/2 h-52 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] blur-2xl"
       />
 
       {/* two-step progress — step 1 complete, step 2 current */}
-      <div className="mx-auto mb-8 flex max-w-md items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em]">
+      <div className="mx-auto mb-5 flex max-w-md items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em]">
         <span className="inline-flex items-center gap-1.5 text-muted-foreground/70">
           <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.6} />
           Your Business
@@ -642,7 +659,7 @@ function BookingScreen() {
         </span>
       </div>
 
-      <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
         <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
         Details Received
       </div>
@@ -650,55 +667,45 @@ function BookingScreen() {
         We&rsquo;ve received your information and created your profile.
       </p>
 
-      <p className="mt-8 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
+      <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
         One Final Step
       </p>
-      <h2 className="mx-auto mt-3 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+      <h2 className="mx-auto mt-2.5 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
         Book Your Free Consultation
       </h2>
-      <p className="mx-auto mt-5 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
+      <p className="mx-auto mt-4 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
         Choose a time to discuss your current lead flow, missed calls and AI
         receptionist setup.
       </p>
 
-      {/* reassurance checklist */}
-      <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
-        {["Average setup call: 15 minutes", "No obligation", "Tailored to your business"].map((t) => (
-          <li key={t} className="inline-flex items-center gap-1.5">
-            <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.4} />
-            {t}
-          </li>
-        ))}
-      </ul>
-
       {/* thin emerald accent line above the booking container */}
       <div
         aria-hidden
-        className="mx-auto mt-10 h-px w-24 rounded-full"
+        className="mx-auto mt-7 h-px w-24 rounded-full"
         style={{
           background:
-            "linear-gradient(to right, transparent, rgba(16,185,129,0.6), transparent)",
+            "linear-gradient(to right, transparent, rgba(16,185,129,0.7), transparent)",
         }}
       />
 
       {/* glass panel around the calendar */}
-      <div className="relative mx-auto mt-6 max-w-xl">
+      <div className="relative mx-auto mt-5 max-w-xl">
         <div
           aria-hidden
           className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
           style={{
             background:
-              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.12), transparent 70%)",
+              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.14), transparent 70%)",
           }}
         />
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/15 bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
+        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
           {/* emerald top hairline */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-px"
             style={{
               background:
-                "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)",
+                "linear-gradient(to right, transparent, rgba(16,185,129,0.55), transparent)",
             }}
           />
           {GHL_CALENDAR_URL ? (
@@ -707,23 +714,33 @@ function BookingScreen() {
               src={GHL_CALENDAR_URL}
               id="ghl-consultation-calendar"
               scrolling="no"
-              className="block min-h-[680px] w-full md:min-h-[720px]"
-              style={{ width: "100%", minHeight: 680, border: "none", overflow: "hidden" }}
+              className="block min-h-[600px] w-full md:min-h-[640px]"
+              style={{ width: "100%", minHeight: 600, border: "none", overflow: "hidden" }}
             />
           ) : (
-            <div className="flex min-h-[320px] flex-col items-center justify-center px-7 py-16 text-center">
+            <div className="flex min-h-[260px] flex-col items-center justify-center px-7 py-12 text-center">
               <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
                 <Check className="relative h-5 w-5 text-emerald-500" strokeWidth={2.2} />
               </div>
-              <p className="mt-6 max-w-sm text-[14.5px] text-muted-foreground leading-relaxed">
+              <p className="mt-5 max-w-sm text-[14.5px] text-muted-foreground leading-relaxed">
                 Your details are in. A Montarro strategist will reach out shortly.
               </p>
             </div>
           )}
         </div>
 
-        {/* prefer a callback instead of booking — below the calendar widget */}
-        <div className="mt-8 flex flex-col items-center">
+        {/* reassurance — beneath the calendar */}
+        <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
+          {["15 Minute Setup Call", "No Obligation", "Tailored To Your Business"].map((t) => (
+            <li key={t} className="inline-flex items-center gap-1.5">
+              <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.4} />
+              {t}
+            </li>
+          ))}
+        </ul>
+
+        {/* prefer a callback instead of booking — beneath the calendar section */}
+        <div className="mt-6 flex flex-col items-center">
           <button
             type="button"
             onClick={() => setOutcome("callback")}

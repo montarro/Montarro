@@ -461,8 +461,8 @@ function Hero() {
 
         <Reveal delay={0.3}>
           <p className="mt-6 max-w-2xl text-pretty text-base md:text-lg text-muted-foreground">
-            AI revenue systems that capture calls, qualify leads, book jobs, and
-            scale revenue — without hiring more staff.
+            AI revenue systems that answer calls, qualify leads, book jobs, and
+            recover missed opportunities — without hiring more staff.
           </p>
         </Reveal>
 
@@ -859,9 +859,9 @@ function MissedRevenue() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
-                Every unanswered call is a customer choosing someone else. Our AI
+                Every unanswered call is a customer choosing a competitor. Our AI
                 receptionist answers instantly, qualifies the lead, books the
-                appointment, and pushes everything into your CRM.
+                appointment, and updates your CRM — automatically.
               </p>
             </Reveal>
             <Reveal delay={0.18}>

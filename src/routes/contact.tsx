@@ -524,18 +524,21 @@ function ContactPage() {
                 )}
               </div>
 
-              {/* contact alternates */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13px] text-muted-foreground">
-                <a href="mailto:Team@montarro.com" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                  <Mail className="h-4 w-4" /> Team@montarro.com
-                </a>
-                <a href="tel:0450731109" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                  <Phone className="h-4 w-4" /> 0450 731 109
-                </a>
-                <a href="https://instagram.com/montarroaii" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                  <Instagram className="h-4 w-4" /> @montarroaii
-                </a>
-              </div>
+              {/* contact alternates — only on the form step; the booking and
+                  confirmation states carry their own minimal contact line */}
+              {!submitted && (
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13px] text-muted-foreground">
+                  <a href="mailto:Team@montarro.com" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+                    <Mail className="h-4 w-4" /> Team@montarro.com
+                  </a>
+                  <a href="tel:0450731109" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+                    <Phone className="h-4 w-4" /> 0450 731 109
+                  </a>
+                  <a href="https://instagram.com/montarroaii" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+                    <Instagram className="h-4 w-4" /> @montarroaii
+                  </a>
+                </div>
+              )}
             </motion.div>
           </div>
         </section>
@@ -761,39 +764,93 @@ function BookingScreen({ lead }: { lead: FormState }) {
 }
 
 function BookingConfirmation() {
+  const steps = [
+    ["Business Review", "We analyse your current systems and lead flow."],
+    [
+      "Strategy Session",
+      "We identify bottlenecks, missed revenue opportunities and automation potential.",
+    ],
+    ["Implementation Roadmap", "We outline the fastest path to measurable growth."],
+  ];
   return (
     <motion.div
       initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex flex-col items-center px-7 py-20 text-center md:px-12"
+      className="relative flex flex-col items-center px-7 py-16 text-center md:px-14 md:py-20"
     >
+      {/* thin emerald accent line at the top of the card */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, rgba(16,185,129,0.6), transparent)",
+        }}
       />
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.25),transparent_70%)] blur-md" />
+      {/* stronger emerald glow behind the success icon */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-16 left-1/2 h-64 w-[620px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.28),transparent_70%)] blur-3xl"
+      />
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/[0.07] shadow-[0_18px_50px_-18px_rgba(16,185,129,0.55)]">
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.4),transparent_70%)] blur-md" />
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
       </div>
-      <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Consultation Confirmed.
+
+      <p className="mt-8 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
+        Application Received
+      </p>
+      <h2 className="mt-3 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+        Your consultation has been locked in.
       </h2>
-      <p className="mt-5 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
-        Our team will review your business infrastructure before the call to
-        identify operational bottlenecks, automation opportunities, and revenue
-        recovery potential.
+      <p className="mt-5 max-w-lg text-[14.5px] text-muted-foreground leading-relaxed">
+        Before the call, our team will review your current lead flow, missed
+        opportunities and customer acquisition process to identify the
+        highest-impact growth opportunities for your business.
       </p>
-      <p className="mt-6 max-w-sm text-[12px] uppercase tracking-[0.18em] text-muted-foreground/60">
-        Check your inbox for the calendar invite and confirmation details.
-      </p>
-      <Link
-        to="/"
-        className="mt-10 inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
-      >
-        Back to home
-        <ArrowUpRight className="h-3.5 w-3.5" />
-      </Link>
+
+      {/* What happens next */}
+      <div className="mt-12 w-full max-w-lg text-left">
+        <p className="text-center text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
+          What Happens Next?
+        </p>
+        <ol className="mt-6 space-y-4">
+          {steps.map(([title, body], i) => (
+            <li
+              key={title}
+              className="flex items-start gap-4 rounded-2xl border border-black/[0.06] bg-white/60 px-5 py-4 shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_18px_44px_-34px_rgba(0,0,0,0.25)] backdrop-blur"
+            >
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] font-display text-[13px] tabular-nums text-emerald-700">
+                {i + 1}
+              </span>
+              <div>
+                <div className="text-[14px] font-medium text-foreground">{title}</div>
+                <div className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{body}</div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className="mt-12 flex flex-col items-center gap-5">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
+        >
+          Back to home
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
+        <p className="text-[12px] text-muted-foreground/70">
+          Need assistance?{" "}
+          <a
+            href="mailto:team@montarro.com"
+            className="text-emerald-700 transition-colors hover:text-emerald-600"
+          >
+            team@montarro.com
+          </a>
+        </p>
+      </div>
     </motion.div>
   );
 }
@@ -821,13 +878,24 @@ function CallbackConfirmation() {
         Your details are in — a Montarro strategist will reach out shortly to set
         up your consultation.
       </p>
-      <Link
-        to="/"
-        className="mt-10 inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
-      >
-        Back to home
-        <ArrowUpRight className="h-3.5 w-3.5" />
-      </Link>
+      <div className="mt-10 flex flex-col items-center gap-5">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
+        >
+          Back to home
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
+        <p className="text-[12px] text-muted-foreground/70">
+          Need assistance?{" "}
+          <a
+            href="mailto:team@montarro.com"
+            className="text-emerald-700 transition-colors hover:text-emerald-600"
+          >
+            team@montarro.com
+          </a>
+        </p>
+      </div>
     </motion.div>
   );
 }

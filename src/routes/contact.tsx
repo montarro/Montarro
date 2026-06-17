@@ -626,21 +626,63 @@ function BookingScreen() {
         className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
       />
 
-      <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
-        <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
-        Details received
+      {/* two-step progress — step 1 complete, step 2 current */}
+      <div className="mx-auto mb-8 flex max-w-md items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em]">
+        <span className="inline-flex items-center gap-1.5 text-muted-foreground/70">
+          <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.6} />
+          Your Business
+        </span>
+        <span aria-hidden className="h-px w-8 bg-black/10" />
+        <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          </span>
+          Book A Time
+        </span>
       </div>
 
-      <h2 className="mx-auto font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+      <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
+        <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
+        Details Received
+      </div>
+      <p className="mx-auto max-w-md text-[14px] text-muted-foreground leading-relaxed">
+        We&rsquo;ve received your information and created your profile.
+      </p>
+
+      <p className="mt-8 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
+        One Final Step
+      </p>
+      <h2 className="mx-auto mt-3 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
         Book Your Free Consultation
       </h2>
       <p className="mx-auto mt-5 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
-        Choose a time to discuss your current lead flow, missed calls, and AI
-        receptionist setup with the Montarro team.
+        Choose a time to discuss your current lead flow, missed calls and AI
+        receptionist setup.
       </p>
 
+      {/* reassurance checklist */}
+      <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
+        {["Average setup call: 15 minutes", "No obligation", "Tailored to your business"].map((t) => (
+          <li key={t} className="inline-flex items-center gap-1.5">
+            <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.4} />
+            {t}
+          </li>
+        ))}
+      </ul>
+
+      {/* thin emerald accent line above the booking container */}
+      <div
+        aria-hidden
+        className="mx-auto mt-10 h-px w-24 rounded-full"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, rgba(16,185,129,0.6), transparent)",
+        }}
+      />
+
       {/* glass panel around the calendar */}
-      <div className="relative mx-auto mt-10 max-w-xl">
+      <div className="relative mx-auto mt-6 max-w-xl">
         <div
           aria-hidden
           className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
@@ -649,7 +691,7 @@ function BookingScreen() {
               "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.12), transparent 70%)",
           }}
         />
-        <div className="relative overflow-hidden rounded-2xl border border-black/[0.07] bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
+        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/15 bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
           {/* emerald top hairline */}
           <div
             aria-hidden
@@ -680,6 +722,16 @@ function BookingScreen() {
           )}
         </div>
 
+        {/* trust row beneath the calendar */}
+        <ul className="mx-auto mt-8 grid max-w-md grid-cols-1 gap-x-6 gap-y-2.5 text-left text-[12.5px] text-muted-foreground sm:grid-cols-2">
+          {["Never Miss Another Lead", "Book More Jobs", "Recover Missed Calls", "Go Live In Days"].map((t) => (
+            <li key={t} className="inline-flex items-center gap-2">
+              <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={2.4} />
+              {t}
+            </li>
+          ))}
+        </ul>
+
         {/* fallback: prefer a callback instead of booking */}
         <div className="mt-8 flex flex-col items-center">
           <button
@@ -706,6 +758,10 @@ function BookingConfirmation() {
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex flex-col items-center px-7 py-20 text-center md:px-12"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
+      />
       <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
         <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.25),transparent_70%)] blur-md" />
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
@@ -740,6 +796,10 @@ function CallbackConfirmation() {
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex flex-col items-center px-7 py-20 text-center md:px-12"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
+      />
       <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
         <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.25),transparent_70%)] blur-md" />
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />

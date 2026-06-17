@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Check, Mail, Phone, Instagram, Loader2 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -322,7 +322,7 @@ function ContactPage() {
                 />
 
                 {submitted ? (
-                  <BookingScreen />
+                  <BookingScreen lead={form} />
                 ) : (
                   <div className="relative">
                     {/* Progress bar */}
@@ -575,9 +575,29 @@ const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
  * without leaving the page. Booking completion (detected via the calendar's
  * postMessage) reveals a premium confirmation state.
  */
-function BookingScreen() {
+function BookingScreen({ lead }: { lead: FormState }) {
   const [outcome, setOutcome] = useState<"booked" | "callback" | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // Pre-fill the GHL booking widget with the details already captured by the
+  // Montarro form (name, email, phone) via query params, so the visitor only
+  // picks a date and time — no duplicate data entry. GHL still shows its
+  // (now pre-filled) contact step; it offers no official param to hide it.
+  const calendarSrc = useMemo(() => {
+    if (!GHL_CALENDAR_URL) return undefined;
+    try {
+      const u = new URL(GHL_CALENDAR_URL);
+      const { first, last } = splitName(lead.fullName);
+      if (first) u.searchParams.set("first_name", first);
+      if (last) u.searchParams.set("last_name", last);
+      if (lead.fullName) u.searchParams.set("name", lead.fullName);
+      if (lead.email) u.searchParams.set("email", lead.email);
+      if (lead.phone) u.searchParams.set("phone", lead.phone);
+      return u.toString();
+    } catch {
+      return GHL_CALENDAR_URL;
+    }
+  }, [lead]);
 
   // Cinematic entrance: bring the booking stage into view smoothly.
   useEffect(() => {
@@ -704,10 +724,10 @@ function BookingScreen() {
                 "linear-gradient(to right, transparent, rgba(16,185,129,0.55), transparent)",
             }}
           />
-          {GHL_CALENDAR_URL ? (
+          {calendarSrc ? (
             <iframe
               title="Book your Montarro consultation"
-              src={GHL_CALENDAR_URL}
+              src={calendarSrc}
               id="ghl-consultation-calendar"
               scrolling="no"
               className="block min-h-[600px] w-full md:min-h-[640px]"

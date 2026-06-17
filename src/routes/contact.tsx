@@ -7,9 +7,8 @@ import { primaryCta } from "@/lib/cta";
 
 // Generic lead webhook (public — handled by Make/Zapier/GHL automation
 // separately). The Montarro form POSTs its payload straight here.
-const LEAD_WEBHOOK_URL = (
-  import.meta.env as Record<string, string | undefined>
-).VITE_MONTARRO_LEAD_WEBHOOK_URL;
+// Referenced as import.meta.env.VITE_* so Vite statically inlines it at build.
+const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 
 function splitName(full: string): { first: string; last: string } {
   const parts = full.trim().split(/\s+/).filter(Boolean);
@@ -547,9 +546,9 @@ function ContactPage() {
 
 // Public calendar embed URL (no secret — embeds are public). Set
 // VITE_GHL_CALENDAR_URL in the environment to enable in-page booking.
-const GHL_CALENDAR_URL = (
-  import.meta.env as Record<string, string | undefined>
-).VITE_GHL_CALENDAR_URL;
+// Referenced as import.meta.env.VITE_* so Vite statically inlines it at build;
+// .trim() so an empty/whitespace value falls back instead of rendering blank.
+const GHL_CALENDAR_URL = import.meta.env.VITE_GHL_CALENDAR_URL?.trim();
 
 const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
@@ -569,6 +568,15 @@ function BookingScreen() {
       rootRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 120);
     return () => window.clearTimeout(t);
+  }, []);
+
+  // Diagnostic: make a missing calendar URL obvious in the console.
+  useEffect(() => {
+    if (!GHL_CALENDAR_URL) {
+      console.warn(
+        "[Montarro] VITE_GHL_CALENDAR_URL is not set in this build — showing the booking fallback. Add it in Vercel → Environment Variables and redeploy (it is a build-time VITE_ var).",
+      );
+    }
   }, []);
 
   // Load the GHL embed helper once (responsive iframe auto-resize).

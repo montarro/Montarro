@@ -655,7 +655,7 @@ function BookingScreen({ lead }: { lead: FormState }) {
       initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
-      className="relative px-7 py-8 text-center md:px-12 md:py-9"
+      className="relative px-7 py-7 text-center md:px-12 md:py-8"
     >
       {/* emerald accent lighting behind the header — stronger for hierarchy */}
       <div
@@ -663,23 +663,7 @@ function BookingScreen({ lead }: { lead: FormState }) {
         className="pointer-events-none absolute -top-20 left-1/2 h-52 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] blur-2xl"
       />
 
-      {/* two-step progress — step 1 complete, step 2 current */}
-      <div className="mx-auto mb-5 flex max-w-md items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em]">
-        <span className="inline-flex items-center gap-1.5 text-muted-foreground/70">
-          <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.6} />
-          Your Business
-        </span>
-        <span aria-hidden className="h-px w-8 bg-black/10" />
-        <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          </span>
-          Book A Time
-        </span>
-      </div>
-
-      <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
         <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
         Details Received
       </div>
@@ -687,25 +671,15 @@ function BookingScreen({ lead }: { lead: FormState }) {
       <p className="text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
         One Final Step
       </p>
-      <h2 className="mx-auto mt-2.5 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
+      <h2 className="mx-auto mt-2 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
         Book Your Consultation
       </h2>
-      <p className="mx-auto mt-4 max-w-xl text-[14.5px] text-muted-foreground leading-relaxed">
+      <p className="mx-auto mt-2.5 text-[14.5px] text-muted-foreground leading-relaxed">
         Choose a time below.
       </p>
 
-      {/* thin emerald accent line above the booking container */}
-      <div
-        aria-hidden
-        className="mx-auto mt-7 h-px w-24 rounded-full"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, rgba(16,185,129,0.7), transparent)",
-        }}
-      />
-
       {/* glass panel around the calendar */}
-      <div className="relative mx-auto mt-5 max-w-xl">
+      <div className="relative mx-auto mt-6 max-w-xl">
         <div
           aria-hidden
           className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
@@ -745,8 +719,8 @@ function BookingScreen({ lead }: { lead: FormState }) {
           )}
         </div>
 
-        {/* reassurance — beneath the calendar */}
-        <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
+        {/* reassurance — clean horizontal row beneath the calendar */}
+        <ul className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
           {["15 Minute Setup Call", "No Obligation", "Tailored To Your Business"].map((t) => (
             <li key={t} className="inline-flex items-center gap-1.5">
               <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.4} />
@@ -755,19 +729,28 @@ function BookingScreen({ lead }: { lead: FormState }) {
           ))}
         </ul>
 
+        {/* divider before the secondary CTA */}
+        <div aria-hidden className="mx-auto mt-6 h-px w-full max-w-xs bg-black/[0.07]" />
+
         {/* secondary CTA — request a callback (equal-weight emerald button) */}
-        <div className="mt-8 flex flex-col items-center gap-3">
+        <div className="mt-6 flex flex-col items-center gap-3">
           <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70">
             Can&rsquo;t Talk Right Now?
           </p>
-          <button
-            type="button"
-            onClick={() => setOutcome("callback")}
-            className={`${primaryCta} inline-flex px-6 py-3 text-sm`}
-          >
-            Request A Callback
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
+          <div className="relative">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-3 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.35),transparent_70%)] blur-xl"
+            />
+            <button
+              type="button"
+              onClick={() => setOutcome("callback")}
+              className={`${primaryCta} inline-flex px-7 py-3.5 text-sm`}
+            >
+              Request A Callback
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </button>
+          </div>
           <p className="max-w-sm text-[13px] text-muted-foreground leading-relaxed">
             We&rsquo;ll reach out personally and help you choose a time.
           </p>

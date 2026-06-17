@@ -707,8 +707,8 @@ function BookingScreen() {
               src={GHL_CALENDAR_URL}
               id="ghl-consultation-calendar"
               scrolling="no"
-              className="block h-[680px] w-full md:h-[720px]"
-              style={{ border: "none" }}
+              className="block min-h-[680px] w-full md:min-h-[720px]"
+              style={{ width: "100%", minHeight: 680, border: "none", overflow: "hidden" }}
             />
           ) : (
             <div className="flex min-h-[320px] flex-col items-center justify-center px-7 py-16 text-center">
@@ -722,17 +722,7 @@ function BookingScreen() {
           )}
         </div>
 
-        {/* trust row beneath the calendar */}
-        <ul className="mx-auto mt-8 grid max-w-md grid-cols-1 gap-x-6 gap-y-2.5 text-left text-[12.5px] text-muted-foreground sm:grid-cols-2">
-          {["Never Miss Another Lead", "Book More Jobs", "Recover Missed Calls", "Go Live In Days"].map((t) => (
-            <li key={t} className="inline-flex items-center gap-2">
-              <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={2.4} />
-              {t}
-            </li>
-          ))}
-        </ul>
-
-        {/* fallback: prefer a callback instead of booking */}
+        {/* prefer a callback instead of booking — below the calendar widget */}
         <div className="mt-8 flex flex-col items-center">
           <button
             type="button"

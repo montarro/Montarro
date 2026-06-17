@@ -660,10 +660,10 @@ function BookingScreen({ lead }: { lead: FormState }) {
       transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
       className="relative px-7 py-7 text-center md:px-12 md:py-8"
     >
-      {/* emerald accent lighting behind the header — stronger for hierarchy */}
+      {/* subtle emerald accent lighting behind the header */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-20 left-1/2 h-52 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] blur-2xl"
+        className="pointer-events-none absolute -top-20 left-1/2 h-52 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_70%)] blur-2xl"
       />
 
       <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
@@ -675,10 +675,10 @@ function BookingScreen({ lead }: { lead: FormState }) {
         One Final Step
       </p>
       <h2 className="mx-auto mt-2 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Book Your Consultation
+        Book Your Free Consultation
       </h2>
       <p className="mx-auto mt-2.5 text-[14.5px] text-muted-foreground leading-relaxed">
-        Choose a time below.
+        Choose a time that suits you.
       </p>
 
       {/* glass panel around the calendar */}
@@ -688,7 +688,7 @@ function BookingScreen({ lead }: { lead: FormState }) {
           className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
           style={{
             background:
-              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.14), transparent 70%)",
+              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.08), transparent 70%)",
           }}
         />
         <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
@@ -732,30 +732,28 @@ function BookingScreen({ lead }: { lead: FormState }) {
           ))}
         </ul>
 
-        {/* divider before the secondary CTA */}
+        {/* divider before the secondary conversion path */}
         <div aria-hidden className="mx-auto mt-6 h-px w-full max-w-xs bg-black/[0.07]" />
 
-        {/* secondary CTA — request a callback (equal-weight emerald button) */}
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70">
-            Can&rsquo;t Talk Right Now?
+        {/* secondary conversion path — request a callback (black CTA) */}
+        <div className="mt-6 flex flex-col items-center gap-2.5">
+          <h3 className="font-display text-xl tracking-tight text-foreground">
+            Prefer We Call You?
+          </h3>
+          <p className="max-w-sm text-[13.5px] text-muted-foreground leading-relaxed">
+            Skip the booking process and speak directly with our team.
           </p>
-          <div className="relative">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -inset-3 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.35),transparent_70%)] blur-xl"
-            />
-            <button
-              type="button"
-              onClick={() => setOutcome("callback")}
-              className={`${primaryCta} inline-flex px-7 py-3.5 text-sm`}
-            >
-              Request A Callback
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
-          </div>
-          <p className="max-w-sm text-[13px] text-muted-foreground leading-relaxed">
-            We&rsquo;ll reach out personally and help you choose a time.
+          <button
+            type="button"
+            onClick={() => setOutcome("callback")}
+            className="group mt-2 inline-flex items-center gap-2 rounded-xl bg-[#0b0b0c] px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white ring-1 ring-emerald-500/20 shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)] transition-all duration-300 ease-out hover:-translate-y-[1px] hover:bg-black hover:ring-emerald-500/40 hover:shadow-[0_22px_50px_-16px_rgba(0,0,0,0.6)]"
+          >
+            Request A Callback
+            <ArrowUpRight className="h-4 w-4 text-emerald-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </button>
+          <p className="mt-1 max-w-md text-[13px] text-muted-foreground leading-relaxed">
+            A member of our team will contact you directly to discuss your
+            business, answer any questions and determine the best next step.
           </p>
         </div>
       </div>

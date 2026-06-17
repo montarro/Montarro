@@ -796,16 +796,20 @@ function BookingConfirmation() {
         <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
       </div>
 
-      <p className="mt-8 text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
-        Application Received
+      <p className="mt-8 text-[11px] uppercase tracking-[0.32em] text-emerald-700/80">
+        Free Consultation Booked
       </p>
-      <h2 className="mt-3 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Your consultation has been locked in.
+      <h2 className="mt-3 font-display text-gradient-chrome leading-[1.05] tracking-[-0.035em]">
+        <span className="block text-2xl md:text-3xl font-medium">Your</span>
+        <span className="block text-[2.4rem] md:text-[3.25rem] font-semibold tracking-[-0.04em] leading-[0.98]">
+          Free Consultation
+        </span>
+        <span className="block text-2xl md:text-3xl font-medium">Is Confirmed.</span>
       </h2>
-      <p className="mt-5 max-w-lg text-[14.5px] text-muted-foreground leading-relaxed">
-        Before the call, our team will review your current lead flow, missed
-        opportunities and customer acquisition process to identify the
-        highest-impact growth opportunities for your business.
+      <p className="mt-6 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
+        Our team will review your current lead flow, missed opportunities, and
+        growth infrastructure before the call so we can provide tailored
+        recommendations specific to your business.
       </p>
 
       {/* What happens next */}

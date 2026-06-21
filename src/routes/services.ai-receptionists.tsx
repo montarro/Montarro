@@ -52,7 +52,6 @@ export const Route = createFileRoute("/services/ai-receptionists")({
 });
 
 const RECEPTIONIST_TEL = "+610345145084";
-const RECEPTIONIST_TEL_DISPLAY = "+61 03 4514 5084";
 
 function Reveal({
   children,
@@ -325,13 +324,13 @@ function LiveDemonstration() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href={`tel:${RECEPTIONIST_TEL}`} className={`${primaryCta} inline-flex px-6 py-3.5 text-sm`}>
                 <Phone className="h-4 w-4" />
-                Call The AI — {RECEPTIONIST_TEL_DISPLAY}
+                Test The Receptionist
               </a>
               <Link
                 to="/demo"
                 className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3.5 text-sm font-medium text-white/85 transition-all duration-300 hover:border-white/35 hover:text-white"
               >
-                Open Live Demo
+                See It In Action
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>

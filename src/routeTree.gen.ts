@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConsultationRouteImport } from './routes/consultation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesPaidAdvertisingRouteImport } from './routes/services.paid-advertising'
 import { Route as ServicesContentCreationRouteImport } from './routes/services.content-creation'
@@ -28,6 +29,11 @@ const DemoRoute = DemoRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsultationRoute = ConsultationRouteImport.update({
+  id: '/consultation',
+  path: '/consultation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -74,6 +80,7 @@ const PackagesGrowthRoute = PackagesGrowthRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/packages/growth': typeof PackagesGrowthRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/consultation'
     | '/contact'
     | '/demo'
     | '/packages/growth'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/consultation'
     | '/contact'
     | '/demo'
     | '/packages/growth'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/consultation'
     | '/contact'
     | '/demo'
     | '/packages/growth'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConsultationRoute: typeof ConsultationRoute
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRoute
   PackagesGrowthRoute: typeof PackagesGrowthRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consultation': {
+      id: '/consultation'
+      path: '/consultation'
+      fullPath: '/consultation'
+      preLoaderRoute: typeof ConsultationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -238,6 +258,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConsultationRoute: ConsultationRoute,
   ContactRoute: ContactRoute,
   DemoRoute: DemoRoute,
   PackagesGrowthRoute: PackagesGrowthRoute,

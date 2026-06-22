@@ -649,6 +649,31 @@ function BookingScreen({ lead }: { lead: FormState }) {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  // Send the visitor's choice (book vs. callback) to the Make webhook. The
+  // initial lead is captured on form submit (before this screen); the chosen
+  // consultation_preference is only known here, so it is sent as a follow-up.
+  const prefSent = useRef(false);
+  useEffect(() => {
+    if (!outcome || prefSent.current || !LEAD_WEBHOOK_URL) return;
+    prefSent.current = true;
+    const { first, last } = splitName(lead.fullName);
+    void fetch(LEAD_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        event: "consultation_preference",
+        consultation_preference: outcome === "booked" ? "book_consultation" : "prefer_a_call",
+        full_name: lead.fullName,
+        first_name: first,
+        last_name: last,
+        email: lead.email,
+        phone: lead.phone,
+        company_name: lead.company,
+        source: "Montarro Website",
+      }),
+    }).catch((err) => console.error("[Montarro] preference webhook failed:", err));
+  }, [outcome, lead]);
+
   if (outcome === "booked") return <BookingConfirmation />;
   if (outcome === "callback") return <CallbackConfirmation />;
 

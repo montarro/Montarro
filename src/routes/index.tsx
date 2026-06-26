@@ -554,32 +554,16 @@ function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate min-h-screen overflow-hidden bg-[#f1f8f5] pt-28"
+      className="relative isolate min-h-screen overflow-hidden bg-[#E9F7EE] pt-28"
     >
-      {/* soft premium off-white wash with a subtle emerald glow */}
-      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#eaf5ef 0%,#f1f9f5 40%,#f8fcfa 72%,#ffffff 100%)" }} />
-      {/* emerald glow from top */}
+      {/* fine engineered grid sitting directly on the flat emerald canvas */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[700px] max-w-5xl"
-        style={{
-          background:
-            "radial-gradient(ellipse 62% 55% at 50% 0%, rgba(16,185,129,0.18), transparent 70%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/4 -z-10 h-[460px] w-[600px] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.06), transparent 70%)" }}
-      />
-      {/* fine engineered structural grid — quiet, refined, branded */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_12%,transparent_74%)]"
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(6,78,59,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.07) 1px, transparent 1px)",
-          backgroundSize: "22px 22px",
+            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
         }}
       />
 
@@ -677,43 +661,37 @@ const TRUST_REVIEWS = [
     name: "James R.",
     industry: "Roofing",
     time: "3 weeks ago",
-    quote:
-      "We used to lose half our enquiries simply because no one could get to the phone while we were up on a roof. Montarro now answers every call, asks the right questions and books the quote straight into our diary. In the first month it picked up three jobs we would have completely missed. It honestly feels like having a full-time receptionist who never takes a break.",
+    quote: "Answers every call while we're up on a roof. It picked up three jobs in the first month that we'd have missed completely.",
   },
   {
     name: "Sarah L.",
     industry: "Dental Clinic",
     time: "1 month ago",
-    quote:
-      "Our front desk was constantly overwhelmed between patients and a phone that never stopped. Since bringing Montarro in, new patient enquiries are handled instantly and appointments land directly in our system. The team finally has room to breathe and focus on the person in the chair. Patients have even commented on how quick and easy it is to get booked in.",
+    quote: "New patient enquiries are handled instantly and land straight in our system. The front desk finally has room to breathe.",
   },
   {
     name: "Michael T.",
     industry: "Law Firm",
     time: "2 months ago",
-    quote:
-      "I was sceptical that an AI could handle the first conversation with a potential client, but it has been genuinely impressive. It captures the details we need, screens out the time-wasters and books consultations without anyone lifting a finger. The tone is professional and calm, exactly how we would want our firm represented. It has quietly become one of the most reliable parts of our intake.",
+    quote: "It screens enquiries and books consultations without anyone lifting a finger. Professional, calm and genuinely reliable.",
   },
   {
     name: "Luke H.",
     industry: "Plumbing",
     time: "6 weeks ago",
-    quote:
-      "Most of our work comes in by phone, and a missed call usually meant a missed job. Montarro answers everything, even after hours, and the bookings are waiting for me in the morning. Setup was painless and it was working within a couple of weeks. The amount of recovered work paid for it almost immediately.",
+    quote: "Answers everything, even after hours. The bookings are just waiting for me in the morning. Paid for itself almost immediately.",
   },
   {
     name: "Daniel K.",
     industry: "Electrical",
     time: "2 weeks ago",
-    quote:
-      "What sold me was how natural it sounds — most customers have no idea they are not speaking to a person. It qualifies the lead, gets the address and job details, and updates our CRM automatically. I am no longer chasing notes or trying to remember who called. Everything is just there, organised, when I need it.",
+    quote: "Most customers have no idea it isn't a person. It qualifies the lead and updates our CRM automatically — nothing to chase.",
   },
   {
     name: "Rebecca M.",
     industry: "Real Estate",
     time: "3 months ago",
-    quote:
-      "Enquiries come in at all hours in our industry, and speed is the difference between winning and losing a listing. Montarro responds instantly every time and makes sure nothing slips through. It has made the whole office feel more on top of things. I would recommend it to anyone who lives and dies by their enquiries.",
+    quote: "Responds instantly every time, day or night. Nothing slips through anymore and the whole office feels on top of things.",
   },
 ];
 
@@ -725,7 +703,35 @@ const reviewInitials = (name: string) =>
 
 function Trust() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const paused = useRef(false);
   const drag = useRef({ down: false, startX: 0, startLeft: 0 });
+  // duplicate the set so the strip can loop seamlessly
+  const loop = [...TRUST_REVIEWS, ...TRUST_REVIEWS];
+
+  // continuous right-to-left auto-scroll; wraps at the halfway point
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let raf = 0;
+    let last = performance.now();
+    const speed = 45; // px per second — slow enough to read
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      if (!paused.current && !drag.current.down) {
+        el.scrollLeft += speed * dt;
+      }
+      // one set + its trailing gap = exact seamless loop point (gap-4 = 16px)
+      const wrap = (el.scrollWidth + 16) / 2;
+      if (wrap > 0) {
+        if (el.scrollLeft >= wrap) el.scrollLeft -= wrap;
+        else if (el.scrollLeft < 0) el.scrollLeft += wrap;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.pointerType !== "mouse") return; // touch uses native scroll
@@ -742,85 +748,82 @@ function Trust() {
   const endDrag = () => {
     drag.current.down = false;
   };
-  const scrollByCards = (dir: number) => {
+  const nudge = (dir: number) => {
     const el = trackRef.current;
     if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+    el.scrollBy({ left: dir * 320, behavior: "smooth" });
   };
 
   return (
-    <section id="reviews" className="relative overflow-hidden bg-[#141414] py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex items-end justify-between gap-6">
-          <Reveal>
-            <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
-                <GoogleG className="h-[18px] w-[18px]" />
-                <span className="text-[13px] font-semibold tabular-nums text-white">4.8</span>
-                <Stars />
-              </div>
-              <h2 className="mt-7 font-display text-3xl md:text-5xl leading-[1.05] tracking-[-0.03em] text-white">
-                Trusted by operators who can&rsquo;t miss a call.
-              </h2>
-              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/50">
-                Real businesses describing how Montarro changed the way they handle enquiries.
-              </p>
+    <section id="reviews" className="relative overflow-hidden bg-[#141414] py-12 lg:py-16">
+      <div className="mx-auto mb-7 flex max-w-7xl items-end justify-between gap-6 px-6">
+        <Reveal>
+          <div>
+            <div className="flex items-center gap-2">
+              <Stars />
+              <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/55">
+                Google Reviews
+              </span>
             </div>
-          </Reveal>
-
-          {/* desktop arrows */}
-          <div className="hidden shrink-0 items-center gap-3 md:flex">
-            <button
-              type="button"
-              aria-label="Previous reviews"
-              onClick={() => scrollByCards(-1)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors duration-300 hover:border-white/35 hover:text-white"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next reviews"
-              onClick={() => scrollByCards(1)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors duration-300 hover:border-white/35 hover:text-white"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+            <p className="mt-2 text-[15px] font-medium text-white/90">
+              Rated 4.8 — trusted by operators across Melbourne.
+            </p>
           </div>
+        </Reveal>
+
+        {/* subtle arrows */}
+        <div className="hidden shrink-0 items-center gap-2 sm:flex">
+          <button
+            type="button"
+            aria-label="Previous reviews"
+            onClick={() => nudge(-1)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-300 hover:border-white/25 hover:text-white/90"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next reviews"
+            onClick={() => nudge(1)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-300 hover:border-white/25 hover:text-white/90"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
-      {/* carousel track — drag on desktop, swipe on mobile */}
+      {/* auto-scrolling trust strip — pauses on hover, swipe on mobile */}
       <div
         ref={trackRef}
+        onMouseEnter={() => (paused.current = true)}
+        onMouseLeave={() => (paused.current = false)}
+        onTouchStart={() => (paused.current = true)}
+        onTouchEnd={() => (paused.current = false)}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerLeave={endDrag}
-        className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-3 [scroll-padding-left:1.5rem] select-none lg:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]"
+        className="no-scrollbar flex gap-4 overflow-x-auto px-6 pb-2 select-none"
       >
-        {TRUST_REVIEWS.map((r) => (
+        {loop.map((r, i) => (
           <figure
-            key={r.name}
-            className="flex w-[300px] shrink-0 snap-start flex-col rounded-2xl bg-white p-7 shadow-[0_30px_70px_-34px_rgba(0,0,0,0.6)] sm:w-[360px]"
+            key={`${r.name}-${i}`}
+            className="flex w-[280px] shrink-0 flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[13px] font-semibold text-emerald-700">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-[12px] font-semibold text-emerald-300">
                   {reviewInitials(r.name)}
                 </span>
-                <div className="min-w-0">
-                  <div className="text-[14px] font-semibold text-foreground">{r.name}</div>
-                  <div className="text-[12px] text-muted-foreground">{r.industry}</div>
+                <div className="min-w-0 leading-tight">
+                  <div className="text-[13px] font-semibold text-white">{r.name}</div>
+                  <div className="text-[11px] text-white/45">{r.industry}</div>
                 </div>
               </div>
-              <span className="shrink-0 whitespace-nowrap text-[12px] text-black/40">{r.time}</span>
+              <span className="shrink-0 whitespace-nowrap text-[11px] text-white/30">{r.time}</span>
             </div>
-            <div className="mt-5 flex items-center gap-2">
-              <Stars />
-              <GoogleG className="h-4 w-4" />
-            </div>
-            <blockquote className="mt-4 text-[14px] leading-relaxed text-foreground/75">
+            <Stars className="mt-4" />
+            <blockquote className="mt-3 text-[13px] leading-relaxed text-white/65">
               {r.quote}
             </blockquote>
           </figure>

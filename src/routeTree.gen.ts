@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConsultationRouteImport } from './routes/consultation'
@@ -22,6 +24,16 @@ import { Route as PackagesStarterRouteImport } from './routes/packages.starter'
 import { Route as PackagesScaleRouteImport } from './routes/packages.scale'
 import { Route as PackagesGrowthRouteImport } from './routes/packages.growth'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoRoute = DemoRouteImport.update({
   id: '/demo',
   path: '/demo',
@@ -90,6 +102,8 @@ export interface FileRoutesByFullPath {
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -104,6 +118,8 @@ export interface FileRoutesByTo {
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -119,6 +135,8 @@ export interface FileRoutesById {
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/packages/growth': typeof PackagesGrowthRoute
   '/packages/scale': typeof PackagesScaleRoute
   '/packages/starter': typeof PackagesStarterRoute
@@ -135,6 +153,8 @@ export interface FileRouteTypes {
     | '/consultation'
     | '/contact'
     | '/demo'
+    | '/privacy'
+    | '/terms'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -149,6 +169,8 @@ export interface FileRouteTypes {
     | '/consultation'
     | '/contact'
     | '/demo'
+    | '/privacy'
+    | '/terms'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -163,6 +185,8 @@ export interface FileRouteTypes {
     | '/consultation'
     | '/contact'
     | '/demo'
+    | '/privacy'
+    | '/terms'
     | '/packages/growth'
     | '/packages/scale'
     | '/packages/starter'
@@ -178,6 +202,8 @@ export interface RootRouteChildren {
   ConsultationRoute: typeof ConsultationRoute
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRoute
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
   PackagesGrowthRoute: typeof PackagesGrowthRoute
   PackagesScaleRoute: typeof PackagesScaleRoute
   PackagesStarterRoute: typeof PackagesStarterRoute
@@ -189,6 +215,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo': {
       id: '/demo'
       path: '/demo'
@@ -282,6 +322,8 @@ const rootRouteChildren: RootRouteChildren = {
   ConsultationRoute: ConsultationRoute,
   ContactRoute: ContactRoute,
   DemoRoute: DemoRoute,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
   PackagesGrowthRoute: PackagesGrowthRoute,
   PackagesScaleRoute: PackagesScaleRoute,
   PackagesStarterRoute: PackagesStarterRoute,

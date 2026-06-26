@@ -128,8 +128,8 @@ export function SiteFooter() {
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/[0.06] pt-6 text-[12px] text-black/25 md:flex-row md:items-center">
           <div>© 2025 Montarro. All rights reserved.</div>
           <div className="flex gap-6">
-            <a href="#" className="transition-colors duration-300 hover:text-black/60">Privacy</a>
-            <a href="#" className="transition-colors duration-300 hover:text-black/60">Terms</a>
+            <Link to="/privacy" className="transition-colors duration-300 hover:text-black/60">Privacy</Link>
+            <Link to="/terms" className="transition-colors duration-300 hover:text-black/60">Terms</Link>
           </div>
         </div>
       </div>

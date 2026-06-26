@@ -30,7 +30,7 @@
   --color-ring: var(--ring);
   --color-silver: var(--silver);
   --color-chrome: var(--chrome);
-  --font-display: "Inter", system-ui, sans-serif;
+  --font-display: "Geist", "Inter", system-ui, sans-serif;
 }
 
 :root {

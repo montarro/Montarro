@@ -96,7 +96,7 @@ function Nav() {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
+          <img src="/montarro-logo.png" alt="Montarro" className="h-16 w-auto" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] font-medium">
           {(() => {
@@ -124,9 +124,9 @@ function Nav() {
           Book a Strategy Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        {/* mobile actions — single CTA + menu, kept clean */}
-        <div className="flex items-center gap-2 md:hidden">
-          <Link to="/contact" className={`${primaryCta} inline-flex px-3.5 py-2 text-[12px]`}>
+        {/* mobile actions — single CTA + bare hamburger, kept clean */}
+        <div className="flex items-center gap-4 md:hidden">
+          <Link to="/contact" className={`${primaryCta} inline-flex px-5 py-2.5 text-[13px]`}>
             Book a Call
           </Link>
           <MobileMenu />
@@ -551,14 +551,14 @@ function Hero() {
         className="pointer-events-none absolute -right-24 top-1/4 -z-10 h-[460px] w-[600px] rounded-full blur-3xl"
         style={{ background: "radial-gradient(circle, rgba(16,185,129,0.06), transparent 70%)" }}
       />
-      {/* faint structural grid */}
+      {/* fine engineered structural grid — quiet, refined, branded */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]"
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(0,0,0,0.65) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.65) 1px, transparent 1px)",
-          backgroundSize: "62px 62px",
+            "linear-gradient(to right, rgba(6,78,59,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.055) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
         }}
       />
 
@@ -570,59 +570,64 @@ function Hero() {
           {/* LEFT — message */}
           <div className="text-left lg:col-span-7">
             <Reveal delay={0.05}>
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-emerald-700 backdrop-blur">
-                <LiveDot /> AI Growth Infrastructure
-              </div>
+              <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-emerald-800/70">
+                AI Revenue Infrastructure
+              </p>
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display mt-7 text-[clamp(3rem,5.8vw,6rem)] font-semibold uppercase leading-[0.92] tracking-[-0.045em] text-[#0a0b0b]">
-                <span className="block">Never miss</span>
-                <span className="block">another</span>
-                <span className="block">qualified lead</span>
-                <span className="block">worth quoting.</span>
+              <h1 className="font-display mt-5 text-[clamp(2.9rem,6vw,5.85rem)] font-semibold uppercase leading-[0.94] tracking-[-0.04em] text-[#0a0b0b]">
+                <span className="block">Never miss another</span>
+                <span className="block">
+                  Qualified <span className="text-emerald-500">Lead.</span>
+                </span>
+                <span className="block">Worth quoting.</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.3}>
               <p className="mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
-                Montarro captures every enquiry, qualifies it instantly, books the
-                job and updates your CRM automatically — so your team spends time
-                quoting work, not chasing leads.
+                We answer every call, qualify every lead, book every opportunity and
+                update your CRM automatically—so your team spends more time quoting
+                jobs, not chasing them.
               </p>
             </Reveal>
 
             <Reveal delay={0.42}>
-              <div className="mt-8 flex flex-wrap items-center justify-start gap-3">
-                <Link to="/demo" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
-                  <PlayCircle className="h-4 w-4" /> Live Demo
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                <Link
+                  to="/demo"
+                  className={`${primaryCta} flex w-full items-center justify-center px-7 py-4 text-[15px] sm:w-auto`}
+                >
+                  <PlayCircle className="h-5 w-5" /> Live Demo
                 </Link>
                 <a
                   href="#results"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-black/[0.1] bg-white/70 px-6 py-3 text-sm font-medium text-foreground backdrop-blur transition-all duration-300 ease-out hover:border-emerald-500/40 hover:bg-white"
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/[0.12] bg-white/80 px-7 py-4 text-[15px] font-medium text-foreground backdrop-blur transition-all duration-300 ease-out hover:border-emerald-500/40 hover:bg-white sm:w-auto"
                 >
-                  See Our Results
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  See What&rsquo;s Missing
+                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </div>
             </Reveal>
 
+            {/* single confidence statement — replaces feature chips */}
             <Reveal delay={0.5}>
-              <div className="mt-7 flex flex-wrap items-center justify-start gap-2">
-                {["AI Receptionist", "CRM Automation", "Lead Generation", "24/7 Response"].map((c) => (
-                  <span key={c} className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white/60 px-3 py-1.5 text-[12px] text-muted-foreground">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> {c}
-                  </span>
-                ))}
-              </div>
+              <p className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-foreground">
+                <Check className="h-4 w-4 shrink-0 text-emerald-500" strokeWidth={3} />
+                Your revenue system never sleeps.
+              </p>
             </Reveal>
 
-            {/* Google review badge — part of the wording column */}
+            {/* Google review card + location — part of the wording column */}
             <Reveal delay={0.58}>
-              <div className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-black/[0.06] bg-white px-4 py-2.5 shadow-[0_14px_34px_-20px_rgba(0,0,0,0.3)]">
-                <GoogleG />
-                <span className="text-[14px] font-semibold tabular-nums text-foreground">4.8</span>
-                <Stars />
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="inline-flex items-center gap-3 rounded-2xl border border-black/[0.06] bg-white px-5 py-3.5 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.32)]">
+                  <GoogleG className="h-5 w-5" />
+                  <span className="text-[16px] font-semibold tabular-nums text-foreground">4.8</span>
+                  <Stars />
+                </div>
+                <span className="text-[14px] font-medium text-foreground">Melbourne, VIC</span>
               </div>
             </Reveal>
           </div>

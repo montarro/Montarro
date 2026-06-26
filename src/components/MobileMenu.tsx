@@ -59,13 +59,13 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
-        className={`inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur transition-colors duration-300 ${
+        className={`-mr-1 inline-flex items-center justify-center p-1 transition-colors duration-300 ${
           scrolled
-            ? "border-white/15 bg-white/[0.06] text-white/90 hover:border-white/35"
-            : "border-black/[0.08] bg-card/50 text-foreground hover:border-foreground/30"
+            ? "text-white/90 hover:text-white"
+            : "text-foreground hover:text-foreground/60"
         }`}
       >
-        <Menu className="h-[18px] w-[18px]" />
+        <Menu className="h-7 w-7" strokeWidth={2} />
       </button>
 
       {mounted &&

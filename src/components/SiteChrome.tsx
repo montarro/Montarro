@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -67,7 +67,24 @@ export function SiteNav() {
           Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        <MobileMenu scrolled={scrolled} />
+        {/* mobile actions — persistent call + qualify CTA beside the hamburger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href="tel:+610345145084"
+            aria-label="Call Montarro"
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur transition-colors duration-300 ${
+              scrolled
+                ? "border-white/15 bg-white/[0.06] text-white/90 hover:border-white/35"
+                : "border-black/[0.08] bg-card/50 text-foreground hover:border-foreground/30"
+            }`}
+          >
+            <Phone className="h-[17px] w-[17px]" />
+          </a>
+          <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
+            Do I Qualify?
+          </Link>
+          <MobileMenu scrolled={scrolled} />
+        </div>
       </div>
     </header>
   );

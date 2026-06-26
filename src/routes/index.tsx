@@ -24,6 +24,7 @@ import {
   Mail,
   Instagram,
   Facebook,
+  Star,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -440,67 +441,83 @@ function Hero() {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative mx-auto flex max-w-7xl flex-col items-center px-6 pt-8 pb-16 text-center sm:pt-14 sm:pb-20"
+        className="relative mx-auto max-w-7xl px-6 pt-6 pb-16 sm:pt-10 sm:pb-20"
       >
-        <Reveal delay={0.05}>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
-            </span>
-            The AI Growth System
+        <div className="grid items-center gap-12 lg:grid-cols-12">
+          {/* LEFT — message */}
+          <div className="text-center lg:col-span-6 lg:text-left">
+            <Reveal delay={0.05}>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                </span>
+                AI Growth Infrastructure
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.15} className="w-full">
+              <h1 className="font-display text-balance mx-auto max-w-[14ch] text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] tracking-[-0.04em] lg:mx-0">
+                <span className="block text-gradient-chrome">Never miss</span>
+                <span className="block text-gradient-chrome">a lead again.</span>
+              </h1>
+            </Reveal>
+
+            <Reveal delay={0.3}>
+              <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg text-muted-foreground lg:mx-0">
+                One AI system that generates demand, answers every call, qualifies
+                leads and books jobs — your complete growth engine, without hiring
+                more staff.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.45}>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <Link to="/contact" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
+                  Book a Free Consultation
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+                <a
+                  href="#system"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
+                >
+                  Explore the System
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.55}>
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12px] text-muted-foreground/80 lg:justify-start">
+                <span className="inline-flex items-center gap-2"><LiveDot /> All systems operational</span>
+                <span aria-hidden className="hidden h-3 w-px bg-black/10 sm:block" />
+                <span>Aussie-trained AI voice</span>
+                <span aria-hidden className="hidden h-3 w-px bg-black/10 sm:block" />
+                <span>Privacy Act compliant</span>
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.15} className="w-full">
-          <h1 className="font-display text-balance mx-auto max-w-[14ch] text-[clamp(2.85rem,9vw,8rem)] leading-[0.92] tracking-[-0.05em]">
-            <span className="block text-gradient-chrome">Never miss</span>
-            <span className="block text-gradient-chrome">a lead again.</span>
-          </h1>
-        </Reveal>
-
-        <Reveal delay={0.3}>
-          <p className="mt-6 max-w-2xl text-pretty text-base md:text-lg text-muted-foreground">
-            One AI growth system that generates demand, answers every call,
-            qualifies leads and books jobs — without hiring more staff.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.38}>
-          <p className="mt-3 text-[12px] tracking-wide text-muted-foreground/70">
-            Aussie-trained AI voice. Privacy Act compliant. Local data handling.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.45}>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/contact"
-              className={`${primaryCta} inline-flex px-6 py-3 text-sm`}
-            >
-              Book a Free Consultation
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <a
-              href="#system"
-              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
-            >
-              Explore the System
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+          {/* RIGHT — live system pipeline (desktop) */}
+          <div className="hidden lg:col-span-6 lg:block">
+            <Reveal delay={0.3}>
+              <LiveWorkflow />
+            </Reveal>
           </div>
-        </Reveal>
 
-        {/* Premium live revenue dashboard card */}
-        <RevenueCard />
+          {/* live widget (mobile, clean) */}
+          <div className="lg:hidden">
+            <RevenueCard />
+          </div>
+        </div>
 
         {/* Proof bar */}
         <Reveal delay={0.7} className="w-full">
-          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06] sm:grid-cols-4">
+          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06] sm:grid-cols-4">
             {[
               ["24/7", "AI Response"],
               ["128", "Missed Calls Recovered"],
-              ["34", "Jobs Booked"],
+              ["34", "Jobs Booked This Week"],
               ["$42.8K", "Revenue Captured"],
             ].map(([v, l]) => (
               <div
@@ -2428,6 +2445,96 @@ function Faq() {
   );
 }
 
+/* ------------------------------ REVIEWS ------------------------------ */
+function GoogleWordmark() {
+  const letters: [string, string][] = [
+    ["G", "#4285F4"], ["o", "#EA4335"], ["o", "#FBBC05"],
+    ["g", "#4285F4"], ["l", "#34A853"], ["e", "#EA4335"],
+  ];
+  return (
+    <span className="font-semibold tracking-tight" aria-label="Google">
+      {letters.map(([c, col], i) => (
+        <span key={i} style={{ color: col }}>{c}</span>
+      ))}
+    </span>
+  );
+}
+
+function Stars({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-0.5 ${className}`} aria-hidden>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} className="h-4 w-4 fill-[#FBBC05] text-[#FBBC05]" />
+      ))}
+    </span>
+  );
+}
+
+function Reviews() {
+  const reviews = [
+    { quote: "We were missing calls every afternoon. Montarro answers everything now — we've booked jobs we would have lost completely.", name: "Daniel R.", role: "Plumbing · Melbourne" },
+    { quote: "It books straight into our calendar and updates the CRM automatically. Our front desk finally has breathing room.", name: "Sarah K.", role: "Dental Practice" },
+    { quote: "Live in two weeks. Within the first month the system had already paid for itself in recovered work.", name: "James T.", role: "Electrical Contractor" },
+  ];
+  return (
+    <section id="reviews" className="relative border-t border-black/[0.06] py-20 lg:py-28">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[360px] max-w-4xl rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.05),transparent_70%)] blur-3xl" />
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.08] bg-card/50 px-4 py-2 text-[13px] backdrop-blur">
+              <GoogleWordmark />
+              <span aria-hidden className="h-3.5 w-px bg-black/10" />
+              <Stars />
+              <span className="font-semibold tabular-nums text-foreground">5.0</span>
+            </div>
+            <h2 className="mt-7 font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.03em] text-gradient-chrome">
+              Operators who can&rsquo;t afford to miss a call.
+            </h2>
+            <p className="mx-auto mt-5 max-w-lg leading-relaxed text-muted-foreground">
+              Real outcomes from the businesses running on the Montarro System.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-4 md:grid-cols-3">
+          {reviews.map((r, i) => (
+            <Reveal key={r.name} delay={0.08 * i}>
+              <figure className="flex h-full flex-col rounded-2xl border border-black/[0.08] bg-gradient-to-b from-white to-[#f6f7f8] p-7 shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-44px_rgba(0,0,0,0.22)]">
+                <Stars />
+                <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-foreground/90">
+                  &ldquo;{r.quote}&rdquo;
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-black/[0.06] pt-4">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 font-display text-sm font-semibold text-emerald-700">
+                    {r.name.charAt(0)}
+                  </span>
+                  <div className="flex-1">
+                    <div className="text-[14px] font-medium text-foreground">{r.name}</div>
+                    <div className="text-[12px] text-muted-foreground">{r.role}</div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Google
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.1}>
+          <div className="mt-10 text-center">
+            <a href="#" className="group inline-flex items-center gap-2 text-[13px] font-medium text-emerald-700 transition-colors hover:text-emerald-600">
+              Read more reviews on Google
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function Landing() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -2442,6 +2549,7 @@ function Landing() {
         <LeadGeneration />
         <Results />
         <CaseStudy />
+        <Reviews />
         <Integrations />
         <Pricing />
         <Faq />

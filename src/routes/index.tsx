@@ -25,6 +25,8 @@ import {
   Instagram,
   Facebook,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -420,6 +422,35 @@ function HeroTile({
   );
 }
 
+/** Single animated metric for the hero dashboard — counts up once on first view. */
+function HeroStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  useEffect(() => {
+    if (!inView || !ref.current) return;
+    const node = ref.current;
+    const controls = animate(0, to, {
+      duration: 1.8,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate(v) {
+        node.textContent = format(v);
+      },
+      onComplete() {
+        node.textContent = format(to);
+      },
+    });
+    return () => controls.stop();
+  }, [inView, to]);
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3 py-2.5">
+      <div className="font-display text-lg tracking-tight tabular-nums text-white">
+        <span ref={ref}>{format(0)}</span>
+      </div>
+      <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.12em] text-white/40">{label}</div>
+    </div>
+  );
+}
+
 function HeroDashboard() {
   const pill = "rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-emerald-300";
   const events: { icon: typeof PhoneCall; label: string; meta: string; time: string; right: React.ReactNode }[] = [
@@ -438,7 +469,7 @@ function HeroDashboard() {
         className="pointer-events-none absolute -inset-10 -z-10 rounded-[44px] blur-3xl"
         style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.20), transparent 70%)" }}
       />
-      <div className="overflow-hidden rounded-[20px] border border-white/10 bg-gradient-to-b from-[#111413] to-[#0a0b0b] shadow-[0_50px_120px_-40px_rgba(0,0,0,0.75)]">
+      <div className="overflow-hidden rounded-[26px] border border-white/10 bg-gradient-to-b from-[#181818] to-[#141414] shadow-[0_40px_90px_-48px_rgba(0,0,0,0.6)]">
         <span aria-hidden className="block h-px w-full bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
 
         {/* window chrome + integrated metrics */}
@@ -455,16 +486,9 @@ function HeroDashboard() {
             </span>
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
-            {[
-              ["Revenue Captured", "$42.8K"],
-              ["Avg Response", "0.8s"],
-              ["Bookings Today", "12"],
-            ].map(([l, v]) => (
-              <div key={l} className="rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2.5">
-                <div className="font-display text-lg tracking-tight tabular-nums text-white">{v}</div>
-                <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.12em] text-white/40">{l}</div>
-              </div>
-            ))}
+            <HeroStat to={42.8} format={(v) => `$${v.toFixed(1)}K`} label="Revenue Captured" />
+            <HeroStat to={0.8} format={(v) => `${v.toFixed(1)}s`} label="Avg Response" />
+            <HeroStat to={12} format={(v) => `${Math.round(v)}`} label="Bookings Today" />
           </div>
         </div>
 
@@ -492,10 +516,10 @@ function HeroDashboard() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: 0.25 + i * 0.18, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-[#0d0f0e] shadow-[0_0_0_4px_rgba(10,11,11,1)]">
+                  <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-[#141414] shadow-[0_0_0_4px_rgba(20,20,20,1)]">
                     <Icon className="h-4 w-4 text-emerald-400" />
                   </span>
-                  <div className="flex flex-1 items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-2">
+                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2">
                     <div className="min-w-0">
                       <div className="truncate text-[13px] font-medium text-white">{e.label}</div>
                       <div className="truncate text-[11px] text-white/45">{e.meta}</div>
@@ -530,10 +554,10 @@ function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate min-h-screen overflow-hidden bg-[#d3efe1] pt-28"
+      className="relative isolate min-h-screen overflow-hidden bg-[#f1f8f5] pt-28"
     >
-      {/* soft premium light-emerald wash that fades naturally into the page */}
-      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#c4ebd9 0%,#d4f0e6 38%,#e7f7f0 70%,#ffffff 100%)" }} />
+      {/* soft premium off-white wash with a subtle emerald glow */}
+      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#eaf5ef 0%,#f1f9f5 40%,#f8fcfa 72%,#ffffff 100%)" }} />
       {/* emerald glow from top */}
       <div
         aria-hidden
@@ -551,11 +575,11 @@ function Hero() {
       {/* fine engineered structural grid — quiet, refined, branded */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_12%,transparent_74%)]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(6,78,59,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.055) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(to right, rgba(6,78,59,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.07) 1px, transparent 1px)",
+          backgroundSize: "22px 22px",
         }}
       />
 
@@ -568,15 +592,17 @@ function Hero() {
           <div className="text-left lg:col-span-7">
             <Reveal delay={0.05}>
               <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-emerald-800/70">
-                AI Revenue Infrastructure
+                AI Revenue Infrastructure for Aussie Businesses
               </p>
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display mt-5 text-[clamp(3rem,6.2vw,6rem)] font-semibold uppercase leading-[0.94] tracking-[-0.04em] text-[#0a0b0b]">
-                <span className="block">Never miss another</span>
-                <span className="block text-emerald-500">Lead.</span>
-                <span className="block">Worth quoting.</span>
+              <h1 className="font-headline mt-5 text-[clamp(3.25rem,6.8vw,6.5rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
+                <span className="block">Never miss</span>
+                <span className="block">
+                  Another <span className="text-emerald-500">Lead.</span>
+                </span>
+                <span className="mt-[0.35em] block">Worth quoting.</span>
               </h1>
             </Reveal>
 
@@ -607,12 +633,15 @@ function Hero() {
               </div>
             </Reveal>
 
-            {/* single confidence statement — replaces feature chips */}
+            {/* curiosity line — leads the eye toward exploring / booking */}
             <Reveal delay={0.5}>
-              <p className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-foreground/80">
-                <Check className="h-4 w-4 shrink-0 text-emerald-500" strokeWidth={3} />
-                Our system never sleeps.
-              </p>
+              <a
+                href="#reviews"
+                className="group mt-7 inline-flex items-center gap-1.5 text-[13px] font-medium text-foreground/70 transition-colors duration-300 hover:text-foreground"
+              >
+                See why Melbourne businesses are switching
+                <ArrowRight className="h-4 w-4 text-emerald-600 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </a>
             </Reveal>
 
             {/* Google review card + location — part of the wording column */}
@@ -643,74 +672,159 @@ function Hero() {
 /* ------------------------------ TRUST ------------------------------ */
 
 
+const TRUST_REVIEWS = [
+  {
+    name: "James R.",
+    industry: "Roofing",
+    time: "3 weeks ago",
+    quote:
+      "We used to lose half our enquiries simply because no one could get to the phone while we were up on a roof. Montarro now answers every call, asks the right questions and books the quote straight into our diary. In the first month it picked up three jobs we would have completely missed. It honestly feels like having a full-time receptionist who never takes a break.",
+  },
+  {
+    name: "Sarah L.",
+    industry: "Dental Clinic",
+    time: "1 month ago",
+    quote:
+      "Our front desk was constantly overwhelmed between patients and a phone that never stopped. Since bringing Montarro in, new patient enquiries are handled instantly and appointments land directly in our system. The team finally has room to breathe and focus on the person in the chair. Patients have even commented on how quick and easy it is to get booked in.",
+  },
+  {
+    name: "Michael T.",
+    industry: "Law Firm",
+    time: "2 months ago",
+    quote:
+      "I was sceptical that an AI could handle the first conversation with a potential client, but it has been genuinely impressive. It captures the details we need, screens out the time-wasters and books consultations without anyone lifting a finger. The tone is professional and calm, exactly how we would want our firm represented. It has quietly become one of the most reliable parts of our intake.",
+  },
+  {
+    name: "Luke H.",
+    industry: "Plumbing",
+    time: "6 weeks ago",
+    quote:
+      "Most of our work comes in by phone, and a missed call usually meant a missed job. Montarro answers everything, even after hours, and the bookings are waiting for me in the morning. Setup was painless and it was working within a couple of weeks. The amount of recovered work paid for it almost immediately.",
+  },
+  {
+    name: "Daniel K.",
+    industry: "Electrical",
+    time: "2 weeks ago",
+    quote:
+      "What sold me was how natural it sounds — most customers have no idea they are not speaking to a person. It qualifies the lead, gets the address and job details, and updates our CRM automatically. I am no longer chasing notes or trying to remember who called. Everything is just there, organised, when I need it.",
+  },
+  {
+    name: "Rebecca M.",
+    industry: "Real Estate",
+    time: "3 months ago",
+    quote:
+      "Enquiries come in at all hours in our industry, and speed is the difference between winning and losing a listing. Montarro responds instantly every time and makes sure nothing slips through. It has made the whole office feel more on top of things. I would recommend it to anyone who lives and dies by their enquiries.",
+  },
+];
+
+const reviewInitials = (name: string) =>
+  name
+    .split(" ")
+    .map((p) => p[0])
+    .join("");
+
 function Trust() {
-  const reviews = [
-    {
-      name: "James R.",
-      industry: "Plumbing",
-      quote: "Montarro completely changed how we handle enquiries. Every missed call now becomes a booked job.",
-    },
-    {
-      name: "Luke H.",
-      industry: "Roofing",
-      quote: "The AI books jobs while our staff are onsite. Easily one of the best investments we've made.",
-    },
-    {
-      name: "Sarah L.",
-      industry: "Dental Clinic",
-      quote: "Our office finally feels organised. Everything just works, and nothing slips through.",
-    },
-    {
-      name: "Michael T.",
-      industry: "Law Firm",
-      quote: "The AI sounds incredibly natural. Clients don't even realise it's automated.",
-    },
-  ];
-  const initials = (name: string) =>
-    name
-      .split(" ")
-      .map((p) => p[0])
-      .join("");
+  const trackRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({ down: false, startX: 0, startLeft: 0 });
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return; // touch uses native scroll
+    const el = trackRef.current;
+    if (!el) return;
+    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!drag.current.down) return;
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollLeft = drag.current.startLeft - (e.clientX - drag.current.startX);
+  };
+  const endDrag = () => {
+    drag.current.down = false;
+  };
+  const scrollByCards = (dir: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  };
+
   return (
     <section id="reviews" className="relative overflow-hidden bg-[#141414] py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
-              <GoogleG className="h-[18px] w-[18px]" />
-              <span className="text-[13px] font-semibold tabular-nums text-white">4.8</span>
-              <Stars />
+        <div className="flex items-end justify-between gap-6">
+          <Reveal>
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
+                <GoogleG className="h-[18px] w-[18px]" />
+                <span className="text-[13px] font-semibold tabular-nums text-white">4.8</span>
+                <Stars />
+              </div>
+              <h2 className="mt-7 font-display text-3xl md:text-5xl leading-[1.05] tracking-[-0.03em] text-white">
+                Trusted by operators who can&rsquo;t miss a call.
+              </h2>
+              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/50">
+                Real businesses describing how Montarro changed the way they handle enquiries.
+              </p>
             </div>
-            <h2 className="mt-7 font-display text-3xl md:text-5xl leading-[1.05] tracking-[-0.03em] text-white">
-              Trusted by operators who can&rsquo;t miss a call.
-            </h2>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/50">
-              Real businesses running on the Montarro System.
-            </p>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={0.08 * i}>
-              <figure className="flex h-full flex-col rounded-2xl border border-white/[0.07] bg-white/[0.03] p-7 transition-colors duration-300 hover:border-white/[0.12]">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-[13px] font-semibold text-white/90 ring-1 ring-white/10">
-                    {initials(r.name)}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="text-[14px] font-semibold text-white">{r.name}</div>
-                    <div className="text-[12px] text-white/45">{r.industry}</div>
-                  </div>
-                </div>
-                <Stars className="mt-6" />
-                <blockquote className="mt-4 flex-1 text-[14px] leading-relaxed text-white/65">
-                  {r.quote}
-                </blockquote>
-              </figure>
-            </Reveal>
-          ))}
+          {/* desktop arrows */}
+          <div className="hidden shrink-0 items-center gap-3 md:flex">
+            <button
+              type="button"
+              aria-label="Previous reviews"
+              onClick={() => scrollByCards(-1)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors duration-300 hover:border-white/35 hover:text-white"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next reviews"
+              onClick={() => scrollByCards(1)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors duration-300 hover:border-white/35 hover:text-white"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* carousel track — drag on desktop, swipe on mobile */}
+      <div
+        ref={trackRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-3 [scroll-padding-left:1.5rem] select-none lg:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]"
+      >
+        {TRUST_REVIEWS.map((r) => (
+          <figure
+            key={r.name}
+            className="flex w-[300px] shrink-0 snap-start flex-col rounded-2xl bg-white p-7 shadow-[0_30px_70px_-34px_rgba(0,0,0,0.6)] sm:w-[360px]"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[13px] font-semibold text-emerald-700">
+                  {reviewInitials(r.name)}
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[14px] font-semibold text-foreground">{r.name}</div>
+                  <div className="text-[12px] text-muted-foreground">{r.industry}</div>
+                </div>
+              </div>
+              <span className="shrink-0 whitespace-nowrap text-[12px] text-black/40">{r.time}</span>
+            </div>
+            <div className="mt-5 flex items-center gap-2">
+              <Stars />
+              <GoogleG className="h-4 w-4" />
+            </div>
+            <blockquote className="mt-4 text-[14px] leading-relaxed text-foreground/75">
+              {r.quote}
+            </blockquote>
+          </figure>
+        ))}
       </div>
     </section>
   );

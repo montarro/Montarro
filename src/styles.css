@@ -31,6 +31,7 @@
   --color-silver: var(--silver);
   --color-chrome: var(--chrome);
   --font-display: "Geist", "Inter", system-ui, sans-serif;
+  --font-headline: "Saira", "Geist", system-ui, sans-serif;
 }
 
 :root {
@@ -92,6 +93,20 @@
     font-family: var(--font-display);
     letter-spacing: -0.04em;
     font-weight: 700;
+  }
+
+  .font-headline {
+    font-family: var(--font-headline);
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   .text-gradient-chrome {

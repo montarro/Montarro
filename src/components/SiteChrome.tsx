@@ -64,7 +64,7 @@ export function SiteNav() {
             scrolled ? "ring-1 ring-emerald-400/25" : ""
           }`}
         >
-          Book a Free Consultation
+          Book a Strategy Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         {/* mobile actions — persistent call + qualify CTA beside the hamburger */}

@@ -103,19 +103,17 @@ function Nav() {
           <img
             src="/montarro-logo.png"
             alt="Montarro"
-            className={`w-auto transition-all duration-500 ease-out ${
-              scrolled ? "h-9 invert" : "h-[52px]"
+            className={`w-auto transition-all duration-500 ease-out invert ${
+              scrolled ? "h-9" : "h-[52px]"
             }`}
           />
         </a>
         <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
           {(() => {
-            const cls = `tracking-tight transition-colors duration-300 ${
-              scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-            }`;
+            const cls = "tracking-tight text-white/70 transition-colors duration-300 hover:text-white";
             return (
               <>
-                <a href="#services" className={cls}>Services</a>
+                <a href="#system" className={cls}>The System</a>
                 <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
@@ -127,7 +125,7 @@ function Nav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <a href="#pricing" className={cls}>Pricing</a>
+                <a href="#packages" className={cls}>Packages</a>
               </>
             );
           })()}
@@ -141,7 +139,20 @@ function Nav() {
           Book a Free Consultation
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        <MobileMenu scrolled={scrolled} />
+        {/* mobile actions — Do I Qualify? + call beside the hamburger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href="tel:0450731109"
+            aria-label="Call Montarro on 0450 731 109"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 backdrop-blur transition-colors duration-300 hover:border-white/35"
+          >
+            <Phone className="h-[17px] w-[17px]" />
+          </a>
+          <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
+            Do I Qualify?
+          </Link>
+          <MobileMenu scrolled={scrolled} />
+        </div>
       </div>
     </header>
   );
@@ -408,6 +419,128 @@ function RevenueCard() {
   );
 }
 
+/* --------------------- HERO LIVE OPERATING SYSTEM --------------------- */
+function HeroTile({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={`relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl ${className}`}
+    >
+      <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+      {children}
+    </motion.div>
+  );
+}
+
+function HeroDashboard() {
+  return (
+    <div className="relative">
+      {/* ambient halo */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-8 -z-10 rounded-[40px] blur-3xl"
+        style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.16), transparent 70%)" }}
+      />
+      {/* OS chrome header */}
+      <div className="mb-3 flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 backdrop-blur">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/70">
+          <LiveDot /> Montarro OS · Live
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-white/15" />
+          <span className="h-2 w-2 rounded-full bg-white/15" />
+          <span className="h-2 w-2 rounded-full bg-emerald-500/70" />
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {/* Revenue Captured */}
+        <HeroTile className="col-span-2" delay={0.05}>
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/45">Revenue Captured</span>
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-300/90"><LiveDot /> Live</span>
+          </div>
+          <div className="mt-2 flex items-end justify-between">
+            <div>
+              <div className="font-display text-4xl tracking-tight tabular-nums text-white sm:text-5xl">$42.8K</div>
+              <div className="mt-1 flex items-center gap-1.5 text-[12px] font-medium text-emerald-400"><TrendingUp className="h-3.5 w-3.5" /> +31% this month</div>
+            </div>
+            <div className="h-14 w-32 sm:w-40"><RevenueSparkline /></div>
+          </div>
+        </HeroTile>
+
+        {/* Incoming Call */}
+        <HeroTile delay={0.1}>
+          <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.16em] text-white/45">
+            <span className="inline-flex items-center gap-1.5"><PhoneCall className="h-3.5 w-3.5 text-emerald-400" /> Incoming Call</span>
+            <Waveform />
+          </div>
+          <div className="mt-3 text-[13px] font-medium text-white">+61 4•• ••• 218</div>
+          <div className="text-[11px] text-white/50">AI answering · 0.8s</div>
+        </HeroTile>
+
+        {/* AI Receptionist Live */}
+        <HeroTile delay={0.15}>
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/45"><Bot className="h-3.5 w-3.5 text-emerald-400" /> AI Receptionist</div>
+          <div className="mt-3 inline-flex items-center gap-2 text-[13px] font-medium text-white"><LiveDot /> Live now</div>
+          <div className="text-[11px] text-white/50">12 active conversations</div>
+        </HeroTile>
+
+        {/* Lead Qualified */}
+        <HeroTile delay={0.2} className="hidden sm:block">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/45"><CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> Lead Qualified</div>
+          <div className="mt-3 text-[13px] font-medium text-white">High intent · roofing</div>
+          <div className="text-[11px] text-white/50">Routed to booking</div>
+        </HeroTile>
+
+        {/* Appointment Booked */}
+        <HeroTile delay={0.25}>
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/45"><CalendarCheck className="h-3.5 w-3.5 text-emerald-400" /> Booked</div>
+          <div className="mt-3 text-[13px] font-medium text-white">Thu · 3:00 PM</div>
+          <div className="text-[11px] text-emerald-400">Confirmed</div>
+        </HeroTile>
+
+        {/* CRM Updated */}
+        <HeroTile delay={0.3} className="hidden sm:block">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/45"><Database className="h-3.5 w-3.5 text-emerald-400" /> CRM Updated</div>
+          <div className="mt-3 text-[13px] font-medium text-white">GoHighLevel</div>
+          <div className="text-[11px] text-white/50">Synced · just now</div>
+        </HeroTile>
+
+        {/* SMS Sent */}
+        <HeroTile delay={0.35} className="hidden sm:block">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/45"><Mail className="h-3.5 w-3.5 text-emerald-400" /> SMS Sent</div>
+          <div className="mt-3 text-[13px] font-medium text-white">Follow-up sent</div>
+          <div className="text-[11px] text-white/50">412 today</div>
+        </HeroTile>
+
+        {/* Google Reviews */}
+        <HeroTile className="col-span-2" delay={0.4}>
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center gap-2">
+              <GoogleWordmark />
+              <Stars />
+              <span className="text-[13px] font-semibold tabular-nums text-white">4.9</span>
+            </span>
+            <span className="text-[11px] text-white/50">128+ businesses</span>
+          </div>
+          <div className="mt-2 text-[12px] text-white/60">&ldquo;Booked jobs we&rsquo;d have lost completely.&rdquo; — Trusted by Melbourne businesses</div>
+        </HeroTile>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------- HERO ------------------------------- */
 
 function Hero() {
@@ -423,21 +556,34 @@ function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate min-h-screen overflow-hidden pt-24"
+      className="relative isolate min-h-screen overflow-hidden bg-[#070908] pt-24 text-white"
     >
-      {/* backdrop */}
-      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.11] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-      <div className="absolute inset-0 -z-10 bg-radial-glow" />
-      {/* subtle emerald radial lighting from the top */}
+      {/* dark gradient base */}
+      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#0b0d0c 0%,#070908 58%,#0a0c0b 100%)" }} />
+      {/* faint structural grid */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[560px] max-w-5xl"
+        className="absolute inset-0 -z-10 opacity-[0.06] [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_78%)]"
         style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.07), transparent 70%)",
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
         }}
       />
-      <div className="absolute inset-x-0 top-1/3 -z-10 mx-auto h-[420px] max-w-4xl rounded-full bg-black/[0.04] blur-3xl" />
+      {/* emerald glow from top */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[620px] max-w-5xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.16), transparent 70%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 right-0 -z-10 h-[460px] w-[640px] rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.08), transparent 70%)" }}
+      />
 
       <motion.div
         style={{ y, opacity }}
@@ -447,31 +593,32 @@ function Hero() {
           {/* LEFT — message */}
           <div className="text-center lg:col-span-6 lg:text-left">
             <Reveal delay={0.05}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:justify-start">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[12px] text-white/80 backdrop-blur">
+                  <Stars /> <span className="font-semibold tabular-nums text-white">4.9</span> Google Rating
                 </span>
-                AI Growth Infrastructure
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-white/55 backdrop-blur">
+                  <LiveDot /> Trusted by Melbourne Businesses
+                </span>
               </div>
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display text-balance mx-auto max-w-[14ch] text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] tracking-[-0.04em] lg:mx-0">
-                <span className="block text-gradient-chrome">Never miss</span>
-                <span className="block text-gradient-chrome">a lead again.</span>
+              <h1 className="font-display text-balance mx-auto mt-6 max-w-[16ch] text-[clamp(2.5rem,5.4vw,4.5rem)] leading-[0.98] tracking-[-0.04em] lg:mx-0">
+                <span className="block bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent">The revenue operating system</span>
+                <span className="block bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent">for service businesses.</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.3}>
-              <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg text-muted-foreground lg:mx-0">
-                One AI system that generates demand, answers every call, qualifies
-                leads and books jobs — your complete growth engine, without hiring
-                more staff.
+              <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-white/60 lg:mx-0">
+                Montarro answers every call, qualifies the lead, books the job and
+                updates your CRM — instantly, 24/7. One system that turns missed
+                calls into booked revenue.
               </p>
             </Reveal>
 
-            <Reveal delay={0.45}>
+            <Reveal delay={0.42}>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                 <Link to="/contact" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
                   Book a Free Consultation
@@ -479,61 +626,51 @@ function Hero() {
                 </Link>
                 <a
                   href="#system"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-medium text-white/85 backdrop-blur transition-all duration-300 ease-out hover:border-white/35 hover:text-white"
                 >
-                  Explore the System
+                  See How It Works
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </div>
             </Reveal>
 
-            <Reveal delay={0.55}>
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12px] text-muted-foreground/80 lg:justify-start">
-                <span className="inline-flex items-center gap-2"><LiveDot /> All systems operational</span>
-                <span aria-hidden className="hidden h-3 w-px bg-black/10 sm:block" />
-                <span>Aussie-trained AI voice</span>
-                <span aria-hidden className="hidden h-3 w-px bg-black/10 sm:block" />
-                <span>Privacy Act compliant</span>
+            <Reveal delay={0.5}>
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                {["AI Receptionist", "CRM Automation", "Lead Generation", "24/7 Response"].map((c) => (
+                  <span key={c} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] text-white/70">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> {c}
+                  </span>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.58}>
+              <div className="mt-8 flex items-center justify-center gap-3 lg:justify-start">
+                <div className="flex -space-x-2.5">
+                  {["#10b981", "#0ea5e9", "#f59e0b", "#8b5cf6", "#ef4444"].map((c, i) => (
+                    <span
+                      key={i}
+                      aria-hidden
+                      className="h-8 w-8 rounded-full border-2 border-[#0a0c0b]"
+                      style={{ background: `linear-gradient(135deg, ${c}, rgba(255,255,255,0.18))` }}
+                    />
+                  ))}
+                </div>
+                <div className="text-left">
+                  <div className="text-[13px] font-medium text-white">128+ Businesses Growing With Montarro</div>
+                  <div className="text-[11px] text-white/50">Across trades, dental, legal &amp; medical</div>
+                </div>
               </div>
             </Reveal>
           </div>
 
-          {/* RIGHT — live system pipeline (desktop) */}
-          <div className="hidden lg:col-span-6 lg:block">
-            <Reveal delay={0.3}>
-              <LiveWorkflow />
+          {/* RIGHT — live operating system */}
+          <div className="lg:col-span-6">
+            <Reveal delay={0.25}>
+              <HeroDashboard />
             </Reveal>
-          </div>
-
-          {/* live widget (mobile, clean) */}
-          <div className="lg:hidden">
-            <RevenueCard />
           </div>
         </div>
-
-        {/* Proof bar */}
-        <Reveal delay={0.7} className="w-full">
-          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06] sm:grid-cols-4">
-            {[
-              ["24/7", "AI Response"],
-              ["128", "Missed Calls Recovered"],
-              ["34", "Jobs Booked This Week"],
-              ["$42.8K", "Revenue Captured"],
-            ].map(([v, l]) => (
-              <div
-                key={l}
-                className="bg-background/85 px-4 py-4 text-center backdrop-blur"
-              >
-                <div className="font-display text-xl tracking-tight text-foreground tabular-nums">
-                  {v}
-                </div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                  {l}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
       </motion.div>
 
 

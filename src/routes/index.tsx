@@ -829,7 +829,7 @@ function ScaleCard() {
 
 function MissedRevenue() {
   return (
-    <section id="how-it-works" className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
+    <section id="ai-receptionist" className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
       {/* tonal background + radial lighting for section rhythm and depth */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-[#fafafb] via-white to-[#f6f7f8]" />
       <div
@@ -850,7 +850,7 @@ function MissedRevenue() {
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-emerald-500/70" />
                 <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  The Problem
+                  AI Receptionist
                 </span>
               </div>
               <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
@@ -1076,6 +1076,7 @@ function AttentionViz() {
 function ModuleCard({
   dark = false,
   href,
+  hash,
   eyebrow,
   title,
   desc,
@@ -1084,7 +1085,8 @@ function ModuleCard({
   children,
 }: {
   dark?: boolean;
-  href: string;
+  href?: string;
+  hash?: string;
   eyebrow: string;
   title: string;
   desc: string;
@@ -1095,7 +1097,8 @@ function ModuleCard({
   const isLg = size === "lg";
   return (
     <Link
-      to={href}
+      to={hash ? "/" : (href ?? "/")}
+      hash={hash}
       className={`group relative flex h-full flex-col overflow-hidden rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-1 ${
         dark
           ? "border border-white/10 bg-gradient-to-b from-[#171717] to-[#0b0b0b] text-white shadow-[0_30px_80px_-42px_rgba(0,0,0,0.7)] hover:border-emerald-500/40 hover:shadow-[0_46px_100px_-45px_rgba(16,185,129,0.5)]"
@@ -1175,7 +1178,7 @@ function ModuleCard({
 
 function Services() {
   return (
-    <section id="services" className="relative py-20 lg:py-28">
+    <section id="system" className="relative py-20 lg:py-28">
       {/* cinematic emerald glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px] overflow-hidden">
         <div className="absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_65%)] blur-3xl" />
@@ -1188,15 +1191,15 @@ function Services() {
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-emerald-500/70" />
                 <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  Modules
+                  The System
                 </span>
               </div>
               <h2 className="font-display text-5xl md:text-7xl leading-[1.05] tracking-tight text-gradient-chrome">
-                Infrastructure Modules
+                The Montarro System
               </h2>
             </div>
             <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
-              AI-powered systems engineered to capture, convert, and compound revenue.
+              One connected system to capture, qualify, manage and convert every lead.
             </p>
           </div>
         </Reveal>
@@ -1218,7 +1221,7 @@ function Services() {
           </Reveal>
           <Reveal delay={0.08}>
             <ModuleCard
-              href="/services/paid-advertising"
+              hash="lead-generation"
               eyebrow="Performance · Live"
               title="Demand Acquisition"
               desc="Performance media systems designed to generate scalable demand."
@@ -1234,9 +1237,9 @@ function Services() {
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <Reveal>
             <ModuleCard
-              href="/services/automation-systems"
+              hash="crm-automation"
               eyebrow="Pipeline"
-              title="Operational Automation"
+              title="CRM & Automation"
               desc="Backend workflows that eliminate friction across your pipeline."
               size="sm"
               status={["Pipeline sync active", "14 automations running", "Lead routing operational"]}
@@ -1247,7 +1250,7 @@ function Services() {
           <Reveal delay={0.08}>
             <ModuleCard
               dark
-              href="/services/content-creation"
+              hash="lead-generation"
               eyebrow="Distribution"
               title="Attention Systems"
               desc="Content infrastructure designed to compound reach and intent."
@@ -1664,7 +1667,7 @@ const TIERS = [
 
 function Pricing() {
   return (
-    <section id="pricing" className="relative overflow-hidden border-t border-border py-20 lg:py-28">
+    <section id="packages" className="relative overflow-hidden border-t border-border py-20 lg:py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[420px] max-w-4xl"
@@ -1689,7 +1692,7 @@ function Pricing() {
           {TIERS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
-                to={t.href}
+                to="/contact"
                 className={`group relative block h-full overflow-hidden rounded-2xl border p-8 backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 hover:scale-[1.02] active:scale-[0.99] ${
                   t.featured
                     ? "border-emerald-500/45 bg-gradient-to-b from-emerald-500/[0.06] to-white/55 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/60 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_48px_100px_-34px_rgba(16,185,129,0.55)]"
@@ -2256,6 +2259,143 @@ function Integrations() {
 
 /* ------------------------------ PAGE ------------------------------ */
 
+/* ----------------------------- CRM & AUTOMATION ----------------------------- */
+function CrmAutomation() {
+  const features: { icon: typeof Database; title: string; desc: string }[] = [
+    { icon: Database, title: "Centralised CRM", desc: "Every lead, call and conversation in one organised place." },
+    { icon: Workflow, title: "Automated Follow-Up", desc: "Instant SMS and email sequences so no lead goes cold." },
+    { icon: CheckCircle2, title: "Lead Qualification", desc: "Enquiries scored and routed before they reach your team." },
+    { icon: BarChart3, title: "Real-Time Reporting", desc: "See pipeline, response times and conversion at a glance." },
+  ];
+  return (
+    <section id="crm-automation" className="relative py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-10 bg-emerald-500/70" />
+            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">CRM &amp; Automation</span>
+          </div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
+              Every Lead, Managed Automatically.
+            </h2>
+            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
+              The system that captures, organises and follows up — so your team
+              only spends time on leads ready to buy.
+            </p>
+          </div>
+        </Reveal>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <Reveal key={f.title} delay={0.06 * i}>
+                <div className="group h-full rounded-2xl border border-black/[0.07] bg-white/70 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30 hover:bg-white hover:shadow-[0_30px_70px_-50px_rgba(16,185,129,0.5)]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div className="mt-5 text-[15px] font-medium text-foreground">{f.title}</div>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{f.desc}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ----------------------------- LEAD GENERATION ----------------------------- */
+function LeadGeneration() {
+  const features: { icon: typeof Megaphone; title: string; desc: string }[] = [
+    { icon: Megaphone, title: "Google Ads", desc: "Capture high-intent searches the moment demand appears." },
+    { icon: Facebook, title: "Meta Ads", desc: "Build demand and stay top-of-mind across Facebook & Instagram." },
+    { icon: BarChart3, title: "Conversion Tracking", desc: "Every dollar measured from click to booked job." },
+    { icon: Users, title: "Audience Targeting", desc: "Reach the right local customers, not wasted impressions." },
+  ];
+  return (
+    <section id="lead-generation" className="relative border-t border-black/[0.06] bg-card/30 py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-10 bg-emerald-500/70" />
+            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Lead Generation</span>
+          </div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
+              Demand That Fills Your Pipeline.
+            </h2>
+            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
+              Google &amp; Meta campaigns engineered to put qualified enquiries
+              in front of your AI receptionist — ready to be booked.
+            </p>
+          </div>
+        </Reveal>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <Reveal key={f.title} delay={0.06 * i}>
+                <div className="group h-full rounded-2xl border border-black/[0.07] bg-white/70 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30 hover:bg-white hover:shadow-[0_30px_70px_-50px_rgba(16,185,129,0.5)]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div className="mt-5 text-[15px] font-medium text-foreground">{f.title}</div>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{f.desc}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------------- FAQ --------------------------------- */
+function Faq() {
+  const items: { q: string; a: string }[] = [
+    { q: "What is the AI Receptionist?", a: "An always-on voice agent that answers your calls, qualifies the caller, books appointments and updates your CRM — in under a second, 24/7." },
+    { q: "How quickly can we go live?", a: "Most businesses are live within two weeks: week one for setup and training, week two for testing and launch." },
+    { q: "Will it sound robotic?", a: "No. It holds a natural, low-latency conversation trained on your services, pricing and booking rules." },
+    { q: "Does it work after hours?", a: "Yes — it answers every call day or night, so after-hours enquiries become booked jobs instead of voicemails." },
+    { q: "How does it connect to my calendar and CRM?", a: "It books directly into your calendar and syncs every conversation into your CRM automatically." },
+    { q: "What does it cost?", a: "Pricing is tailored to your business. Book a free consultation and we'll scope it to your call volume and goals." },
+  ];
+  return (
+    <section id="faq" className="relative border-t border-black/[0.06] py-20 lg:py-28">
+      <div className="mx-auto max-w-3xl px-6">
+        <Reveal>
+          <div className="text-center">
+            <div className="mb-6 inline-flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">FAQ</span>
+              <span className="h-px w-10 bg-emerald-500/70" />
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">
+              Questions, Answered.
+            </h2>
+          </div>
+        </Reveal>
+        <div className="mt-12 space-y-3">
+          {items.map((it, i) => (
+            <Reveal key={it.q} delay={0.04 * i}>
+              <details className="group rounded-2xl border border-black/[0.07] bg-white/70 px-5 py-4 backdrop-blur transition-colors duration-300 hover:border-emerald-500/30 open:border-emerald-500/30">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-foreground">
+                  {it.q}
+                  <ArrowRight className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-open:rotate-90" />
+                </summary>
+                <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{it.a}</p>
+              </details>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Landing() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -2263,13 +2403,16 @@ function Landing() {
       <main>
         <Hero />
         <Trust />
-        <MissedRevenue />
         <Integrations />
         <Services />
+        <MissedRevenue />
         <ExperienceInfra />
+        <CrmAutomation />
+        <LeadGeneration />
         <Results />
         <CaseStudy />
         <Pricing />
+        <Faq />
         <CTA />
       </main>
       <Footer />

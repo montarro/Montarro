@@ -17,21 +17,11 @@ type NavItem =
  * resetting scroll cleanly.
  */
 const NAV: NavItem[] = [
-  { kind: "link", label: "Homepage", to: "/", hash: "top" },
-  {
-    kind: "group",
-    label: "Services",
-    items: [
-      { label: "AI Receptionists", to: "/services/ai-receptionists" },
-      { label: "CRM Automation", to: "/services/automation-systems" },
-      { label: "Paid Acquisition", to: "/services/paid-advertising" },
-      { label: "Content Infrastructure", to: "/services/content-creation" },
-      { label: "Web Systems", to: "/", hash: "services" },
-    ],
-  },
+  { kind: "link", label: "The System", to: "/", hash: "system" },
   { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true },
   { kind: "link", label: "Live Demo", to: "/demo" },
-  { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
+  { kind: "link", label: "Packages", to: "/", hash: "packages" },
+  { kind: "link", label: "FAQ", to: "/", hash: "faq" },
   { kind: "link", label: "Book a Free Consultation", to: "/contact" },
 ];
 

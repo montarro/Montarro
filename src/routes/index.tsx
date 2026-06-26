@@ -1620,7 +1620,6 @@ const TIERS = [
   {
     name: "Starter",
     tagline: "Core infrastructure to capture every lead.",
-    href: "/packages/starter" as const,
     cta: "View Infrastructure",
     features: [
       "AI Reception System",
@@ -1635,7 +1634,6 @@ const TIERS = [
     name: "Growth",
     tagline: "Full acquisition and revenue systems, engineered.",
     featured: true,
-    href: "/packages/growth" as const,
     cta: "Scale With Montarro",
     features: [
       "Everything in Starter",
@@ -1650,7 +1648,6 @@ const TIERS = [
   {
     name: "Scale",
     tagline: "A complete revenue operation, fully managed.",
-    href: "/packages/scale" as const,
     cta: "Apply For Partnership",
     features: [
       "Full Revenue Infrastructure",

@@ -41,7 +41,7 @@ export function SiteNav() {
             }`;
             return (
               <>
-                <Link to="/" hash="services" className={cls}>Services</Link>
+                <Link to="/" hash="system" className={cls}>The System</Link>
                 <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
@@ -53,7 +53,7 @@ export function SiteNav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/" hash="pricing" className={cls}>Pricing</Link>
+                <Link to="/" hash="packages" className={cls}>Packages</Link>
               </>
             );
           })()}
@@ -97,20 +97,20 @@ export function SiteFooter() {
                 Infrastructure
               </h4>
               <ul className="mt-4 space-y-2">
-                <li><Link to="/services/ai-receptionists" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">AI Receptionists</Link></li>
-                <li><Link to="/services/content-creation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Content Creation</Link></li>
-                <li><Link to="/services/automation-systems" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Automation Systems</Link></li>
-                <li><Link to="/services/paid-advertising" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Paid Advertising</Link></li>
+                <li><Link to="/services/ai-receptionists" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">AI Receptionist</Link></li>
+                <li><Link to="/" hash="crm-automation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">CRM &amp; Automation</Link></li>
+                <li><Link to="/" hash="lead-generation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Lead Generation</Link></li>
+                <li><Link to="/demo" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Live Demo</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/35">
-                Packages
+                Explore
               </h4>
               <ul className="mt-4 space-y-2">
-                <li><Link to="/packages/starter" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Starter</Link></li>
-                <li><Link to="/packages/growth" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Growth</Link></li>
-                <li><Link to="/packages/scale" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Scale</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">The System</Link></li>
+                <li><Link to="/" hash="packages" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Packages</Link></li>
+                <li><Link to="/" hash="faq" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">FAQ</Link></li>
               </ul>
             </div>
             <div>

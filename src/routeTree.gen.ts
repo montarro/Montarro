@@ -14,15 +14,8 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConsultationRouteImport } from './routes/consultation'
-import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesPaidAdvertisingRouteImport } from './routes/services.paid-advertising'
-import { Route as ServicesContentCreationRouteImport } from './routes/services.content-creation'
-import { Route as ServicesAutomationSystemsRouteImport } from './routes/services.automation-systems'
 import { Route as ServicesAiReceptionistsRouteImport } from './routes/services.ai-receptionists'
-import { Route as PackagesStarterRouteImport } from './routes/packages.starter'
-import { Route as PackagesScaleRouteImport } from './routes/packages.scale'
-import { Route as PackagesGrowthRouteImport } from './routes/packages.growth'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -49,168 +42,83 @@ const ConsultationRoute = ConsultationRouteImport.update({
   path: '/consultation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BookRoute = BookRouteImport.update({
-  id: '/book',
-  path: '/book',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesPaidAdvertisingRoute = ServicesPaidAdvertisingRouteImport.update({
-  id: '/services/paid-advertising',
-  path: '/services/paid-advertising',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesContentCreationRoute = ServicesContentCreationRouteImport.update({
-  id: '/services/content-creation',
-  path: '/services/content-creation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAutomationSystemsRoute =
-  ServicesAutomationSystemsRouteImport.update({
-    id: '/services/automation-systems',
-    path: '/services/automation-systems',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ServicesAiReceptionistsRoute = ServicesAiReceptionistsRouteImport.update({
   id: '/services/ai-receptionists',
   path: '/services/ai-receptionists',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PackagesStarterRoute = PackagesStarterRouteImport.update({
-  id: '/packages/starter',
-  path: '/packages/starter',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PackagesScaleRoute = PackagesScaleRouteImport.update({
-  id: '/packages/scale',
-  path: '/packages/scale',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PackagesGrowthRoute = PackagesGrowthRouteImport.update({
-  id: '/packages/growth',
-  path: '/packages/growth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/book': typeof BookRoute
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/packages/growth': typeof PackagesGrowthRoute
-  '/packages/scale': typeof PackagesScaleRoute
-  '/packages/starter': typeof PackagesStarterRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
-  '/services/automation-systems': typeof ServicesAutomationSystemsRoute
-  '/services/content-creation': typeof ServicesContentCreationRoute
-  '/services/paid-advertising': typeof ServicesPaidAdvertisingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/book': typeof BookRoute
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/packages/growth': typeof PackagesGrowthRoute
-  '/packages/scale': typeof PackagesScaleRoute
-  '/packages/starter': typeof PackagesStarterRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
-  '/services/automation-systems': typeof ServicesAutomationSystemsRoute
-  '/services/content-creation': typeof ServicesContentCreationRoute
-  '/services/paid-advertising': typeof ServicesPaidAdvertisingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/book': typeof BookRoute
   '/consultation': typeof ConsultationRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/packages/growth': typeof PackagesGrowthRoute
-  '/packages/scale': typeof PackagesScaleRoute
-  '/packages/starter': typeof PackagesStarterRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
-  '/services/automation-systems': typeof ServicesAutomationSystemsRoute
-  '/services/content-creation': typeof ServicesContentCreationRoute
-  '/services/paid-advertising': typeof ServicesPaidAdvertisingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/book'
     | '/consultation'
     | '/contact'
     | '/demo'
     | '/privacy'
     | '/terms'
-    | '/packages/growth'
-    | '/packages/scale'
-    | '/packages/starter'
     | '/services/ai-receptionists'
-    | '/services/automation-systems'
-    | '/services/content-creation'
-    | '/services/paid-advertising'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/book'
     | '/consultation'
     | '/contact'
     | '/demo'
     | '/privacy'
     | '/terms'
-    | '/packages/growth'
-    | '/packages/scale'
-    | '/packages/starter'
     | '/services/ai-receptionists'
-    | '/services/automation-systems'
-    | '/services/content-creation'
-    | '/services/paid-advertising'
   id:
     | '__root__'
     | '/'
-    | '/book'
     | '/consultation'
     | '/contact'
     | '/demo'
     | '/privacy'
     | '/terms'
-    | '/packages/growth'
-    | '/packages/scale'
-    | '/packages/starter'
     | '/services/ai-receptionists'
-    | '/services/automation-systems'
-    | '/services/content-creation'
-    | '/services/paid-advertising'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BookRoute: typeof BookRoute
   ConsultationRoute: typeof ConsultationRoute
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
-  PackagesGrowthRoute: typeof PackagesGrowthRoute
-  PackagesScaleRoute: typeof PackagesScaleRoute
-  PackagesStarterRoute: typeof PackagesStarterRoute
   ServicesAiReceptionistsRoute: typeof ServicesAiReceptionistsRoute
-  ServicesAutomationSystemsRoute: typeof ServicesAutomationSystemsRoute
-  ServicesContentCreationRoute: typeof ServicesContentCreationRoute
-  ServicesPaidAdvertisingRoute: typeof ServicesPaidAdvertisingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -250,39 +158,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsultationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/book': {
-      id: '/book'
-      path: '/book'
-      fullPath: '/book'
-      preLoaderRoute: typeof BookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/paid-advertising': {
-      id: '/services/paid-advertising'
-      path: '/services/paid-advertising'
-      fullPath: '/services/paid-advertising'
-      preLoaderRoute: typeof ServicesPaidAdvertisingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/content-creation': {
-      id: '/services/content-creation'
-      path: '/services/content-creation'
-      fullPath: '/services/content-creation'
-      preLoaderRoute: typeof ServicesContentCreationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/automation-systems': {
-      id: '/services/automation-systems'
-      path: '/services/automation-systems'
-      fullPath: '/services/automation-systems'
-      preLoaderRoute: typeof ServicesAutomationSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/ai-receptionists': {
@@ -292,45 +172,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesAiReceptionistsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/packages/starter': {
-      id: '/packages/starter'
-      path: '/packages/starter'
-      fullPath: '/packages/starter'
-      preLoaderRoute: typeof PackagesStarterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/packages/scale': {
-      id: '/packages/scale'
-      path: '/packages/scale'
-      fullPath: '/packages/scale'
-      preLoaderRoute: typeof PackagesScaleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/packages/growth': {
-      id: '/packages/growth'
-      path: '/packages/growth'
-      fullPath: '/packages/growth'
-      preLoaderRoute: typeof PackagesGrowthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BookRoute: BookRoute,
   ConsultationRoute: ConsultationRoute,
   ContactRoute: ContactRoute,
   DemoRoute: DemoRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
-  PackagesGrowthRoute: PackagesGrowthRoute,
-  PackagesScaleRoute: PackagesScaleRoute,
-  PackagesStarterRoute: PackagesStarterRoute,
   ServicesAiReceptionistsRoute: ServicesAiReceptionistsRoute,
-  ServicesAutomationSystemsRoute: ServicesAutomationSystemsRoute,
-  ServicesContentCreationRoute: ServicesContentCreationRoute,
-  ServicesPaidAdvertisingRoute: ServicesPaidAdvertisingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

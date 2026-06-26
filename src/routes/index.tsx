@@ -448,21 +448,21 @@ function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
             </span>
-            RECOVERING REVENUE 24/7
+            The AI Growth System
           </div>
         </Reveal>
 
         <Reveal delay={0.15} className="w-full">
           <h1 className="font-display text-balance mx-auto max-w-[14ch] text-[clamp(2.85rem,9vw,8rem)] leading-[0.92] tracking-[-0.05em]">
-            <span className="block text-gradient-chrome">NEVER MISS</span>
-            <span className="block text-gradient-chrome">A LEAD.</span>
+            <span className="block text-gradient-chrome">Never miss</span>
+            <span className="block text-gradient-chrome">a lead again.</span>
           </h1>
         </Reveal>
 
         <Reveal delay={0.3}>
           <p className="mt-6 max-w-2xl text-pretty text-base md:text-lg text-muted-foreground">
-            AI revenue systems that answer calls, qualify leads, book jobs, and
-            recover missed opportunities — without hiring more staff.
+            One AI growth system that generates demand, answers every call,
+            qualifies leads and books jobs — without hiring more staff.
           </p>
         </Reveal>
 
@@ -482,10 +482,10 @@ function Hero() {
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <a
-              href="#services"
+              href="#system"
               className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-2.5 text-sm font-medium backdrop-blur transition-all duration-300 ease-out hover:border-foreground/40 hover:bg-card"
             >
-              See The System
+              Explore the System
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
@@ -544,7 +544,7 @@ function Trust() {
       <div className="mx-auto max-w-5xl px-6 text-center">
         <Reveal>
           <h2 className="text-base md:text-xl font-medium uppercase tracking-[0.22em] text-white/85">
-            Revenue Infrastructure for Ambitious Operators
+            Built for the industries that run on phone calls
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
@@ -850,11 +850,11 @@ function MissedRevenue() {
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-emerald-500/70" />
                 <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  AI Receptionist
+                  The Problem
                 </span>
               </div>
               <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
-                MISSED CALLS ARE LOST REVENUE.
+                Missed calls are lost revenue.
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
@@ -1176,91 +1176,118 @@ function ModuleCard({
   );
 }
 
-function Services() {
+type Stage = {
+  n: string;
+  icon: typeof Megaphone;
+  title: string;
+  desc: string;
+  hash?: string;
+  href?: string;
+  core?: boolean;
+};
+
+function SystemJourney() {
+  const stages: Stage[] = [
+    { n: "01", icon: Megaphone, title: "Lead Generation", desc: "Google & Meta campaigns bring qualified demand to your door.", hash: "lead-generation" },
+    { n: "02", icon: PhoneCall, title: "Lead Capture", desc: "Every call, form and enquiry captured the moment it arrives." },
+    { n: "03", icon: Bot, title: "AI Qualification", desc: "The AI receptionist answers, qualifies and prioritises each lead — 24/7.", href: "/services/ai-receptionists", core: true },
+    { n: "04", icon: Database, title: "CRM", desc: "Every contact organised in one live source of truth.", hash: "crm-automation" },
+    { n: "05", icon: CalendarCheck, title: "Booking", desc: "Appointments booked straight into your calendar, automatically." },
+    { n: "06", icon: Workflow, title: "Follow-Up", desc: "Automated SMS & email sequences so no lead ever goes cold.", hash: "crm-automation" },
+    { n: "07", icon: BarChart3, title: "Reporting", desc: "Real-time visibility on pipeline, response times and revenue." },
+    { n: "08", icon: TrendingUp, title: "Growth", desc: "Compounding, predictable revenue — month after month." },
+  ];
   return (
-    <section id="system" className="relative py-20 lg:py-28">
+    <section id="system" className="relative overflow-hidden py-24 lg:py-36">
       {/* cinematic emerald glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px] overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px] overflow-hidden">
+        <div className="absolute left-1/2 top-0 h-[480px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_65%)] blur-3xl" />
       </div>
+      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
 
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <div className="mb-6 flex items-center gap-3">
-                <span className="h-px w-10 bg-emerald-500/70" />
-                <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  The System
-                </span>
-              </div>
-              <h2 className="font-display text-5xl md:text-7xl leading-[1.05] tracking-tight text-gradient-chrome">
-                The Montarro System
-              </h2>
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700 backdrop-blur">
+              <span className="h-px w-6 bg-emerald-500/70" /> The Montarro System
             </div>
-            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
-              One connected system to capture, qualify, manage and convert every lead.
+            <h2 className="font-display text-5xl md:text-7xl leading-[1.0] tracking-[-0.03em] text-gradient-chrome">
+              One complete growth system.
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg text-muted-foreground leading-relaxed">
+              Not a stack of disconnected tools — a single platform where every
+              lead is generated, captured, qualified, booked, nurtured and
+              measured. Lead in. Revenue out.
             </p>
           </div>
         </Reveal>
 
-        {/* top row — two large featured modules */}
-        <div className="mt-10 grid gap-4 lg:mt-16 lg:grid-cols-2">
-          <Reveal>
-            <ModuleCard
-              dark
-              href="/services/ai-receptionists"
-              eyebrow="Voice · Live"
-              title="Revenue Capture"
-              desc="AI voice systems engineered to answer, qualify and convert inbound demand."
-              size="lg"
-              status={["Revenue tracking active", "Lead attribution synced", "Conversion pipeline monitored"]}
-            >
-              <RevenueCaptureViz />
-            </ModuleCard>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <ModuleCard
-              hash="lead-generation"
-              eyebrow="Performance · Live"
-              title="Demand Acquisition"
-              desc="Performance media systems designed to generate scalable demand."
-              size="lg"
-              status={["Inbound velocity +38%", "Campaign optimization active", "Cost-per-lead monitoring"]}
-            >
-              <DemandViz />
-            </ModuleCard>
-          </Reveal>
+        {/* journey rail */}
+        <div className="relative mt-14 lg:mt-20">
+          {/* flow caption */}
+          <div className="mb-6 flex items-center justify-between text-[10.5px] uppercase tracking-[0.24em] text-muted-foreground/60">
+            <span className="inline-flex items-center gap-2"><LiveDot /> Lead in</span>
+            <span className="inline-flex items-center gap-2">Revenue out <TrendingUp className="h-3.5 w-3.5 text-emerald-500" /></span>
+          </div>
+          {/* connecting line */}
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[3.1rem] hidden h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent lg:block" />
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stages.map((s, i) => {
+              const Icon = s.icon;
+              const inner = (
+                <div
+                  className={`group relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur transition-all duration-500 ease-out hover:-translate-y-1 ${
+                    s.core
+                      ? "border-emerald-500/40 bg-gradient-to-b from-[#0f1110] to-[#0a0b0b] text-white shadow-[0_40px_90px_-50px_rgba(16,185,129,0.55)]"
+                      : "border-black/[0.08] bg-gradient-to-b from-white to-[#f6f7f8] shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-44px_rgba(0,0,0,0.22)] hover:border-emerald-500/35"
+                  }`}
+                >
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="flex items-center justify-between">
+                    <span className={`flex h-11 w-11 items-center justify-center rounded-xl border ${s.core ? "border-emerald-500/40 bg-emerald-500/[0.12] text-emerald-300" : "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600"}`}>
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className={`font-display text-sm tabular-nums tracking-widest ${s.core ? "text-white/40" : "text-muted-foreground/40"}`}>{s.n}</span>
+                  </div>
+                  <div className={`mt-5 font-display text-xl tracking-tight ${s.core ? "text-white" : "text-foreground"}`}>{s.title}</div>
+                  <p className={`mt-2 flex-1 text-[13.5px] leading-relaxed ${s.core ? "text-white/60" : "text-muted-foreground"}`}>{s.desc}</p>
+                  {s.core && (
+                    <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-medium text-emerald-300">
+                      Meet the AI Receptionist
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  )}
+                </div>
+              );
+              return (
+                <Reveal key={s.title} delay={0.05 * i} className="h-full">
+                  {s.href ? (
+                    <Link to={s.href} className="block h-full">{inner}</Link>
+                  ) : s.hash ? (
+                    <Link to="/" hash={s.hash} className="block h-full">{inner}</Link>
+                  ) : (
+                    inner
+                  )}
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
 
-        {/* bottom row — two supporting modules */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <Reveal>
-            <ModuleCard
-              hash="crm-automation"
-              eyebrow="Pipeline"
-              title="CRM & Automation"
-              desc="Backend workflows that eliminate friction across your pipeline."
-              size="sm"
-              status={["Pipeline sync active", "14 automations running", "Lead routing operational"]}
-            >
-              <AutomationViz />
-            </ModuleCard>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <ModuleCard
-              dark
-              hash="lead-generation"
-              eyebrow="Distribution"
-              title="Attention Systems"
-              desc="Content infrastructure designed to compound reach and intent."
-              size="sm"
-              status={["Content distribution active", "Asset pipeline synced", "Publishing queue operational"]}
-            >
-              <AttentionViz />
-            </ModuleCard>
-          </Reveal>
-        </div>
+        {/* closing line */}
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-14 flex max-w-2xl flex-col items-center gap-5 text-center">
+            <p className="text-[15px] leading-relaxed text-muted-foreground">
+              Every stage feeds the next — so nothing slips through the cracks,
+              and every dollar of demand is accounted for.
+            </p>
+            <Link to="/contact" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
+              Book a Free Consultation
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1420,26 +1447,27 @@ function ExperienceInfra() {
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
-                <LiveDot /> Live System
+                <LiveDot /> Part of the System · AI Receptionist
               </div>
               <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
                 <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
-                  Experience The Infrastructure.
+                  Hear the AI receptionist answer.
                 </span>
               </h2>
               <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
-                Test the AI receptionist powering Montarro's revenue systems.
+                The core of the Montarro System — it answers, qualifies and books
+                every call in real time, 24/7.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <a href={`tel:${RECEPTIONIST_TEL}`} className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
                   <Phone className="h-4 w-4" />
-                  Call The AI Receptionist
+                  Call the AI Receptionist
                 </a>
                 <Link
-                  to="/demo"
+                  to="/services/ai-receptionists"
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
-                  View System Demo
+                  Explore the AI Receptionist
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
@@ -2062,16 +2090,16 @@ function CTA() {
           </Reveal>
           <Reveal delay={0.12}>
             <h2 className="font-display text-gradient-white-grey text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.92] tracking-[-0.04em]">
-              ENGINEER YOUR GROWTH.
+              Put the whole system to work.
             </h2>
           </Reveal>
           <Reveal delay={0.24}>
             <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
-              Systems designed for companies scaling beyond manual growth.
+              Book a free consultation and we&rsquo;ll map your growth system in 30 minutes — no obligation.
             </p>
           </Reveal>
           <Reveal delay={0.36}>
-            <div className="relative mt-8 inline-block">
+            <div className="relative mt-8 inline-flex flex-wrap items-center justify-center gap-3">
               {/* ambient emerald halo behind button */}
               <div
                 aria-hidden
@@ -2083,6 +2111,13 @@ function CTA() {
                 className={`${primaryCta} inline-flex px-8 py-4 text-sm`}
               >
                 Book a Free Consultation
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link
+                to="/demo"
+                className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-4 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
+              >
+                Try the Live Demo
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -2270,7 +2305,7 @@ function CrmAutomation() {
         <Reveal>
           <div className="mb-6 flex items-center gap-3">
             <span className="h-px w-10 bg-emerald-500/70" />
-            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">CRM &amp; Automation</span>
+            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Part of the System · CRM &amp; Automation</span>
           </div>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
@@ -2317,7 +2352,7 @@ function LeadGeneration() {
         <Reveal>
           <div className="mb-6 flex items-center gap-3">
             <span className="h-px w-10 bg-emerald-500/70" />
-            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Lead Generation</span>
+            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Part of the System · Lead Generation</span>
           </div>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
@@ -2400,14 +2435,14 @@ function Landing() {
       <main>
         <Hero />
         <Trust />
-        <Integrations />
-        <Services />
         <MissedRevenue />
+        <SystemJourney />
         <ExperienceInfra />
         <CrmAutomation />
         <LeadGeneration />
         <Results />
         <CaseStudy />
+        <Integrations />
         <Pricing />
         <Faq />
         <CTA />

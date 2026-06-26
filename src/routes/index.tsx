@@ -94,19 +94,9 @@ function Nav() {
           : "border-black/[0.05] bg-[#fbfcfb]/80"
       }`}
     >
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
-          scrolled ? "h-16" : "h-[72px] md:h-20"
-        }`}
-      >
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center">
-          <img
-            src="/montarro-logo.png"
-            alt="Montarro"
-            className={`w-auto transition-all duration-500 ease-out ${
-              scrolled ? "h-10" : "h-12 md:h-14"
-            }`}
-          />
+          <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13px] font-medium">
           {(() => {
@@ -454,14 +444,12 @@ function HeroDashboard() {
         {/* window chrome + integrated metrics */}
         <div className="border-b border-white/[0.07] px-5 py-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/65">
-              <LiveDot /> Montarro OS · Live Activity
-            </span>
             <span className="flex items-center gap-1.5" aria-hidden>
-              <span className="h-2 w-2 rounded-full bg-white/15" />
-              <span className="h-2 w-2 rounded-full bg-white/15" />
-              <span className="h-2 w-2 rounded-full bg-emerald-500/70" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             </span>
+            <LiveDot />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {[
@@ -545,17 +533,17 @@ function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate min-h-screen overflow-hidden bg-[#f8fffc] pt-24"
+      className="relative isolate min-h-screen overflow-hidden bg-[#e8f7ef] pt-28"
     >
-      {/* soft emerald wash — almost white, very subtle */}
-      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#f8fffc 0%,#f3faf6 55%,#ffffff 100%)" }} />
+      {/* soft premium emerald wash that fades naturally into the page */}
+      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#d8f2e5 0%,#e6f7ee 40%,#f1fbf6 74%,#ffffff 100%)" }} />
       {/* emerald glow from top */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[640px] max-w-5xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[700px] max-w-5xl"
         style={{
           background:
-            "radial-gradient(ellipse 60% 55% at 50% 0%, rgba(16,185,129,0.10), transparent 70%)",
+            "radial-gradient(ellipse 62% 55% at 50% 0%, rgba(16,185,129,0.18), transparent 70%)",
         }}
       />
       <div
@@ -578,27 +566,26 @@ function Hero() {
         style={{ y, opacity }}
         className="relative mx-auto max-w-7xl px-6 pt-6 pb-16 sm:pt-10 sm:pb-20"
       >
-        <div className="grid items-center gap-12 lg:grid-cols-12">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* LEFT — message */}
-          <div className="text-center lg:col-span-7 lg:text-left">
+          <div className="text-center lg:col-span-6 lg:text-left">
             <Reveal delay={0.05}>
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-emerald-700 backdrop-blur">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-emerald-700 backdrop-blur">
                 <LiveDot /> AI Growth Infrastructure
               </div>
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display text-balance mx-auto mt-6 max-w-[16ch] text-[clamp(2.9rem,5.6vw,5.5rem)] leading-[0.95] tracking-[-0.045em] lg:mx-0">
-                <span className="block text-foreground/45">Never miss another</span>
-                <span className="block text-gradient-chrome">qualified lead worth quoting.</span>
+              <h1 className="font-display text-balance mx-auto mt-7 max-w-[15ch] text-[clamp(3.25rem,6.6vw,6.75rem)] leading-[0.93] tracking-[-0.05em] text-[#0a0b0b] lg:mx-0">
+                Never miss another qualified lead worth quoting.
               </h1>
             </Reveal>
 
             <Reveal delay={0.3}>
-              <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground lg:mx-0">
+              <p className="mx-auto mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground lg:mx-0">
                 Montarro captures every enquiry, qualifies it instantly, books the
-                job and updates your CRM automatically — so quality work gets
-                quoted, not lost to voicemail.
+                job and updates your CRM automatically — so your team spends time
+                quoting work, not chasing leads.
               </p>
             </Reveal>
 
@@ -629,7 +616,7 @@ function Hero() {
           </div>
 
           {/* RIGHT — single live operating-system interface */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <Reveal delay={0.25}>
               <HeroDashboard />
             </Reveal>
@@ -639,12 +626,10 @@ function Hero() {
         {/* subtle trust strip */}
         <Reveal delay={0.5}>
           <div className="mt-12 flex justify-center lg:justify-start">
-            <div className="inline-flex items-center gap-3 rounded-full border border-black/[0.06] bg-white/85 px-5 py-2.5 shadow-[0_14px_34px_-20px_rgba(0,0,0,0.3)] backdrop-blur">
-              <GoogleWordmark />
-              <span aria-hidden className="h-4 w-px bg-black/10" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.06] bg-white px-4 py-2.5 shadow-[0_14px_34px_-20px_rgba(0,0,0,0.3)]">
+              <GoogleG />
               <Stars />
-              <span className="text-[13px] font-semibold tabular-nums text-foreground">4.9</span>
-              <span className="text-[12px] text-muted-foreground">Google Rating</span>
+              <span className="text-[14px] font-semibold tabular-nums text-foreground">4.9</span>
             </div>
           </div>
         </Reveal>
@@ -2569,6 +2554,17 @@ function GoogleWordmark() {
         <span key={i} style={{ color: col }}>{c}</span>
       ))}
     </span>
+  );
+}
+
+function GoogleG({ className = "h-[18px] w-[18px]" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-label="Google" role="img">
+      <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z" />
+      <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z" />
+      <path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z" />
+      <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z" />
+    </svg>
   );
 }
 

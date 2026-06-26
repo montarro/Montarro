@@ -98,9 +98,9 @@ function Nav() {
         <a href="#top" className="flex items-center">
           <img src="/montarro-logo.png" alt="Montarro" className="h-16 w-auto" />
         </a>
-        <nav className="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <nav className="hidden md:flex items-center gap-10 text-[13.5px] font-semibold">
           {(() => {
-            const cls = "tracking-tight text-muted-foreground transition-colors duration-300 hover:text-foreground";
+            const cls = "tracking-tight text-foreground/75 transition-colors duration-300 hover:text-foreground";
             return (
               <>
                 <a href="#system" className={cls}>The System</a>
@@ -449,7 +449,10 @@ function HeroDashboard() {
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             </span>
-            <LiveDot />
+            <span className="inline-flex items-center gap-1.5">
+              <LiveDot />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Live</span>
+            </span>
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {[
@@ -507,12 +510,6 @@ function HeroDashboard() {
             })}
           </div>
         </div>
-
-        {/* footer status */}
-        <div className="flex items-center justify-between border-t border-white/[0.07] px-5 py-3 text-[11px] sm:px-6">
-          <span className="inline-flex items-center gap-2 text-emerald-300/80"><LiveDot /> All systems operational</span>
-          <span className="text-white/35">Updated just now</span>
-        </div>
       </div>
     </div>
   );
@@ -564,7 +561,7 @@ function Hero() {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative mx-auto max-w-7xl px-6 pt-6 pb-16 sm:pt-10 sm:pb-20"
+        className="relative mx-auto max-w-7xl px-6 pt-6 pb-28 sm:pt-10 sm:pb-24"
       >
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* LEFT — message */}
@@ -576,11 +573,9 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display mt-5 text-[clamp(2.9rem,6vw,5.85rem)] font-semibold uppercase leading-[0.94] tracking-[-0.04em] text-[#0a0b0b]">
+              <h1 className="font-display mt-5 text-[clamp(3rem,6.2vw,6rem)] font-semibold uppercase leading-[0.94] tracking-[-0.04em] text-[#0a0b0b]">
                 <span className="block">Never miss another</span>
-                <span className="block">
-                  Qualified <span className="text-emerald-500">Lead.</span>
-                </span>
+                <span className="block text-emerald-500">Lead.</span>
                 <span className="block">Worth quoting.</span>
               </h1>
             </Reveal>
@@ -588,8 +583,8 @@ function Hero() {
             <Reveal delay={0.3}>
               <p className="mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
                 We answer every call, qualify every lead, book every opportunity and
-                update your CRM automatically—so your team spends more time quoting
-                jobs, not chasing them.
+                update your CRM automatically. So your team spends more time quoting
+                jobs, not chasing leads.
               </p>
             </Reveal>
 
@@ -597,25 +592,26 @@ function Hero() {
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <Link
                   to="/demo"
-                  className={`${primaryCta} flex w-full items-center justify-center px-7 py-4 text-[15px] sm:w-auto`}
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#0a0b0b] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_12px_30px_-14px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:-translate-y-[1px] hover:bg-black hover:shadow-[0_22px_46px_-16px_rgba(0,0,0,0.55)] sm:w-auto"
                 >
-                  <PlayCircle className="h-5 w-5" /> Live Demo
+                  Live Demo
+                  <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
                 <a
                   href="#results"
-                  className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/[0.12] bg-white/80 px-7 py-4 text-[15px] font-medium text-foreground backdrop-blur transition-all duration-300 ease-out hover:border-emerald-500/40 hover:bg-white sm:w-auto"
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/25 bg-transparent px-7 py-4 text-[15px] font-semibold text-foreground transition-all duration-300 ease-out hover:border-black/60 sm:w-auto"
                 >
                   See What&rsquo;s Missing
-                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />
                 </a>
               </div>
             </Reveal>
 
             {/* single confidence statement — replaces feature chips */}
             <Reveal delay={0.5}>
-              <p className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-foreground">
+              <p className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-foreground/80">
                 <Check className="h-4 w-4 shrink-0 text-emerald-500" strokeWidth={3} />
-                Your revenue system never sleeps.
+                Our system never sleeps.
               </p>
             </Reveal>
 
@@ -648,39 +644,73 @@ function Hero() {
 
 
 function Trust() {
-  const industries = [
-    "HVAC",
-    "DENTAL",
-    "LEGAL",
-    "MEDICAL",
-    "PLUMBING",
-    "AUTOMOTIVE",
-    "CONSTRUCTION",
+  const reviews = [
+    {
+      name: "James R.",
+      industry: "Plumbing",
+      quote: "Montarro completely changed how we handle enquiries. Every missed call now becomes a booked job.",
+    },
+    {
+      name: "Luke H.",
+      industry: "Roofing",
+      quote: "The AI books jobs while our staff are onsite. Easily one of the best investments we've made.",
+    },
+    {
+      name: "Sarah L.",
+      industry: "Dental Clinic",
+      quote: "Our office finally feels organised. Everything just works, and nothing slips through.",
+    },
+    {
+      name: "Michael T.",
+      industry: "Law Firm",
+      quote: "The AI sounds incredibly natural. Clients don't even realise it's automated.",
+    },
   ];
+  const initials = (name: string) =>
+    name
+      .split(" ")
+      .map((p) => p[0])
+      .join("");
   return (
-    <section className="relative bg-graphite py-14 overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px divider-emerald-glow" />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px divider-emerald-glow opacity-60" />
-      <div className="mx-auto max-w-5xl px-6 text-center">
+    <section id="reviews" className="relative overflow-hidden bg-[#141414] py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <h2 className="text-base md:text-xl font-medium uppercase tracking-[0.22em] text-white/85">
-            Built for the industries that run on phone calls
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.26em] text-white/45 sm:text-xs">
-            {industries.map((it, i) => (
-              <span key={it} className="flex items-center gap-4">
-                {i !== 0 && (
-                  <span aria-hidden className="text-emerald-500/50">
-                    •
-                  </span>
-                )}
-                {it}
-              </span>
-            ))}
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
+              <GoogleG className="h-[18px] w-[18px]" />
+              <span className="text-[13px] font-semibold tabular-nums text-white">4.8</span>
+              <Stars />
+            </div>
+            <h2 className="mt-7 font-display text-3xl md:text-5xl leading-[1.05] tracking-[-0.03em] text-white">
+              Trusted by operators who can&rsquo;t miss a call.
+            </h2>
+            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/50">
+              Real businesses running on the Montarro System.
+            </p>
           </div>
         </Reveal>
+
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {reviews.map((r, i) => (
+            <Reveal key={r.name} delay={0.08 * i}>
+              <figure className="flex h-full flex-col rounded-2xl border border-white/[0.07] bg-white/[0.03] p-7 transition-colors duration-300 hover:border-white/[0.12]">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-[13px] font-semibold text-white/90 ring-1 ring-white/10">
+                    {initials(r.name)}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-[14px] font-semibold text-white">{r.name}</div>
+                    <div className="text-[12px] text-white/45">{r.industry}</div>
+                  </div>
+                </div>
+                <Stars className="mt-6" />
+                <blockquote className="mt-4 flex-1 text-[14px] leading-relaxed text-white/65">
+                  {r.quote}
+                </blockquote>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -2663,7 +2693,6 @@ function Landing() {
         <LeadGeneration />
         <Results />
         <CaseStudy />
-        <Reviews />
         <Integrations />
         <Pricing />
         <Faq />

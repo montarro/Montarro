@@ -533,10 +533,10 @@ function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate min-h-screen overflow-hidden bg-[#e8f7ef] pt-28"
+      className="relative isolate min-h-screen overflow-hidden bg-[#d3efe1] pt-28"
     >
-      {/* soft premium emerald wash that fades naturally into the page */}
-      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#d8f2e5 0%,#e6f7ee 40%,#f1fbf6 74%,#ffffff 100%)" }} />
+      {/* soft premium light-emerald wash that fades naturally into the page */}
+      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg,#c4ebd9 0%,#d4f0e6 38%,#e7f7f0 70%,#ffffff 100%)" }} />
       {/* emerald glow from top */}
       <div
         aria-hidden
@@ -568,7 +568,7 @@ function Hero() {
       >
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* LEFT — message */}
-          <div className="text-center lg:col-span-6 lg:text-left">
+          <div className="text-left lg:col-span-7">
             <Reveal delay={0.05}>
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-emerald-700 backdrop-blur">
                 <LiveDot /> AI Growth Infrastructure
@@ -576,13 +576,16 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={0.15} className="w-full">
-              <h1 className="font-display text-balance mx-auto mt-7 max-w-[15ch] text-[clamp(3.25rem,6.6vw,6.75rem)] leading-[0.93] tracking-[-0.05em] text-[#0a0b0b] lg:mx-0">
-                Never miss another qualified lead worth quoting.
+              <h1 className="font-display mt-7 text-[clamp(3rem,5.8vw,6rem)] font-semibold uppercase leading-[0.92] tracking-[-0.045em] text-[#0a0b0b]">
+                <span className="block">Never miss</span>
+                <span className="block">another</span>
+                <span className="block">qualified lead</span>
+                <span className="block">worth quoting.</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.3}>
-              <p className="mx-auto mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground lg:mx-0">
+              <p className="mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
                 Montarro captures every enquiry, qualifies it instantly, books the
                 job and updates your CRM automatically — so your team spends time
                 quoting work, not chasing leads.
@@ -590,7 +593,7 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={0.42}>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <div className="mt-8 flex flex-wrap items-center justify-start gap-3">
                 <Link to="/demo" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
                   <PlayCircle className="h-4 w-4" /> Live Demo
                 </Link>
@@ -605,7 +608,7 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={0.5}>
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+              <div className="mt-7 flex flex-wrap items-center justify-start gap-2">
                 {["AI Receptionist", "CRM Automation", "Lead Generation", "24/7 Response"].map((c) => (
                   <span key={c} className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white/60 px-3 py-1.5 text-[12px] text-muted-foreground">
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> {c}
@@ -613,26 +616,24 @@ function Hero() {
                 ))}
               </div>
             </Reveal>
+
+            {/* Google review badge — part of the wording column */}
+            <Reveal delay={0.58}>
+              <div className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-black/[0.06] bg-white px-4 py-2.5 shadow-[0_14px_34px_-20px_rgba(0,0,0,0.3)]">
+                <GoogleG />
+                <span className="text-[14px] font-semibold tabular-nums text-foreground">4.8</span>
+                <Stars />
+              </div>
+            </Reveal>
           </div>
 
           {/* RIGHT — single live operating-system interface */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             <Reveal delay={0.25}>
               <HeroDashboard />
             </Reveal>
           </div>
         </div>
-
-        {/* subtle trust strip */}
-        <Reveal delay={0.5}>
-          <div className="mt-12 flex justify-center lg:justify-start">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.06] bg-white px-4 py-2.5 shadow-[0_14px_34px_-20px_rgba(0,0,0,0.3)]">
-              <GoogleG />
-              <Stars />
-              <span className="text-[14px] font-semibold tabular-nums text-foreground">4.9</span>
-            </div>
-          </div>
-        </Reveal>
       </motion.div>
     </section>
   );

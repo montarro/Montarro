@@ -1144,11 +1144,11 @@ function MissedRevenue() {
             <Reveal>
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-emerald-500/70" />
-                <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
                   The Problem
                 </span>
               </div>
-              <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-gradient-chrome">
+              <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
                 Missed calls are lost revenue.
               </h2>
             </Reveal>
@@ -1166,14 +1166,9 @@ function MissedRevenue() {
             </Reveal>
             <Reveal delay={0.18}>
               <div className="mt-8 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06]">
-                {[
-                  ["100%", "Calls answered"],
-                  ["0.8s", "Avg response"],
-                  ["24/7", "Coverage"],
-                ].map(([v, l]) => (
-                  <div key={l} className="bg-white/85 px-3 py-3 text-center backdrop-blur">
-                    <div className="font-display text-lg tracking-tight text-foreground tabular-nums">{v}</div>
-                    <div className="mt-0.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{l}</div>
+                {["100%", "0.8s", "24/7"].map((v) => (
+                  <div key={v} className="bg-white/85 px-3 py-5 text-center backdrop-blur">
+                    <div className="font-display text-2xl md:text-3xl font-bold tracking-tight text-foreground tabular-nums">{v}</div>
                   </div>
                 ))}
               </div>

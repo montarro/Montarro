@@ -1152,15 +1152,6 @@ function MissedRevenue() {
               </p>
             </Reveal>
             <Reveal delay={0.18}>
-              <div className="mt-8 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-xl border border-black/[0.06] bg-black/[0.06]">
-                {["100%", "0.8s", "24/7"].map((v) => (
-                  <div key={v} className="bg-white/85 px-3 py-5 text-center backdrop-blur">
-                    <div className="font-display text-2xl md:text-3xl font-bold tracking-tight text-foreground tabular-nums">{v}</div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal delay={0.26}>
               <Link
                 to="/demo"
                 className={`${primaryCta} mt-8 inline-flex px-6 py-3 text-sm`}

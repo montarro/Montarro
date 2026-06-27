@@ -451,12 +451,12 @@ function CountUp({ to, format, className = "" }: { to: number; format: (v: numbe
 /** Headline metric for the hero dashboard — label above a dominant number. */
 function HeroStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
   return (
-    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-4 py-4">
-      <div className="text-[10px] uppercase tracking-[0.13em] text-white/45">{label}</div>
+    <div className="rounded-2xl border border-white/[0.1] bg-gradient-to-b from-white/[0.06] to-white/[0.02] px-4 py-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+      <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/55">{label}</div>
       <CountUp
         to={to}
         format={format}
-        className="mt-2.5 block font-display text-3xl sm:text-4xl font-bold leading-none tracking-tight tabular-nums text-white"
+        className="mt-3 block font-display text-3xl sm:text-4xl font-extrabold leading-none tracking-tight tabular-nums text-white"
       />
     </div>
   );
@@ -497,7 +497,7 @@ function HeroDashboard() {
             </span>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2.5">
-            <HeroStat to={42} format={(v) => `${Math.round(v)}`} label="Bookings This Week" />
+            <HeroStat to={178} format={(v) => `${Math.round(v)}`} label="Bookings This Month" />
             <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}K`} label="EST. Monthly Revenue" />
           </div>
         </div>

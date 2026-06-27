@@ -586,15 +586,15 @@ function Hero() {
                 <span className="block">
                   Another <span className="text-emerald-500">Lead.</span>
                 </span>
-                <span className="mt-[0.35em] block">Worth quoting.</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.3}>
               <p className="mt-7 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
-                We answer every call, qualify every lead, book every opportunity and
-                update your CRM automatically. So your team spends more time quoting
-                jobs, not chasing leads.
+                <span className="font-semibold text-foreground">Our AI</span> answers every
+                call, qualifies every lead, books every opportunity and updates your CRM
+                automatically. So your team spends more time winning work instead of
+                chasing enquiries.
               </p>
             </Reveal>
 
@@ -602,14 +602,14 @@ function Hero() {
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <Link
                   to="/demo"
-                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#0a0b0b] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_12px_30px_-14px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:-translate-y-[1px] hover:bg-black hover:shadow-[0_22px_46px_-16px_rgba(0,0,0,0.55)] sm:w-auto"
+                  className={`${primaryCta} flex w-full items-center justify-center px-7 py-4 text-[15px] sm:w-auto`}
                 >
                   Live Demo
                   <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
                 <a
                   href="#results"
-                  className="group flex w-full items-center justify-center gap-2 rounded-xl border border-black/25 bg-transparent px-7 py-4 text-[15px] font-semibold text-foreground transition-all duration-300 ease-out hover:border-black/60 sm:w-auto"
+                  className="btn-pulse-ring group flex w-full items-center justify-center gap-2 rounded-xl border border-black/40 bg-white px-7 py-4 text-[15px] font-semibold text-foreground transition-all duration-200 ease-out hover:-translate-y-[3px] hover:bg-black/[0.04] hover:shadow-[0_16px_34px_-16px_rgba(0,0,0,0.4)] sm:w-auto"
                 >
                   See What&rsquo;s Missing
                   <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />

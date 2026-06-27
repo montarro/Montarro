@@ -430,8 +430,8 @@ function CountUp({ to, format, className = "" }: { to: number; format: (v: numbe
     if (!inView || !ref.current) return;
     const node = ref.current;
     const controls = animate(0, to, {
-      duration: 1.05,
-      ease: [0.16, 1, 0.3, 1],
+      duration: 1.1,
+      ease: [0.33, 1, 0.68, 1], // easeOutCubic — energetic but visibly rolls from 0
       onUpdate(v) {
         node.textContent = format(v);
       },
@@ -448,16 +448,16 @@ function CountUp({ to, format, className = "" }: { to: number; format: (v: numbe
   );
 }
 
-/** Headline metric for the hero dashboard — the key business outcome, dominant numbers. */
+/** Headline metric for the hero dashboard — label above a dominant number. */
 function HeroStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
   return (
-    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3.5 py-4">
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-4 py-4">
+      <div className="text-[10px] uppercase tracking-[0.13em] text-white/45">{label}</div>
       <CountUp
         to={to}
         format={format}
-        className="font-display text-2xl sm:text-[26px] font-bold leading-none tracking-tight tabular-nums text-white"
+        className="mt-2.5 block font-display text-3xl sm:text-4xl font-bold leading-none tracking-tight tabular-nums text-white"
       />
-      <div className="mt-2 text-[9.5px] uppercase tracking-[0.13em] text-white/45">{label}</div>
     </div>
   );
 }
@@ -496,10 +496,9 @@ function HeroDashboard() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">Live</span>
             </span>
           </div>
-          <div className="mt-4 grid grid-cols-3 gap-2.5">
-            <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}k`} label="Monthly Revenue" />
-            <HeroStat to={0.8} format={(v) => `${v.toFixed(1)}s`} label="Avg Response" />
+          <div className="mt-4 grid grid-cols-2 gap-2.5">
             <HeroStat to={42} format={(v) => `${Math.round(v)}`} label="Bookings This Week" />
+            <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}K`} label="EST. Monthly Revenue" />
           </div>
         </div>
 

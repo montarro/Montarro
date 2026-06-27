@@ -725,7 +725,7 @@ function Trust() {
     if (!el) return;
     let raf = 0;
     let last = performance.now();
-    const speed = 45; // px per second — slow enough to read
+    const speed = 95; // px per second — dynamic but still readable
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
       last = now;

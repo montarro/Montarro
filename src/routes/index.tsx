@@ -782,7 +782,7 @@ function Trust() {
             <div className="flex items-center gap-2">
               <Stars rating={4.8} />
               <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/55">
-                Google Reviews
+                Trusted on Google
               </span>
             </div>
             <p className="mt-2 text-[15px] font-medium text-white/90">

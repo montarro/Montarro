@@ -1153,10 +1153,15 @@ function MissedRevenue() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
-                Every unanswered call is a customer choosing a competitor. Our AI
-                receptionist answers instantly, qualifies the lead, books the
-                appointment, and updates your CRM — automatically.
+              <p className="mt-6 max-w-xl text-base md:text-lg font-medium text-foreground">
+                Every missed call costs you money.
+              </p>
+              <p className="mt-4 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
+                Most businesses don&rsquo;t lose work because they&rsquo;re bad at what
+                they do&mdash;they lose it because no one answers the phone. While
+                you&rsquo;re on-site, with another customer or after hours, new
+                enquiries keep coming in. Every unanswered call is another customer
+                choosing your competitor instead.
               </p>
             </Reveal>
             <Reveal delay={0.18}>
@@ -1175,11 +1180,11 @@ function MissedRevenue() {
             </Reveal>
             <Reveal delay={0.26}>
               <Link
-                to="/contact"
+                to="/demo"
                 className={`${primaryCta} mt-8 inline-flex px-6 py-3 text-sm`}
               >
-                Book a Free Consultation
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <PlayCircle className="h-4 w-4" />
+                Try the AI Receptionist Live
               </Link>
             </Reveal>
           </div>

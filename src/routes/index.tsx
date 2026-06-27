@@ -81,24 +81,11 @@ function Reveal({
 /* ------------------------------- NAV ------------------------------- */
 
 function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-all duration-500 ease-out ${
-        scrolled
-          ? "border-black/[0.07] bg-[#fbfcfb]/90 shadow-[0_12px_34px_-22px_rgba(0,0,0,0.25)]"
-          : "border-black/[0.05] bg-[#fbfcfb]/80"
-      }`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.08] bg-white shadow-[0_1px_2px_-1px_rgba(0,0,0,0.06)]">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-16 w-auto" />
+          <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </a>
         <nav className="hidden md:flex items-center gap-10 text-[13.5px] font-semibold">
           {(() => {

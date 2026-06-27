@@ -280,8 +280,7 @@ function TestCallCard() {
 function LiveDemoBlock() {
   return (
     <>
-      <div aria-hidden style={{ height: "90px", marginBottom: "-1px", background: "linear-gradient(180deg, #ffffff 0%, #d6d9d8 55%, #0a0c0b 100%)" }} />
-      <section className="relative overflow-hidden pb-20 pt-16 lg:pb-24 lg:pt-20" style={{ background: DARK_BG }}>
+      <section className="relative overflow-hidden pb-20 pt-32 lg:pb-24 lg:pt-36" style={{ background: DARK_BG }}>
         <GridTexture dark />
         <motion.div
           aria-hidden

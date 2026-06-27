@@ -1,55 +1,27 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Phone } from "lucide-react";
-import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
 
+// Solid white, fully opaque navbar — identical on every page, no scroll/colour change.
 export function SiteNav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out ${
-        scrolled
-          ? "border-b border-white/10 bg-[#0a0b0b]/70 backdrop-blur-xl shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)]"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
-          scrolled ? "h-14" : "h-16"
-        }`}
-      >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.08] bg-white shadow-[0_1px_2px_-1px_rgba(0,0,0,0.06)]">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center">
-          <img
-            src="/montarro-logo.png"
-            alt="Montarro"
-            className={`w-auto transition-all duration-500 ease-out ${
-              scrolled ? "h-9 invert" : "h-[52px]"
-            }`}
-          />
+          <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </Link>
-        <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
+        <nav className="hidden md:flex items-center gap-9 text-[13.5px] font-semibold">
           {(() => {
-            const cls = `tracking-tight transition-colors duration-300 ${
-              scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-            }`;
+            const cls = "tracking-tight text-foreground/75 transition-colors duration-300 hover:text-foreground";
             return (
               <>
                 <Link to="/" hash="system" className={cls}>The System</Link>
-                <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
+                <Link to="/services/ai-receptionists" className={`group inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </span>
-                  <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#0b0b0c]/95 px-2.5 py-1 text-[10px] font-normal tracking-tight text-white/80 opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:opacity-100">
-                    Test the infrastructure live
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
@@ -60,30 +32,24 @@ export function SiteNav() {
         </nav>
         <Link
           to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px] ${
-            scrolled ? "ring-1 ring-emerald-400/25" : ""
-          }`}
+          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
         >
           Book a Strategy Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         {/* mobile actions — persistent call + qualify CTA beside the hamburger */}
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-3 md:hidden">
           <a
             href="tel:+610345145084"
             aria-label="Call Montarro"
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur transition-colors duration-300 ${
-              scrolled
-                ? "border-white/15 bg-white/[0.06] text-white/90 hover:border-white/35"
-                : "border-black/[0.08] bg-card/50 text-foreground hover:border-foreground/30"
-            }`}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[0.08] bg-card/50 text-foreground transition-colors duration-300 hover:border-foreground/30"
           >
             <Phone className="h-[17px] w-[17px]" />
           </a>
           <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
             Do I Qualify?
           </Link>
-          <MobileMenu scrolled={scrolled} />
+          <MobileMenu />
         </div>
       </div>
     </header>

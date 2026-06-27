@@ -1739,42 +1739,63 @@ function ExperienceInfra() {
         />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
-                <LiveDot /> Part of the System · AI Receptionist
-              </div>
-              <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
-                <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
-                  Hear the AI receptionist answer.
-                </span>
-              </h2>
-              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
-                The core of the Montarro System — it answers, qualifies and books
-                every call in real time, 24/7.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <a href={`tel:${RECEPTIONIST_TEL}`} className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
-                  <Phone className="h-4 w-4" />
-                  Call the AI Receptionist
-                </a>
-                <Link
-                  to="/services/ai-receptionists"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
-                >
-                  Explore the AI Receptionist
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* LEFT — why it matters */}
             <Reveal>
-              <TranscriptPanel />
+              <div>
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+                  <LiveDot /> Part of the System · AI Receptionist
+                </div>
+                <h2 className="font-display text-4xl md:text-5xl leading-[1.05] tracking-[-0.02em]">
+                  <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
+                    Your front desk that never clocks off.
+                  </span>
+                </h2>
+                <p className="mt-6 max-w-xl text-[15px] md:text-base leading-relaxed text-white/60">
+                  Your front desk shouldn&rsquo;t stop working when your team is busy,
+                  onsite or closed. Montarro&rsquo;s AI Receptionist answers calls
+                  instantly, qualifies the enquiry, captures the details and moves the
+                  lead into your system &mdash; so every opportunity is handled properly.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link to="/demo" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
+                    <PlayCircle className="h-4 w-4" />
+                    Try the AI Receptionist Live
+                  </Link>
+                  <Link
+                    to="/services/ai-receptionists"
+                    className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
+                  >
+                    Explore the AI Receptionist
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                </div>
+              </div>
             </Reveal>
+
+            {/* RIGHT — simple process list (explanation, not a mockup) */}
             <Reveal delay={0.1}>
-              <CrmFeedPanel />
+              <ol className="space-y-3">
+                {[
+                  { t: "Answers instantly", d: "Picks up every call in under a second, 24/7 — even after hours and on weekends." },
+                  { t: "Qualifies the enquiry", d: "Asks the right questions and identifies the high-intent leads worth your time." },
+                  { t: "Captures every detail", d: "Records the caller, the job and the context, so nothing is lost or forgotten." },
+                  { t: "Moves it into your CRM", d: "Books the appointment and syncs the lead automatically — ready for your team." },
+                ].map((s, i) => (
+                  <li
+                    key={s.t}
+                    className="flex gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 transition-colors duration-300 hover:border-white/[0.16] hover:bg-white/[0.05]"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.12] font-display text-sm font-semibold tabular-nums text-emerald-300">
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-[15px] font-semibold text-white">{s.t}</div>
+                      <p className="mt-1 text-[13.5px] leading-relaxed text-white/55">{s.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </Reveal>
           </div>
         </div>

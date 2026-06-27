@@ -711,6 +711,16 @@ const reviewInitials = (name: string) =>
     .map((p) => p[0])
     .join("");
 
+// premium, muted avatar backgrounds — one tasteful colour per reviewer
+const REVIEW_AVATARS = [
+  { bg: "bg-emerald-500/15", text: "text-emerald-300" }, // deep emerald
+  { bg: "bg-blue-500/15", text: "text-blue-300" }, // muted blue
+  { bg: "bg-purple-500/15", text: "text-purple-300" }, // soft purple
+  { bg: "bg-orange-500/15", text: "text-orange-300" }, // warm orange
+  { bg: "bg-white/[0.08]", text: "text-white/80" }, // charcoal
+  { bg: "bg-teal-500/15", text: "text-teal-300" }, // muted teal
+];
+
 function Trust() {
   const trackRef = useRef<HTMLDivElement>(null);
   const paused = useRef(false);
@@ -770,7 +780,7 @@ function Trust() {
         <Reveal>
           <div>
             <div className="flex items-center gap-2">
-              <Stars />
+              <Stars rating={4.8} />
               <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/55">
                 Google Reviews
               </span>
@@ -822,9 +832,17 @@ function Trust() {
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-[12px] font-semibold text-emerald-300">
-                  {reviewInitials(r.name)}
-                </span>
+                <div className="relative shrink-0">
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-[12px] font-semibold ${REVIEW_AVATARS[i % REVIEW_AVATARS.length].bg} ${REVIEW_AVATARS[i % REVIEW_AVATARS.length].text}`}
+                  >
+                    {reviewInitials(r.name)}
+                  </span>
+                  {/* Google authenticity marker */}
+                  <span className="absolute -bottom-0.5 -right-0.5 flex h-[15px] w-[15px] items-center justify-center rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.35)] ring-1 ring-black/5">
+                    <GoogleG className="h-2.5 w-2.5" />
+                  </span>
+                </div>
                 <div className="min-w-0 leading-tight">
                   <div className="text-[13px] font-semibold text-white">{r.name}</div>
                   <div className="text-[11px] text-white/45">{r.industry}</div>
@@ -832,7 +850,7 @@ function Trust() {
               </div>
               <span className="shrink-0 whitespace-nowrap text-[11px] text-white/30">{r.time}</span>
             </div>
-            <Stars className="mt-4" />
+            <Stars className="mt-4" rating={4.8} />
             <blockquote className="mt-3 text-[13px] leading-relaxed text-white/65">
               {r.quote}
             </blockquote>
@@ -2731,12 +2749,30 @@ function GoogleG({ className = "h-[18px] w-[18px]" }: { className?: string }) {
   );
 }
 
-function Stars({ className = "" }: { className?: string }) {
+function Stars({ className = "", rating = 5 }: { className?: string; rating?: number }) {
+  const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
   return (
-    <span className={`inline-flex items-center gap-0.5 ${className}`} aria-hidden>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className="h-4 w-4 fill-[#FBBC05] text-[#FBBC05]" />
-      ))}
+    <span
+      className={`relative inline-flex items-center ${className}`}
+      role="img"
+      aria-label={`${rating} out of 5 stars`}
+    >
+      {/* unfilled base */}
+      <span className="inline-flex items-center gap-0.5" aria-hidden>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} className="h-4 w-4 text-white/25" />
+        ))}
+      </span>
+      {/* gold fill clipped to the rating */}
+      <span
+        className="absolute inset-0 inline-flex items-center gap-0.5 overflow-hidden"
+        style={{ width: `${pct}%` }}
+        aria-hidden
+      >
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} className="h-4 w-4 shrink-0 fill-[#FBBC05] text-[#FBBC05]" />
+        ))}
+      </span>
     </span>
   );
 }

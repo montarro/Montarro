@@ -430,8 +430,8 @@ function CountUp({ to, format, className = "" }: { to: number; format: (v: numbe
     if (!inView || !ref.current) return;
     const node = ref.current;
     const controls = animate(0, to, {
-      duration: 1.1,
-      ease: [0.33, 1, 0.68, 1], // easeOutCubic — energetic but visibly rolls from 0
+      duration: 1.7,
+      ease: "easeOut", // smooth, controlled deceleration — confident roll, no jitter
       onUpdate(v) {
         node.textContent = format(v);
       },

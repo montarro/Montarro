@@ -422,15 +422,15 @@ function HeroTile({
   );
 }
 
-/** Single animated metric for the hero dashboard — counts up once on first view. */
-function HeroStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
+/** Inline number that counts up from zero once it scrolls into view — quick, energetic ease-out. */
+function CountUp({ to, format, className = "" }: { to: number; format: (v: number) => string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   useEffect(() => {
     if (!inView || !ref.current) return;
     const node = ref.current;
     const controls = animate(0, to, {
-      duration: 1.8,
+      duration: 1.05,
       ease: [0.16, 1, 0.3, 1],
       onUpdate(v) {
         node.textContent = format(v);
@@ -442,11 +442,22 @@ function HeroStat({ to, format, label }: { to: number; format: (v: number) => st
     return () => controls.stop();
   }, [inView, to]);
   return (
-    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3 py-2.5">
-      <div className="font-display text-lg tracking-tight tabular-nums text-white">
-        <span ref={ref}>{format(0)}</span>
-      </div>
-      <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.12em] text-white/40">{label}</div>
+    <span ref={ref} className={className}>
+      {format(0)}
+    </span>
+  );
+}
+
+/** Headline metric for the hero dashboard — the key business outcome, dominant numbers. */
+function HeroStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3.5 py-4">
+      <CountUp
+        to={to}
+        format={format}
+        className="font-display text-2xl sm:text-[26px] font-bold leading-none tracking-tight tabular-nums text-white"
+      />
+      <div className="mt-2 text-[9.5px] uppercase tracking-[0.13em] text-white/45">{label}</div>
     </div>
   );
 }
@@ -454,12 +465,12 @@ function HeroStat({ to, format, label }: { to: number; format: (v: number) => st
 function HeroDashboard() {
   const pill = "rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-emerald-300";
   const events: { icon: typeof PhoneCall; label: string; meta: string; time: string; right: React.ReactNode }[] = [
-    { icon: PhoneCall, label: "Incoming Call", meta: "+61 4•• ••• 218", time: "0:00", right: <Waveform /> },
+    { icon: PhoneCall, label: "Incoming Call", meta: "+61 04•• ••• 218", time: "0:00", right: <Waveform /> },
     { icon: Bot, label: "AI Receptionist Answered", meta: "0.8s response time", time: "0:01", right: <span className={pill}>Live</span> },
     { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing", time: "0:24", right: <span className={pill}>Qualified</span> },
     { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM", time: "0:38", right: <span className={pill}>Confirmed</span> },
     { icon: Database, label: "CRM Updated", meta: "GoHighLevel · synced", time: "0:39", right: <CheckCircle2 className="h-4 w-4 text-emerald-400" /> },
-    { icon: TrendingUp, label: "Revenue Captured", meta: "Job value added to pipeline", time: "0:40", right: <span className="text-[12px] font-semibold tabular-nums text-emerald-400">+$1,250</span> },
+    { icon: TrendingUp, label: "Revenue Captured", meta: "Job value added to pipeline", time: "0:40", right: <CountUp to={8650} format={(v) => `+$${Math.round(v).toLocaleString()}`} className="text-[12px] font-semibold tabular-nums text-emerald-400" /> },
   ];
   return (
     <div className="relative">
@@ -480,15 +491,15 @@ function HeroDashboard() {
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             </span>
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/[0.12] px-2.5 py-1">
               <LiveDot />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Live</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">Live</span>
             </span>
           </div>
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <HeroStat to={42.8} format={(v) => `$${v.toFixed(1)}K`} label="Revenue Captured" />
+          <div className="mt-4 grid grid-cols-3 gap-2.5">
+            <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}k`} label="Monthly Revenue" />
             <HeroStat to={0.8} format={(v) => `${v.toFixed(1)}s`} label="Avg Response" />
-            <HeroStat to={12} format={(v) => `${Math.round(v)}`} label="Bookings Today" />
+            <HeroStat to={42} format={(v) => `${Math.round(v)}`} label="Bookings This Week" />
           </div>
         </div>
 

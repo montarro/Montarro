@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
+import { motion, useScroll, useTransform, useInView, useMotionValueEvent, animate, type MotionValue } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -2272,9 +2272,11 @@ function useCountUp(target: number, enabled: boolean) {
   return ref;
 }
 
-/* ---------------- HOW IT WORKS · pinned, scroll-driven system tour ---------------- */
-/* One persistent dashboard that morphs through five stages as the user scrolls.
-   Keeps the #results anchor (the 'About' nav links + the hero secondary CTA). */
+/* ---------------- HOW IT WORKS · pinned, scroll-scrubbed system tour ---------------- */
+/* One pinned presentation. The viewport stays stationary; scroll position drives a
+   continuous animation timeline — every stage is stacked and its opacity/offset is
+   tied directly to scroll, so the interface morphs rather than the page moving past
+   blank screens. Keeps the #results anchor (the 'About' nav + hero secondary CTA). */
 
 const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
   { title: "Capture", icon: Inbox, copy: "Every call, web enquiry, Facebook lead and form lands in one place — instantly." },
@@ -2283,18 +2285,6 @@ const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
   { title: "Automation", icon: Workflow, copy: "Follow-ups, reminders, SMS, missed-call texts and reviews — all on their own." },
   { title: "Reporting", icon: BarChart3, copy: "Every lead tracked from enquiry to booked job — response times, conversion, revenue." },
 ];
-
-function HiwRow({ children, i }: { children: React.ReactNode; i: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.12 + i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 function StageVisual({ step }: { step: number }) {
   if (step === 0) {
@@ -2307,19 +2297,17 @@ function StageVisual({ step }: { step: number }) {
     return (
       <div className="space-y-2.5">
         <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Incoming · all channels</div>
-        {channels.map((c, i) => {
+        {channels.map((c) => {
           const I = c.icon;
           return (
-            <HiwRow key={c.label} i={i}>
-              <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 shadow-[0_10px_30px_-26px_rgba(0,0,0,0.4)]">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
-                  <I className="h-3.5 w-3.5" />
-                </span>
-                <span className="flex-1 text-[13px] font-medium text-foreground">{c.label}</span>
-                <span className="text-[10.5px] text-muted-foreground/70">{c.meta}</span>
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-              </div>
-            </HiwRow>
+            <div key={c.label} className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 shadow-[0_10px_30px_-26px_rgba(0,0,0,0.4)]">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+                <I className="h-3.5 w-3.5" />
+              </span>
+              <span className="flex-1 text-[13px] font-medium text-foreground">{c.label}</span>
+              <span className="text-[10.5px] text-muted-foreground/70">{c.meta}</span>
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+            </div>
           );
         })}
         <div className="pt-1 text-center text-[11px] font-medium text-emerald-600">↓ one inbox</div>
@@ -2342,19 +2330,15 @@ function StageVisual({ step }: { step: number }) {
           <Waveform className="text-emerald-500" />
         </div>
         {bubbles.map((b, i) => (
-          <HiwRow key={i} i={i}>
-            <div className={`flex ${b.who === "caller" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 text-[13px] leading-snug ${b.who === "ai" ? "border-emerald-500/20 bg-emerald-500/[0.06] text-foreground" : "border-black/[0.08] bg-white text-foreground"}`}>
-                {b.text}
-              </div>
+          <div key={i} className={`flex ${b.who === "caller" ? "justify-end" : "justify-start"}`}>
+            <div className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 text-[13px] leading-snug ${b.who === "ai" ? "border-emerald-500/20 bg-emerald-500/[0.06] text-foreground" : "border-black/[0.08] bg-white text-foreground"}`}>
+              {b.text}
             </div>
-          </HiwRow>
-        ))}
-        <HiwRow i={3}>
-          <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] px-3 py-2 text-[12px] font-medium text-emerald-700">
-            <CalendarCheck className="h-4 w-4" /> Appointment booked · Thu 3:00 PM
           </div>
-        </HiwRow>
+        ))}
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] px-3 py-2 text-[12px] font-medium text-emerald-700">
+          <CalendarCheck className="h-4 w-4" /> Appointment booked · Thu 3:00 PM
+        </div>
       </div>
     );
   }
@@ -2376,24 +2360,20 @@ function StageVisual({ step }: { step: number }) {
           <span className="rounded-full border border-emerald-500/25 bg-emerald-500/[0.07] px-2 py-0.5 text-[10px] font-medium text-emerald-700">Qualified</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
-          {fields.map((f, i) => (
-            <HiwRow key={f.l} i={i}>
-              <div className="rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{f.l}</div>
-                <div className="mt-0.5 text-[12.5px] font-semibold text-foreground">{f.v}</div>
-              </div>
-            </HiwRow>
+          {fields.map((f) => (
+            <div key={f.l} className="rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{f.l}</div>
+              <div className="mt-0.5 text-[12.5px] font-semibold text-foreground">{f.v}</div>
+            </div>
           ))}
         </div>
-        <HiwRow i={3}>
-          <div className="flex items-center gap-2 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 text-[11px] text-muted-foreground">
-            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Call</span>
-            <span className="h-px flex-1 bg-black/10" />
-            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Quote sent</span>
-            <span className="h-px flex-1 bg-black/10" />
-            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Booked</span>
-          </div>
-        </HiwRow>
+        <div className="flex items-center gap-2 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 text-[11px] text-muted-foreground">
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Call</span>
+          <span className="h-px flex-1 bg-black/10" />
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Quote sent</span>
+          <span className="h-px flex-1 bg-black/10" />
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Booked</span>
+        </div>
       </div>
     );
   }
@@ -2409,18 +2389,16 @@ function StageVisual({ step }: { step: number }) {
     return (
       <div className="space-y-2">
         <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Automations · running</div>
-        {autos.map((a, i) => {
+        {autos.map((a) => {
           const I = a.icon;
           return (
-            <HiwRow key={a.label} i={i}>
-              <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
-                  <I className="h-3.5 w-3.5" />
-                </span>
-                <span className="flex-1 text-[13px] text-foreground">{a.label}</span>
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-              </div>
-            </HiwRow>
+            <div key={a.label} className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+                <I className="h-3.5 w-3.5" />
+              </span>
+              <span className="flex-1 text-[13px] text-foreground">{a.label}</span>
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+            </div>
           );
         })}
       </div>
@@ -2441,40 +2419,79 @@ function StageVisual({ step }: { step: number }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-2">
-        {kpis.map((k, i) => (
-          <HiwRow key={k.l} i={i}>
-            <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-3 py-3 text-center">
-              <div className="font-display text-xl tabular-nums text-foreground">{k.v}</div>
-              <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/70">{k.l}</div>
-            </div>
-          </HiwRow>
+        {kpis.map((k) => (
+          <div key={k.l} className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-3 py-3 text-center">
+            <div className="font-display text-xl tabular-nums text-foreground">{k.v}</div>
+            <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/70">{k.l}</div>
+          </div>
         ))}
       </div>
-      <div className="space-y-2">
-        {funnel.map((f, i) => (
-          <HiwRow key={f.l} i={i}>
-            <div>
-              <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>{f.l}</span>
-                <span className="tabular-nums text-foreground/70">{f.n}</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400"
-                  initial={{ width: 0 }}
-                  animate={{ width: f.w }}
-                  transition={{ delay: 0.2 + i * 0.12, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                />
-              </div>
+      <div className="space-y-2.5">
+        {funnel.map((f) => (
+          <div key={f.l}>
+            <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+              <span>{f.l}</span>
+              <span className="tabular-nums text-foreground/70">{f.n}</span>
             </div>
-          </HiwRow>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
+              <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400" style={{ width: f.w }} />
+            </div>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-function HiwDashboard({ step }: { step: number }) {
+/* a stage stacked in the dashboard body; opacity + drift scrubbed by scroll */
+function StageBodyLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
+  const c = i / (n - 1);
+  const w = 1 / (n - 1);
+  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
+  const y = useTransform(progress, [c - w, c, c + w], [18, 0, -18]);
+  return (
+    <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0 p-4 sm:p-5">
+      <StageVisual step={i} />
+    </motion.div>
+  );
+}
+
+/* the matching headline + copy, scrubbed in step with the dashboard */
+function StageTextLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
+  const c = i / (n - 1);
+  const w = 1 / (n - 1);
+  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
+  const y = useTransform(progress, [c - w, c, c + w], [22, 0, -22]);
+  return (
+    <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0">
+      <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
+        {HIW_STEPS[i].title}
+      </h3>
+      <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">{HIW_STEPS[i].copy}</p>
+    </motion.div>
+  );
+}
+
+/* a module-rail icon whose emerald highlight crossfades with scroll */
+function RailIcon({ progress, i, n, Icon }: { progress: MotionValue<number>; i: number; n: number; Icon: typeof Inbox }) {
+  const c = i / (n - 1);
+  const w = 1 / (n - 1);
+  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
+  return (
+    <span className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground/25">
+      <Icon className="h-4 w-4" />
+      <motion.span
+        style={{ opacity }}
+        className="absolute inset-0 flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
+      >
+        <Icon className="h-4 w-4" />
+      </motion.span>
+    </span>
+  );
+}
+
+function HiwDashboard({ progress, current }: { progress: MotionValue<number>; current: number }) {
+  const n = HIW_STEPS.length;
   return (
     <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-[0_50px_120px_-50px_rgba(0,0,0,0.28)]">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
@@ -2486,45 +2503,24 @@ function HiwDashboard({ step }: { step: number }) {
           <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
         </div>
         <span className="text-[11px] font-medium tracking-tight text-muted-foreground">
-          Montarro OS · <span className="text-foreground">{HIW_STEPS[step].title}</span>
+          Montarro OS · <span className="text-foreground">{HIW_STEPS[current].title}</span>
         </span>
         <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-600">
           <LiveDot /> Live
         </span>
       </div>
       <div className="flex">
-        {/* module rail — persistent, current module highlighted */}
+        {/* module rail — persistent, highlight crossfades with scroll */}
         <div className="flex flex-col gap-1.5 border-r border-black/[0.06] p-2.5">
-          {HIW_STEPS.map((s, i) => {
-            const I = s.icon;
-            const on = i === step;
-            return (
-              <span
-                key={s.title}
-                className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
-                  on
-                    ? "border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
-                    : "border-transparent text-foreground/25"
-                }`}
-              >
-                <I className="h-4 w-4" />
-              </span>
-            );
-          })}
+          {HIW_STEPS.map((s, i) => (
+            <RailIcon key={s.title} progress={progress} i={i} n={n} Icon={s.icon} />
+          ))}
         </div>
-        {/* body — swaps per stage, frame stays */}
-        <div className="relative min-h-[340px] flex-1 p-4 sm:min-h-[380px] sm:p-5">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <StageVisual step={step} />
-            </motion.div>
-          </AnimatePresence>
+        {/* body — every stage stacked, scrubbed by scroll; frame stays put */}
+        <div className="relative h-[360px] flex-1 sm:h-[400px]">
+          {HIW_STEPS.map((s, i) => (
+            <StageBodyLayer key={s.title} progress={progress} i={i} n={n} />
+          ))}
         </div>
       </div>
     </div>
@@ -2534,23 +2530,20 @@ function HiwDashboard({ step }: { step: number }) {
 function HowItWorks() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const [step, setStep] = useState(0);
+  const n = HIW_STEPS.length;
+  const [current, setCurrent] = useState(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const i = Math.min(HIW_STEPS.length - 1, Math.max(0, Math.floor(v * HIW_STEPS.length)));
-    setStep(i);
+    setCurrent(Math.min(n - 1, Math.max(0, Math.round(v * (n - 1)))));
   });
 
   return (
-    <section id="results" ref={ref} className="relative bg-white" style={{ height: `${HIW_STEPS.length * 100}vh` }}>
+    <section id="results" ref={ref} className="relative bg-white" style={{ height: "280vh" }}>
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        {/* soft emerald accent — intensifies on the final (reporting) stage */}
+        {/* soft emerald accent */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] transition-opacity duration-700"
-          style={{
-            background: "radial-gradient(ellipse 60% 70% at 70% 0%, rgba(16,185,129,0.08), transparent 70%)",
-            opacity: step === HIW_STEPS.length - 1 ? 1 : 0.55,
-          }}
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px]"
+          style={{ background: "radial-gradient(ellipse 60% 70% at 70% 0%, rgba(16,185,129,0.08), transparent 70%)" }}
         />
         <div aria-hidden className="absolute inset-0 -z-0 bg-grid opacity-[0.035] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
 
@@ -2563,40 +2556,19 @@ function HowItWorks() {
             </div>
 
             <div className="text-[12px] font-medium tabular-nums tracking-[0.2em] text-muted-foreground/60">
-              {String(step + 1).padStart(2, "0")} / {String(HIW_STEPS.length).padStart(2, "0")}
+              {String(current + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
             </div>
 
-            <div className="relative mt-3 min-h-[180px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -14 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
-                    {HIW_STEPS[step].title}
-                  </h3>
-                  <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
-                    {HIW_STEPS[step].copy}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* progress segments */}
-            <div className="mt-8 flex items-center gap-2">
+            {/* stacked headline/copy, scrubbed */}
+            <div className="relative mt-3 h-[200px] sm:h-[210px]">
               {HIW_STEPS.map((s, i) => (
-                <div key={s.title} className="h-1 flex-1 overflow-hidden rounded-full bg-black/10">
-                  <motion.div
-                    className="h-full rounded-full bg-emerald-500"
-                    initial={false}
-                    animate={{ width: i <= step ? "100%" : "0%" }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                </div>
+                <StageTextLayer key={s.title} progress={scrollYProgress} i={i} n={n} />
               ))}
+            </div>
+
+            {/* continuous progress bar */}
+            <div className="mt-6 h-1 w-full overflow-hidden rounded-full bg-black/10">
+              <motion.div className="h-full origin-left rounded-full bg-emerald-500" style={{ scaleX: scrollYProgress }} />
             </div>
             <div className="mt-3 hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground/50 sm:block">
               Scroll to watch the system run
@@ -2604,7 +2576,7 @@ function HowItWorks() {
           </div>
 
           {/* RIGHT — the one dashboard */}
-          <HiwDashboard step={step} />
+          <HiwDashboard progress={scrollYProgress} current={current} />
         </div>
       </div>
     </section>

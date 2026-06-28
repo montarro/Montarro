@@ -2443,12 +2443,23 @@ function StageVisual({ step }: { step: number }) {
   );
 }
 
-/* a stage stacked in the dashboard body; opacity + drift scrubbed by scroll */
-function StageBodyLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
+/* Per-stage scrub window, CLAMPED to [0,1]. scrollYProgress only spans [0,1], and
+   Motion maps a transform's input-range positions to Web Animations API keyframe
+   offsets — which must stay within [0,1] or Element.animate() throws at mount. The
+   first/last stages therefore use one-sided 2-point ranges instead of c±w. */
+function hiwWindow(i: number, n: number) {
   const c = i / (n - 1);
   const w = 1 / (n - 1);
-  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
-  const y = useTransform(progress, [c - w, c, c + w], [18, 0, -18]);
+  if (i === 0) return { input: [0, w], opacity: [1, 0], y: [0, -18] };
+  if (i === n - 1) return { input: [1 - w, 1], opacity: [0, 1], y: [18, 0] };
+  return { input: [c - w, c, c + w], opacity: [0, 1, 0], y: [18, 0, -18] };
+}
+
+/* a stage stacked in the dashboard body; opacity + drift scrubbed by scroll */
+function StageBodyLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
+  const win = hiwWindow(i, n);
+  const opacity = useTransform(progress, win.input, win.opacity);
+  const y = useTransform(progress, win.input, win.y);
   return (
     <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0 p-4 sm:p-5">
       <StageVisual step={i} />
@@ -2458,10 +2469,9 @@ function StageBodyLayer({ progress, i, n }: { progress: MotionValue<number>; i: 
 
 /* the matching headline + copy, scrubbed in step with the dashboard */
 function StageTextLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
-  const c = i / (n - 1);
-  const w = 1 / (n - 1);
-  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
-  const y = useTransform(progress, [c - w, c, c + w], [22, 0, -22]);
+  const win = hiwWindow(i, n);
+  const opacity = useTransform(progress, win.input, win.opacity);
+  const y = useTransform(progress, win.input, win.y);
   return (
     <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0">
       <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
@@ -2474,9 +2484,8 @@ function StageTextLayer({ progress, i, n }: { progress: MotionValue<number>; i: 
 
 /* a module-rail icon whose emerald highlight crossfades with scroll */
 function RailIcon({ progress, i, n, Icon }: { progress: MotionValue<number>; i: number; n: number; Icon: typeof Inbox }) {
-  const c = i / (n - 1);
-  const w = 1 / (n - 1);
-  const opacity = useTransform(progress, [c - w, c, c + w], [0, 1, 0]);
+  const win = hiwWindow(i, n);
+  const opacity = useTransform(progress, win.input, win.opacity);
   return (
     <span className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground/25">
       <Icon className="h-4 w-4" />

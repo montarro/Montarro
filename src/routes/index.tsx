@@ -1130,105 +1130,66 @@ function ScaleCard() {
   );
 }
 
-/* ---------------- BEAT 3 · THE HIDDEN PROBLEM (revenue leaks) ---------------- */
-
-/* A thin track whose fill quietly recedes once in view — money draining away. */
-function LeakBar() {
+/* ---------------- BEAT 3 · THE PROBLEM (typography-led reframe) ---------------- */
+/* Premium, editorial, no UI: a large statement on the left, supporting copy on the
+   right, set up to flow emotionally into the cost calculator below. */
+function ProblemReframe() {
   return (
-    <div className="relative h-1 w-24 overflow-hidden rounded-full bg-black/[0.06]">
-      <motion.div
-        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-black/30 to-black/10"
-        initial={{ width: "100%" }}
-        whileInView={{ width: "22%" }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 1.7, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-      />
-    </div>
-  );
-}
-
-function HiddenLeaks() {
-  const leaks: { icon: typeof Clock; title: string; desc: string }[] = [
-    { icon: Clock, title: "Slow responses", desc: "Leads go cold in minutes. Reply late and they've already called someone else." },
-    { icon: PhoneMissed, title: "Missed calls", desc: "On a job, after hours, double-booked — every call you can't take is handed to a competitor." },
-    { icon: ClipboardList, title: "Manual admin", desc: "Hours lost to data entry, callbacks and chasing — instead of billable work." },
-    { icon: RefreshCw, title: "Weak follow-up", desc: "Most enquiries need five touches to convert. Most businesses stop after one." },
-    { icon: Inbox, title: "Lost enquiries", desc: "Forms, DMs and voicemails that slip through the cracks and never come back." },
-  ];
-  return (
-    <section id="problem" className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
-      {/* tonal background + faint grid — same material language as the rest of the page */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-[#fafafb] to-[#f5f6f7]" />
-      <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
-
-      <div className="mx-auto max-w-6xl px-6">
-        {/* editorial intro — deliberately not a card grid */}
-        <div className="max-w-3xl">
+    <section id="problem" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-[#f5f6f7] py-24 lg:py-36">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
+          {/* LEFT — the statement */}
           <Reveal>
-            <div className="mb-6 flex items-center gap-3">
+            <div className="mb-7 flex items-center gap-3">
               <span className="h-px w-10 bg-emerald-500/70" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
-                The Hidden Problem
+                The Real Problem
               </span>
             </div>
-            <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
-              The real problem isn&rsquo;t missed calls.
+            <h2 className="font-headline text-[2.6rem] font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl lg:text-7xl">
+              The problem isn&rsquo;t your leads.
+              <span className="mt-3 block text-foreground/40">
+                It&rsquo;s everything that happens after them.
+              </span>
             </h2>
           </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 text-lg md:text-xl leading-relaxed text-muted-foreground">
-              It&rsquo;s everything that leaks out around them — the slow replies, the
-              dropped follow-ups, the enquiries no one ever saw. Each gap looks small.
-              Together, they cost you more than any single lost job.
-            </p>
-          </Reveal>
-        </div>
 
-        {/* the leak ledger — hairline rows, revenue quietly draining */}
-        <div className="mt-14 lg:mt-16">
-          <Reveal>
-            <div className="mb-4 flex items-center justify-between text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground/60">
-              <span>Where the revenue goes</span>
-              <span className="hidden sm:inline">Leaking</span>
-            </div>
-          </Reveal>
-          <div className="border-t border-black/[0.08]">
-            {leaks.map((l, i) => {
-              const Icon = l.icon;
-              return (
-                <Reveal key={l.title} delay={0.06 * i}>
-                  <div className="group flex items-center gap-5 border-b border-black/[0.08] py-6 transition-colors duration-300 hover:bg-black/[0.015]">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-foreground/70 transition-colors duration-300 group-hover:border-black/15 group-hover:text-foreground">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[16px] md:text-[17px] font-semibold tracking-tight text-foreground">{l.title}</div>
-                      <p className="mt-1 max-w-xl text-[13.5px] md:text-sm leading-relaxed text-muted-foreground">{l.desc}</p>
-                    </div>
-                    <div className="hidden shrink-0 items-center gap-3 sm:flex">
-                      <LeakBar />
-                      <ArrowDown className="h-4 w-4 text-foreground/25" />
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-
-          {/* the turn — pulls the eye toward the cost of standing still */}
-          <Reveal delay={0.1}>
-            <div className="mt-12 flex flex-col items-center gap-4 text-center">
-              <p className="text-[15px] md:text-base font-medium text-foreground/80">
-                And that&rsquo;s one week. Now count every week you&rsquo;ve been open.
+          {/* RIGHT — supporting copy, spaced idea by idea */}
+          <Reveal delay={0.12}>
+            <div className="max-w-md lg:pt-2">
+              <p className="text-lg leading-relaxed text-foreground">
+                Every enquiry already costs you money to generate.
               </p>
-              <motion.span
-                aria-hidden
-                animate={{ y: [0, 5, 0] }}
-                transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut" }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-black/[0.08] text-foreground/40"
+
+              <div className="mt-7 space-y-1.5 text-lg leading-relaxed text-muted-foreground">
+                <p>But if nobody answers it&hellip;</p>
+                <p>If nobody follows it up&hellip;</p>
+                <p>If nobody books it&hellip;</p>
+                <p>If nobody tracks it&hellip;</p>
+              </div>
+
+              <p className="mt-7 font-headline text-3xl font-extrabold uppercase tracking-tight text-[#0a0b0b]">
+                It disappears.
+              </p>
+
+              <div className="mt-10 space-y-2 text-lg leading-relaxed">
+                <p className="text-muted-foreground">
+                  Most businesses don&rsquo;t have a marketing problem.
+                </p>
+                <p className="font-medium text-foreground">
+                  They have a <span className="text-emerald-600">revenue infrastructure</span> problem.
+                </p>
+              </div>
+
+              {/* minimal bridge into the cost calculator */}
+              <Link
+                to="/"
+                hash="cost"
+                className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-foreground/70 transition-colors duration-300 hover:text-foreground"
               >
-                <ArrowDown className="h-4 w-4" />
-              </motion.span>
+                See what it&rsquo;s costing you
+                <ArrowDown className="h-4 w-4 text-emerald-600 transition-transform duration-300 group-hover:translate-y-0.5" />
+              </Link>
             </div>
           </Reveal>
         </div>
@@ -3258,7 +3219,7 @@ function Landing() {
       <main>
         <Hero />
         <Trust />
-        <HiddenLeaks />
+        <ProblemReframe />
         <CostOfStandingStill />
         <LifeAfter />
         <WhyMontarro />

@@ -1158,6 +1158,16 @@ function HiddenLeaks() {
       <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
 
       <div className="mx-auto max-w-6xl px-6">
+        {/* TEMP VERIFICATION MARKER — remove once confirmed visible in preview */}
+        <div className="mb-10 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 px-5 py-4 text-center">
+          <p className="font-headline text-lg md:text-xl font-extrabold uppercase tracking-wide text-emerald-700">
+            ✦ Beat 3 — “The Hidden Problem” is now live ✦
+          </p>
+          <p className="mt-1 text-xs font-medium text-emerald-700/80">
+            Temporary verification marker. Once you can see this, tell Claude and it will be removed.
+          </p>
+        </div>
+
         {/* editorial intro — deliberately not a card grid */}
         <div className="max-w-3xl">
           <Reveal>

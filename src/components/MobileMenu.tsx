@@ -127,7 +127,7 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                             to={item.to}
                             hash={item.hash}
                             onClick={() => setOpen(false)}
-                            className="group/row flex items-center justify-between border-b border-white/[0.05] px-1 py-5 transition-colors duration-200"
+                            className="group/row flex items-center justify-between border-b border-white/[0.05] px-1 py-4 transition-colors duration-200"
                           >
                             <span className="flex flex-col">
                               <span className="flex items-center gap-2 text-[16px] font-semibold text-white/90 transition-colors duration-200 group-hover/row:text-white">
@@ -140,7 +140,7 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                                 )}
                               </span>
                               {item.desc && (
-                                <span className="mt-1.5 text-[11px] font-normal text-white/35">{item.desc}</span>
+                                <span className="mt-1 text-[11px] font-normal text-white/35">{item.desc}</span>
                               )}
                             </span>
                             <ArrowUpRight className="h-4 w-4 text-white/20 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />

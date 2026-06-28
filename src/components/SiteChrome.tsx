@@ -42,7 +42,7 @@ export function SiteNav() {
         {/* mobile actions — persistent call + qualify CTA beside the hamburger */}
         <div className="flex items-center gap-3 lg:hidden">
           <a
-            href="tel:+610345145084"
+            href="tel:0450731109"
             aria-label="Call Montarro"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[0.08] bg-card/50 text-foreground transition-colors duration-300 hover:border-foreground/30"
           >

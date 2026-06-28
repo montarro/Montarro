@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView, animate } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -2272,122 +2272,339 @@ function useCountUp(target: number, enabled: boolean) {
   return ref;
 }
 
-type Metric = {
-  display?: string;
-  numeric?: number;
-  suffix?: string;
-  label: string;
-  primary?: boolean;
-};
+/* ---------------- HOW IT WORKS · pinned, scroll-driven system tour ---------------- */
+/* One persistent dashboard that morphs through five stages as the user scrolls.
+   Keeps the #results anchor (the 'About' nav links + the hero secondary CTA). */
 
-function StatCard({ metric }: { metric: Metric }) {
-  const isNum = metric.numeric != null;
-  const ref = useCountUp(metric.numeric ?? 0, isNum);
+const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
+  { title: "Capture", icon: Inbox, copy: "Every call, web enquiry, Facebook lead and form lands in one place — instantly." },
+  { title: "AI Receptionist", icon: Bot, copy: "Answers in seconds, qualifies the caller and books the job — 24/7." },
+  { title: "CRM", icon: Database, copy: "Every conversation, quote and opportunity, organised automatically." },
+  { title: "Automation", icon: Workflow, copy: "Follow-ups, reminders, SMS, missed-call texts and reviews — all on their own." },
+  { title: "Reporting", icon: BarChart3, copy: "Every lead tracked from enquiry to booked job — response times, conversion, revenue." },
+];
+
+function HiwRow({ children, i }: { children: React.ReactNode; i: number }) {
   return (
-    <div
-      className={`group relative h-full overflow-hidden rounded-2xl border px-6 pt-7 pb-6 backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-1 ${
-        metric.primary
-          ? "border-emerald-500/25 bg-gradient-to-b from-emerald-500/[0.04] to-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_24px_60px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/45 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_34px_80px_-34px_rgba(16,185,129,0.5)]"
-          : "border-black/[0.06] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/30 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-32px_rgba(16,185,129,0.32)]"
-      }`}
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.12 + i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <span
-        aria-hidden
-        className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent transition-opacity duration-500 ${
-          metric.primary ? "opacity-100" : "opacity-40 group-hover:opacity-100"
-        }`}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.10),transparent_60%)]"
-      />
-      {metric.primary && (
-        <div className="absolute right-4 top-4 inline-flex items-center gap-1.5 text-[9px] font-medium uppercase tracking-[0.16em] text-emerald-600">
-          <LiveDot /> Live
-        </div>
-      )}
-      <div className="relative font-display text-5xl md:text-6xl text-gradient-chrome tabular-nums">
-        {isNum ? (
-          <>
-            <span ref={ref}>0</span>
-            {metric.suffix}
-          </>
-        ) : (
-          metric.display
-        )}
+      {children}
+    </motion.div>
+  );
+}
+
+function StageVisual({ step }: { step: number }) {
+  if (step === 0) {
+    const channels = [
+      { icon: PhoneCall, label: "Phone call", meta: "+61 4•• 218" },
+      { icon: MonitorSmartphone, label: "Website enquiry", meta: "Contact form" },
+      { icon: Facebook, label: "Facebook lead", meta: "Lead Ad" },
+      { icon: Mail, label: "Web form", meta: "Quote request" },
+    ];
+    return (
+      <div className="space-y-2.5">
+        <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Incoming · all channels</div>
+        {channels.map((c, i) => {
+          const I = c.icon;
+          return (
+            <HiwRow key={c.label} i={i}>
+              <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 shadow-[0_10px_30px_-26px_rgba(0,0,0,0.4)]">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+                  <I className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 text-[13px] font-medium text-foreground">{c.label}</span>
+                <span className="text-[10.5px] text-muted-foreground/70">{c.meta}</span>
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+              </div>
+            </HiwRow>
+          );
+        })}
+        <div className="pt-1 text-center text-[11px] font-medium text-emerald-600">↓ one inbox</div>
       </div>
-      <div className="relative mt-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground/80 font-medium">
-        {metric.label}
+    );
+  }
+
+  if (step === 1) {
+    const bubbles: { who: "ai" | "caller"; text: string }[] = [
+      { who: "ai", text: "Thanks for calling Montarro — how can I help?" },
+      { who: "caller", text: "I need to book a roof inspection." },
+      { who: "ai", text: "Booked — Thursday at 3:00 PM. Confirmation sent." },
+    ];
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center justify-between rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
+          <span className="flex items-center gap-2 text-[12px] font-medium text-foreground">
+            <PhoneCall className="h-3.5 w-3.5 text-emerald-600" /> Incoming call
+          </span>
+          <Waveform className="text-emerald-500" />
+        </div>
+        {bubbles.map((b, i) => (
+          <HiwRow key={i} i={i}>
+            <div className={`flex ${b.who === "caller" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 text-[13px] leading-snug ${b.who === "ai" ? "border-emerald-500/20 bg-emerald-500/[0.06] text-foreground" : "border-black/[0.08] bg-white text-foreground"}`}>
+                {b.text}
+              </div>
+            </div>
+          </HiwRow>
+        ))}
+        <HiwRow i={3}>
+          <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] px-3 py-2 text-[12px] font-medium text-emerald-700">
+            <CalendarCheck className="h-4 w-4" /> Appointment booked · Thu 3:00 PM
+          </div>
+        </HiwRow>
+      </div>
+    );
+  }
+
+  if (step === 2) {
+    const fields = [
+      { l: "Quote", v: "$1,200" },
+      { l: "Appointment", v: "Thu · 3:00 PM" },
+      { l: "Source", v: "Facebook Lead" },
+    ];
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/10 text-[12px] font-semibold text-emerald-700">MB</span>
+          <div className="min-w-0 flex-1">
+            <div className="text-[13px] font-semibold text-foreground">Mark B.</div>
+            <div className="text-[11px] text-muted-foreground">Roofing · new customer</div>
+          </div>
+          <span className="rounded-full border border-emerald-500/25 bg-emerald-500/[0.07] px-2 py-0.5 text-[10px] font-medium text-emerald-700">Qualified</span>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {fields.map((f, i) => (
+            <HiwRow key={f.l} i={i}>
+              <div className="rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{f.l}</div>
+                <div className="mt-0.5 text-[12.5px] font-semibold text-foreground">{f.v}</div>
+              </div>
+            </HiwRow>
+          ))}
+        </div>
+        <HiwRow i={3}>
+          <div className="flex items-center gap-2 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 text-[11px] text-muted-foreground">
+            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Call</span>
+            <span className="h-px flex-1 bg-black/10" />
+            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Quote sent</span>
+            <span className="h-px flex-1 bg-black/10" />
+            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Booked</span>
+          </div>
+        </HiwRow>
+      </div>
+    );
+  }
+
+  if (step === 3) {
+    const autos = [
+      { icon: PhoneCall, label: "Missed-call text sent" },
+      { icon: Clock, label: "Reminder SMS scheduled" },
+      { icon: Mail, label: "Email follow-up sent" },
+      { icon: Star, label: "Review request queued" },
+      { icon: Bot, label: "Team notified" },
+    ];
+    return (
+      <div className="space-y-2">
+        <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Automations · running</div>
+        {autos.map((a, i) => {
+          const I = a.icon;
+          return (
+            <HiwRow key={a.label} i={i}>
+              <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+                  <I className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 text-[13px] text-foreground">{a.label}</span>
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+              </div>
+            </HiwRow>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // step 4 — reporting
+  const kpis = [
+    { v: "0.8s", l: "Response" },
+    { v: "92%", l: "Conversion" },
+    { v: "$96.2K", l: "Revenue" },
+  ];
+  const funnel = [
+    { l: "Enquiries", n: 240, w: "100%" },
+    { l: "Qualified", n: 198, w: "82%" },
+    { l: "Booked", n: 176, w: "73%" },
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-2">
+        {kpis.map((k, i) => (
+          <HiwRow key={k.l} i={i}>
+            <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-3 py-3 text-center">
+              <div className="font-display text-xl tabular-nums text-foreground">{k.v}</div>
+              <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/70">{k.l}</div>
+            </div>
+          </HiwRow>
+        ))}
+      </div>
+      <div className="space-y-2">
+        {funnel.map((f, i) => (
+          <HiwRow key={f.l} i={i}>
+            <div>
+              <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>{f.l}</span>
+                <span className="tabular-nums text-foreground/70">{f.n}</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                  initial={{ width: 0 }}
+                  animate={{ width: f.w }}
+                  transition={{ delay: 0.2 + i * 0.12, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </div>
+            </div>
+          </HiwRow>
+        ))}
       </div>
     </div>
   );
 }
 
-function BackgroundGraph() {
+function HiwDashboard({ step }: { step: number }) {
   return (
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="h-full w-full">
-      <motion.path
-        d="M0,92 C160,84 250,62 400,56 C560,50 660,74 820,50 C980,28 1080,42 1200,18"
-        fill="none"
-        stroke="rgba(16,185,129,0.16)"
-        strokeWidth="1"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
-      />
-    </svg>
+    <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-[0_50px_120px_-50px_rgba(0,0,0,0.28)]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+      {/* window chrome — persistent */}
+      <div className="flex items-center justify-between border-b border-black/[0.06] px-4 py-3">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+        </div>
+        <span className="text-[11px] font-medium tracking-tight text-muted-foreground">
+          Montarro OS · <span className="text-foreground">{HIW_STEPS[step].title}</span>
+        </span>
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-600">
+          <LiveDot /> Live
+        </span>
+      </div>
+      <div className="flex">
+        {/* module rail — persistent, current module highlighted */}
+        <div className="flex flex-col gap-1.5 border-r border-black/[0.06] p-2.5">
+          {HIW_STEPS.map((s, i) => {
+            const I = s.icon;
+            const on = i === step;
+            return (
+              <span
+                key={s.title}
+                className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
+                  on
+                    ? "border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
+                    : "border-transparent text-foreground/25"
+                }`}
+              >
+                <I className="h-4 w-4" />
+              </span>
+            );
+          })}
+        </div>
+        {/* body — swaps per stage, frame stays */}
+        <div className="relative min-h-[340px] flex-1 p-4 sm:min-h-[380px] sm:p-5">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <StageVisual step={step} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
   );
 }
 
-function Results() {
-  const metrics: Metric[] = [
-    { display: "24/7", label: "Always-on AI response", primary: true },
-    { display: "<1s", label: "Average response time", primary: true },
-    { numeric: 1000, suffix: "+", label: "Calls handled / client · month" },
-    { numeric: 5, suffix: "+", label: "Integrated growth services" },
-  ];
+function HowItWorks() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const [step, setStep] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const i = Math.min(HIW_STEPS.length - 1, Math.max(0, Math.floor(v * HIW_STEPS.length)));
+    setStep(i);
+  });
+
   return (
-    <section id="results" className="relative overflow-hidden border-t border-black/[0.04] py-20 lg:py-28">
-      {/* layered background depth */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white via-[#fbfcfc] to-white" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[440px] max-w-4xl"
-        style={{ background: "radial-gradient(ellipse 55% 60% at 50% 0%, rgba(16,185,129,0.06), transparent 70%)" }}
-      />
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.02] mix-blend-multiply"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-        }}
-      />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-16 -z-10 mx-auto h-28 max-w-5xl px-6">
-        <BackgroundGraph />
-      </div>
+    <section id="results" ref={ref} className="relative bg-white" style={{ height: `${HIW_STEPS.length * 100}vh` }}>
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        {/* soft emerald accent — intensifies on the final (reporting) stage */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] transition-opacity duration-700"
+          style={{
+            background: "radial-gradient(ellipse 60% 70% at 70% 0%, rgba(16,185,129,0.08), transparent 70%)",
+            opacity: step === HIW_STEPS.length - 1 ? 1 : 0.55,
+          }}
+        />
+        <div aria-hidden className="absolute inset-0 -z-0 bg-grid opacity-[0.035] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.05] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-emerald-700 backdrop-blur">
-            <LiveDot /> Live Infrastructure
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 lg:grid-cols-[0.82fr_1.18fr]">
+          {/* LEFT — narrative + progress */}
+          <div>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">How It Works</span>
+            </div>
+
+            <div className="text-[12px] font-medium tabular-nums tracking-[0.2em] text-muted-foreground/60">
+              {String(step + 1).padStart(2, "0")} / {String(HIW_STEPS.length).padStart(2, "0")}
+            </div>
+
+            <div className="relative mt-3 min-h-[180px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
+                    {HIW_STEPS[step].title}
+                  </h3>
+                  <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
+                    {HIW_STEPS[step].copy}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* progress segments */}
+            <div className="mt-8 flex items-center gap-2">
+              {HIW_STEPS.map((s, i) => (
+                <div key={s.title} className="h-1 flex-1 overflow-hidden rounded-full bg-black/10">
+                  <motion.div
+                    className="h-full rounded-full bg-emerald-500"
+                    initial={false}
+                    animate={{ width: i <= step ? "100%" : "0%" }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground/50 sm:block">
+              Scroll to watch the system run
+            </div>
           </div>
-          <h2 className="max-w-3xl font-display text-5xl md:text-7xl leading-[0.95] text-gradient-chrome">
-            Engineered for performance.
-          </h2>
-          <p className="mt-5 max-w-xl leading-relaxed text-muted-foreground">
-            Systems designed to capture, qualify, and compound demand at scale.
-          </p>
-        </Reveal>
 
-        <div className="mt-12 md:mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((m, i) => (
-            <Reveal key={m.label} delay={0.05 + i * 0.1}>
-              <StatCard metric={m} />
-            </Reveal>
-          ))}
+          {/* RIGHT — the one dashboard */}
+          <HiwDashboard step={step} />
         </div>
       </div>
     </section>
@@ -3217,7 +3434,7 @@ function Landing() {
         <LifeAfter />
         <WhyMontarro />
         <ExperienceInfra />
-        <Results />
+        <HowItWorks />
         <CaseStudy />
         <Integrations />
         <Pricing />

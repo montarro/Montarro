@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView, useMotionValueEvent, animate, type MotionValue } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -2272,11 +2272,12 @@ function useCountUp(target: number, enabled: boolean) {
   return ref;
 }
 
-/* ---------------- HOW IT WORKS · pinned, scroll-scrubbed system tour ---------------- */
-/* One pinned presentation. The viewport stays stationary; scroll position drives a
-   continuous animation timeline — every stage is stacked and its opacity/offset is
-   tied directly to scroll, so the interface morphs rather than the page moving past
-   blank screens. Keeps the #results anchor (the 'About' nav + hero secondary CTA). */
+/* ---------------- HOW IT WORKS · pinned single-stage system tour ---------------- */
+/* One sticky viewport over a 500vh track. scrollYProgress drives a single
+   activeStage (0..n-1); only ONE stage renders at a time and AnimatePresence
+   crossfades outgoing -> incoming so the dashboard morphs in place — no stacking,
+   no overlap. Left heading/copy/progress and the dashboard all read activeStage.
+   Keeps the #results anchor (the 'About' nav links + hero secondary CTA). */
 
 const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
   { title: "Capture", icon: Inbox, copy: "Every call, web enquiry, Facebook lead and form lands in one place — instantly." },
@@ -2443,64 +2444,22 @@ function StageVisual({ step }: { step: number }) {
   );
 }
 
-/* Per-stage scrub window, CLAMPED to [0,1]. scrollYProgress only spans [0,1], and
-   Motion maps a transform's input-range positions to Web Animations API keyframe
-   offsets — which must stay within [0,1] or Element.animate() throws at mount. The
-   first/last stages therefore use one-sided 2-point ranges instead of c±w. */
-function hiwWindow(i: number, n: number) {
-  const c = i / (n - 1);
-  const w = 1 / (n - 1);
-  if (i === 0) return { input: [0, w], opacity: [1, 0], y: [0, -18] };
-  if (i === n - 1) return { input: [1 - w, 1], opacity: [0, 1], y: [18, 0] };
-  return { input: [c - w, c, c + w], opacity: [0, 1, 0], y: [18, 0, -18] };
-}
-
-/* a stage stacked in the dashboard body; opacity + drift scrubbed by scroll */
-function StageBodyLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
-  const win = hiwWindow(i, n);
-  const opacity = useTransform(progress, win.input, win.opacity);
-  const y = useTransform(progress, win.input, win.y);
+function RailIcon({ active, i, Icon }: { active: number; i: number; Icon: typeof Inbox }) {
+  const on = i === active;
   return (
-    <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0 p-4 sm:p-5">
-      <StageVisual step={i} />
-    </motion.div>
-  );
-}
-
-/* the matching headline + copy, scrubbed in step with the dashboard */
-function StageTextLayer({ progress, i, n }: { progress: MotionValue<number>; i: number; n: number }) {
-  const win = hiwWindow(i, n);
-  const opacity = useTransform(progress, win.input, win.opacity);
-  const y = useTransform(progress, win.input, win.y);
-  return (
-    <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0">
-      <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
-        {HIW_STEPS[i].title}
-      </h3>
-      <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">{HIW_STEPS[i].copy}</p>
-    </motion.div>
-  );
-}
-
-/* a module-rail icon whose emerald highlight crossfades with scroll */
-function RailIcon({ progress, i, n, Icon }: { progress: MotionValue<number>; i: number; n: number; Icon: typeof Inbox }) {
-  const win = hiwWindow(i, n);
-  const opacity = useTransform(progress, win.input, win.opacity);
-  return (
-    <span className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground/25">
+    <span
+      className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
+        on
+          ? "border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
+          : "border-transparent text-foreground/25"
+      }`}
+    >
       <Icon className="h-4 w-4" />
-      <motion.span
-        style={{ opacity }}
-        className="absolute inset-0 flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
-      >
-        <Icon className="h-4 w-4" />
-      </motion.span>
     </span>
   );
 }
 
-function HiwDashboard({ progress, current }: { progress: MotionValue<number>; current: number }) {
-  const n = HIW_STEPS.length;
+function HiwDashboard({ active }: { active: number }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-[0_50px_120px_-50px_rgba(0,0,0,0.28)]">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
@@ -2512,24 +2471,33 @@ function HiwDashboard({ progress, current }: { progress: MotionValue<number>; cu
           <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
         </div>
         <span className="text-[11px] font-medium tracking-tight text-muted-foreground">
-          Montarro OS · <span className="text-foreground">{HIW_STEPS[current].title}</span>
+          Montarro OS · <span className="text-foreground">{HIW_STEPS[active].title}</span>
         </span>
         <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-600">
           <LiveDot /> Live
         </span>
       </div>
       <div className="flex">
-        {/* module rail — persistent, highlight crossfades with scroll */}
+        {/* module rail — persistent, current module highlighted */}
         <div className="flex flex-col gap-1.5 border-r border-black/[0.06] p-2.5">
           {HIW_STEPS.map((s, i) => (
-            <RailIcon key={s.title} progress={progress} i={i} n={n} Icon={s.icon} />
+            <RailIcon key={s.title} active={active} i={i} Icon={s.icon} />
           ))}
         </div>
-        {/* body — every stage stacked, scrubbed by scroll; frame stays put */}
-        <div className="relative h-[360px] flex-1 sm:h-[400px]">
-          {HIW_STEPS.map((s, i) => (
-            <StageBodyLayer key={s.title} progress={progress} i={i} n={n} />
-          ))}
+        {/* body — ONE stage at a time, crossfaded; frame stays put */}
+        <div className="relative h-[360px] flex-1 overflow-hidden sm:h-[400px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 p-4 sm:p-5"
+            >
+              <StageVisual step={active} />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -2540,13 +2508,14 @@ function HowItWorks() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const n = HIW_STEPS.length;
-  const [current, setCurrent] = useState(0);
+  const [active, setActive] = useState(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setCurrent(Math.min(n - 1, Math.max(0, Math.round(v * (n - 1)))));
+    const idx = Math.min(n - 1, Math.max(0, Math.floor(v * n)));
+    setActive((p) => (p === idx ? p : idx));
   });
 
   return (
-    <section id="results" ref={ref} className="relative bg-white" style={{ height: "280vh" }}>
+    <section id="results" ref={ref} className="relative bg-white" style={{ height: "500vh" }}>
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         {/* soft emerald accent */}
         <div
@@ -2557,7 +2526,7 @@ function HowItWorks() {
         <div aria-hidden className="absolute inset-0 -z-0 bg-grid opacity-[0.035] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
 
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 lg:grid-cols-[0.82fr_1.18fr]">
-          {/* LEFT — narrative + progress */}
+          {/* LEFT — narrative + progress, all from activeStage */}
           <div>
             <div className="mb-6 flex items-center gap-3">
               <span className="h-px w-10 bg-emerald-500/70" />
@@ -2565,19 +2534,40 @@ function HowItWorks() {
             </div>
 
             <div className="text-[12px] font-medium tabular-nums tracking-[0.2em] text-muted-foreground/60">
-              {String(current + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
+              {String(active + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
             </div>
 
-            {/* stacked headline/copy, scrubbed */}
+            {/* single heading/copy, crossfaded */}
             <div className="relative mt-3 h-[200px] sm:h-[210px]">
-              {HIW_STEPS.map((s, i) => (
-                <StageTextLayer key={s.title} progress={scrollYProgress} i={i} n={n} />
-              ))}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0"
+                >
+                  <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
+                    {HIW_STEPS[active].title}
+                  </h3>
+                  <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">{HIW_STEPS[active].copy}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
-            {/* continuous progress bar */}
-            <div className="mt-6 h-1 w-full overflow-hidden rounded-full bg-black/10">
-              <motion.div className="h-full origin-left rounded-full bg-emerald-500" style={{ scaleX: scrollYProgress }} />
+            {/* progress segments — driven by activeStage */}
+            <div className="mt-6 flex items-center gap-2">
+              {HIW_STEPS.map((s, i) => (
+                <div key={s.title} className="h-1 flex-1 overflow-hidden rounded-full bg-black/10">
+                  <motion.div
+                    className="h-full rounded-full bg-emerald-500"
+                    initial={false}
+                    animate={{ width: i <= active ? "100%" : "0%" }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                </div>
+              ))}
             </div>
             <div className="mt-3 hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground/50 sm:block">
               Scroll to watch the system run
@@ -2585,7 +2575,7 @@ function HowItWorks() {
           </div>
 
           {/* RIGHT — the one dashboard */}
-          <HiwDashboard progress={scrollYProgress} current={current} />
+          <HiwDashboard active={active} />
         </div>
       </div>
     </section>
@@ -3405,7 +3395,7 @@ function Reviews() {
 
 function Landing() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
       <Nav />
       <main>
         <Hero />

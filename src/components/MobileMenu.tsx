@@ -200,7 +200,7 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                       onClick={() => setOpen(false)}
                       className={`${primaryCta} flex w-full px-6 py-3.5 text-sm`}
                     >
-                      Book a Free Consultation
+                      Book a Strategy Call
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                   </div>

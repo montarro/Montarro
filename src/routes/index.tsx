@@ -108,19 +108,29 @@ function Nav() {
             );
           })()}
         </nav>
-        <Link
-          to="/contact"
-          className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
-        >
-          Book a Strategy Call
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-        {/* mobile actions — single CTA + bare hamburger, kept clean */}
-        <div className="flex items-center gap-4 lg:hidden">
-          <Link to="/contact" className={`${primaryCta} inline-flex px-5 py-2.5 text-[13px]`}>
-            Book a Call
+        <div className="flex items-center gap-3 lg:gap-4">
+          {/* persistent bare call icon — all pages, mobile + desktop */}
+          <a
+            href="tel:0450731109"
+            aria-label="Call Montarro"
+            className="inline-flex items-center justify-center text-foreground/70 transition-colors duration-300 hover:text-foreground"
+          >
+            <Phone className="h-[18px] w-[18px]" />
+          </a>
+          <Link
+            to="/contact"
+            className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
+          >
+            Book a Strategy Call
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-          <MobileMenu />
+          {/* mobile actions — single CTA + bare hamburger, kept clean */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <Link to="/contact" className={`${primaryCta} inline-flex px-5 py-2.5 text-[13px]`}>
+              Book a Call
+            </Link>
+            <MobileMenu />
+          </div>
         </div>
       </div>
     </header>

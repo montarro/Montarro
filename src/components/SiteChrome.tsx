@@ -32,26 +32,29 @@ export function SiteNav() {
             );
           })()}
         </nav>
-        <Link
-          to="/contact"
-          className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
-        >
-          Book a Strategy Call
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-        {/* mobile actions — persistent call + qualify CTA beside the hamburger */}
-        <div className="flex items-center gap-3 lg:hidden">
+        <div className="flex items-center gap-3 lg:gap-4">
+          {/* persistent bare call icon — all pages, mobile + desktop */}
           <a
             href="tel:0450731109"
             aria-label="Call Montarro"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[0.08] bg-card/50 text-foreground transition-colors duration-300 hover:border-foreground/30"
+            className="inline-flex items-center justify-center text-foreground/70 transition-colors duration-300 hover:text-foreground"
           >
-            <Phone className="h-[17px] w-[17px]" />
+            <Phone className="h-[18px] w-[18px]" />
           </a>
-          <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
-            Do I Qualify?
+          <Link
+            to="/contact"
+            className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
+          >
+            Book a Strategy Call
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-          <MobileMenu />
+          {/* mobile actions — qualify CTA beside the hamburger */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
+              Do I Qualify?
+            </Link>
+            <MobileMenu />
+          </div>
         </div>
       </div>
     </header>

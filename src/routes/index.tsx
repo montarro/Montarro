@@ -1884,117 +1884,99 @@ function ModuleCard({
   );
 }
 
-type Stage = {
-  n: string;
-  icon: typeof Megaphone;
-  title: string;
-  desc: string;
-  hash?: string;
-  href?: string;
-  core?: boolean;
-};
+/* ---------------- BEAT 6 · WHY BUSINESSES CHOOSE MONTARRO ---------------- */
+/* Premium editorial positioning — typical agency vs Montarro. Carries the
+   #system nav anchor so the existing "The System" links keep resolving. */
 
-function SystemJourney() {
-  const stages: Stage[] = [
-    { n: "01", icon: Megaphone, title: "Lead Generation", desc: "Google & Meta campaigns bring qualified demand to your door." },
-    { n: "02", icon: PhoneCall, title: "Lead Capture", desc: "Every call, form and enquiry captured the moment it arrives." },
-    { n: "03", icon: Bot, title: "AI Qualification", desc: "The AI receptionist answers, qualifies and prioritises each lead — 24/7.", href: "/services/ai-receptionists", core: true },
-    { n: "04", icon: Database, title: "CRM", desc: "Every contact organised in one live source of truth." },
-    { n: "05", icon: CalendarCheck, title: "Booking", desc: "Appointments booked straight into your calendar, automatically." },
-    { n: "06", icon: Workflow, title: "Follow-Up", desc: "Automated SMS & email sequences so no lead ever goes cold." },
-    { n: "07", icon: BarChart3, title: "Reporting", desc: "Real-time visibility on pipeline, response times and revenue." },
-    { n: "08", icon: TrendingUp, title: "Growth", desc: "Compounding, predictable revenue — month after month." },
+function WhyMontarro() {
+  const rows: { agency: string; montarro: string }[] = [
+    { agency: "Sells you services.", montarro: "Engineers your revenue infrastructure." },
+    { agency: "Delivers a project, then moves on.", montarro: "Builds systems that compound." },
+    { agency: "A patchwork of disconnected tools.", montarro: "One connected ecosystem." },
+    { agency: "Reports clicks and impressions.", montarro: "Measured on booked jobs and revenue." },
+    { agency: "Manual follow-up, when there's time.", montarro: "AI that follows up instantly, every time." },
+    { agency: "Reactive support.", montarro: "A long-term operational partner." },
   ];
   return (
-    <section id="system" className="relative overflow-hidden py-24 lg:py-36">
-      {/* cinematic emerald glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px] overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[480px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_65%)] blur-3xl" />
-      </div>
-      <div className="absolute inset-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
+    <section id="system" className="relative overflow-hidden bg-[#fafaf9] py-24 lg:py-36">
+      {/* hairline top edge to separate from the transformation beat */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-black/[0.06]" />
 
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700 backdrop-blur">
-              <span className="h-px w-6 bg-emerald-500/70" /> The Montarro System
+      <div className="mx-auto max-w-5xl px-6">
+        {/* editorial header — left-aligned, generous air */}
+        <div className="max-w-3xl">
+          <Reveal>
+            <div className="mb-7 flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
+                Why Montarro
+              </span>
             </div>
-            <h2 className="font-display text-5xl md:text-7xl leading-[1.0] tracking-[-0.03em] text-gradient-chrome">
-              One complete growth system.
+            <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
+              This isn&rsquo;t an agency.
+              <br />
+              It&rsquo;s <span className="text-emerald-600">revenue infrastructure.</span>
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg text-muted-foreground leading-relaxed">
-              Not a stack of disconnected tools — a single platform where every
-              lead is generated, captured, qualified, booked, nurtured and
-              measured. Lead in. Revenue out.
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              You can already see the problem, the cost, and what changes. The only
+              question left is who builds it. Most companies sell you services and
+              disappear. We engineer one system that runs your growth — and stay to
+              run it with you.
             </p>
-          </div>
-        </Reveal>
-
-        {/* journey rail */}
-        <div className="relative mt-14 lg:mt-20">
-          {/* flow caption */}
-          <div className="mb-6 flex items-center justify-between text-[10.5px] uppercase tracking-[0.24em] text-muted-foreground/60">
-            <span className="inline-flex items-center gap-2"><LiveDot /> Lead in</span>
-            <span className="inline-flex items-center gap-2">Revenue out <TrendingUp className="h-3.5 w-3.5 text-emerald-500" /></span>
-          </div>
-          {/* connecting line */}
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[3.1rem] hidden h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent lg:block" />
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {stages.map((s, i) => {
-              const Icon = s.icon;
-              const inner = (
-                <div
-                  className={`group relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur transition-all duration-500 ease-out hover:-translate-y-1 ${
-                    s.core
-                      ? "border-emerald-500/40 bg-gradient-to-b from-[#0f1110] to-[#0a0b0b] text-white shadow-[0_40px_90px_-50px_rgba(16,185,129,0.55)]"
-                      : "border-black/[0.08] bg-gradient-to-b from-white to-[#f6f7f8] shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-44px_rgba(0,0,0,0.22)] hover:border-emerald-500/35"
-                  }`}
-                >
-                  <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100" />
-                  <div className="flex items-center justify-between">
-                    <span className={`flex h-11 w-11 items-center justify-center rounded-xl border ${s.core ? "border-emerald-500/40 bg-emerald-500/[0.12] text-emerald-300" : "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600"}`}>
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <span className={`font-display text-sm tabular-nums tracking-widest ${s.core ? "text-white/40" : "text-muted-foreground/40"}`}>{s.n}</span>
-                  </div>
-                  <div className={`mt-5 font-display text-xl tracking-tight ${s.core ? "text-white" : "text-foreground"}`}>{s.title}</div>
-                  <p className={`mt-2 flex-1 text-[13.5px] leading-relaxed ${s.core ? "text-white/60" : "text-muted-foreground"}`}>{s.desc}</p>
-                  {s.core && (
-                    <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-medium text-emerald-300">
-                      Meet the AI Receptionist
-                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </span>
-                  )}
-                </div>
-              );
-              return (
-                <Reveal key={s.title} delay={0.05 * i} className="h-full">
-                  {s.href ? (
-                    <Link to={s.href} className="block h-full">{inner}</Link>
-                  ) : s.hash ? (
-                    <Link to="/" hash={s.hash} className="block h-full">{inner}</Link>
-                  ) : (
-                    inner
-                  )}
-                </Reveal>
-              );
-            })}
-          </div>
+          </Reveal>
         </div>
 
-        {/* closing line */}
+        {/* the comparison — borderless editorial spine, deliberately not cards */}
+        <div className="mt-16 lg:mt-24">
+          {/* column labels */}
+          <Reveal>
+            <div className="grid grid-cols-2">
+              <div className="pb-5 pr-4 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/45 sm:pr-10">
+                Most agencies
+              </div>
+              <div className="border-l border-black/10 pb-5 pl-4 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-emerald-600 sm:pl-10">
+                Montarro
+              </div>
+            </div>
+          </Reveal>
+
+          {rows.map((r, i) => (
+            <Reveal key={r.montarro} delay={0.05 * i}>
+              <div className="group grid grid-cols-2 border-t border-black/[0.08]">
+                {/* agency — receding */}
+                <div className="py-7 pr-4 sm:pr-10">
+                  <span className="text-[15px] font-light leading-snug text-muted-foreground/70 transition-colors duration-500 group-hover:text-muted-foreground/45 sm:text-lg">
+                    {r.agency}
+                  </span>
+                </div>
+                {/* montarro — confident, anchored to the spine */}
+                <div className="relative border-l border-black/10 py-7 pl-4 sm:pl-10">
+                  <span
+                    aria-hidden
+                    className="absolute -left-[3.5px] top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-emerald-500/60 transition-all duration-500 group-hover:h-2 group-hover:w-2 group-hover:bg-emerald-500"
+                  />
+                  <span className="relative inline-block text-[15px] font-medium leading-snug text-foreground sm:text-lg">
+                    {r.montarro}
+                    <span
+                      aria-hidden
+                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-emerald-500/60 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    />
+                  </span>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+          <div aria-hidden className="border-t border-black/[0.08]" />
+        </div>
+
+        {/* the takeaway */}
         <Reveal delay={0.1}>
-          <div className="mx-auto mt-14 flex max-w-2xl flex-col items-center gap-5 text-center">
-            <p className="text-[15px] leading-relaxed text-muted-foreground">
-              Every stage feeds the next — so nothing slips through the cracks,
-              and every dollar of demand is accounted for.
-            </p>
-            <Link to="/contact" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
-              Book a Free Consultation
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
+          <p className="mt-16 max-w-2xl text-xl leading-snug text-foreground sm:text-2xl">
+            <span className="text-muted-foreground">You don&rsquo;t need another agency.</span>{" "}
+            You need infrastructure that runs without you.
+          </p>
         </Reveal>
       </div>
     </section>
@@ -3171,7 +3153,7 @@ function Landing() {
         <HiddenLeaks />
         <CostOfStandingStill />
         <LifeAfter />
-        <SystemJourney />
+        <WhyMontarro />
         <ExperienceInfra />
         <Results />
         <CaseStudy />

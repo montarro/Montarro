@@ -1414,114 +1414,158 @@ function CostOfStandingStill() {
 
 /* ---------------- BEAT 5 · LIFE AFTER MONTARRO (the transformation) ---------------- */
 
+/* The "before" state — a business running without structure. Dark charcoal,
+   subtle red accents, soft red ambient glow: stress and overload, not alarm. */
 function BeforeState() {
-  const countRef = useCountUp(7, true);
-  const alerts = [
-    { icon: PhoneMissed, text: "Calls you can’t answer mid-job", meta: "now" },
-    { icon: Clock, text: "Leads going cold before you call back", meta: "18m" },
-    { icon: ClipboardList, text: "Admin eating into your evenings", meta: "9:40pm" },
-    { icon: RefreshCw, text: "Follow-ups that never happen", meta: "—" },
-    { icon: Inbox, text: "A pipeline you can’t see", meta: "?" },
+  const missedRef = useCountUp(12, true);
+  const pile = [
+    { icon: PhoneMissed, label: "Missed call · Mark R.", tag: "2m" },
+    { icon: Mail, label: "Voicemail", tag: "unread" },
+    { icon: ClipboardList, label: "Quote #1184", tag: "overdue 3d" },
+    { icon: RefreshCw, label: "Follow-up · Sarah", tag: "forgotten" },
   ];
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-black/[0.12] bg-gradient-to-b from-[#ededeb] to-[#dededb] p-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.45),0_34px_70px_-40px_rgba(0,0,0,0.42)] sm:p-7">
-      {/* header */}
-      <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-black/[0.045] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/55">
-          <AlertTriangle className="h-3.5 w-3.5" /> Reactive
+    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-b from-[#181311] to-[#0d0a09] p-6 shadow-[0_40px_90px_-50px_rgba(0,0,0,0.85)] sm:p-7">
+      {/* soft red ambient glow — stress, not alarm */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-16 right-[-12%] h-60 w-72 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(208,66,58,0.18), transparent 65%)" }}
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-500/25 to-transparent" />
+
+      {/* late, and the phone is still ringing with no one to answer */}
+      <div className="relative flex items-center justify-between">
+        <span className="inline-flex items-center gap-2 text-[12px] font-medium text-white/45">
+          <motion.span
+            className="h-2 w-2 rounded-full bg-red-500/90"
+            animate={{ opacity: [1, 0.2, 1], scale: [1, 0.8, 1] }}
+            transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          Ringing — no answer
         </span>
-        <span className="text-[10.5px] font-medium uppercase tracking-[0.24em] text-foreground/35">Before</span>
+        <span className="text-[12px] tabular-nums text-white/30">9:41 PM</span>
       </div>
 
-      {/* the stress metric — piling up */}
-      <div className="mt-6 flex items-end gap-2.5">
-        <span ref={countRef} className="font-headline text-5xl font-extrabold leading-none tabular-nums text-foreground/80">0</span>
-        <span className="mb-1 text-[13px] text-foreground/45">missed calls today</span>
+      {/* overwhelm — the number that keeps climbing */}
+      <div className="relative mt-6 flex items-end gap-2.5">
+        <span ref={missedRef} className="font-headline text-6xl font-extrabold leading-none tabular-nums text-white">0</span>
+        <span className="mb-1.5 text-[13px] text-white/40">missed this week</span>
       </div>
-      <div className="mt-3 flex items-center gap-2">
-        <div className="h-1 flex-1 overflow-hidden rounded-full bg-black/[0.07]">
+      <div className="relative mt-3 flex items-center gap-2.5">
+        <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
           <motion.div
-            className="h-full rounded-full bg-foreground/30"
-            initial={{ width: "38%" }}
-            whileInView={{ width: "94%" }}
+            className="h-full rounded-full bg-red-500/55"
+            initial={{ width: "34%" }}
+            whileInView={{ width: "96%" }}
             viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           />
         </div>
-        <span className="text-[10px] uppercase tracking-[0.16em] text-foreground/35">At capacity</span>
+        <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-red-400/70">Overloaded</span>
       </div>
 
-      {/* the noise — alerts that never stop */}
-      <div className="mt-6 space-y-2">
-        {alerts.map((a, i) => {
-          const I = a.icon;
+      {/* the pile — disconnected scraps, nothing tying them together */}
+      <div className="relative mt-6 space-y-2">
+        {pile.map((p, i) => {
+          const I = p.icon;
           return (
-            <Reveal key={a.text} delay={0.04 * i}>
-              <div className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-white/45 px-3.5 py-2.5">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-black/[0.05] text-foreground/40">
+            <Reveal key={p.label} delay={0.05 * i}>
+              <div className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] text-white/40">
                   <I className="h-3.5 w-3.5" />
                 </span>
-                <span className="flex-1 text-[13px] leading-snug text-foreground/60">{a.text}</span>
-                <span className="shrink-0 text-[10.5px] tabular-nums text-foreground/30">{a.meta}</span>
+                <span className="flex-1 truncate text-[13px] text-white/65">{p.label}</span>
+                <span className="shrink-0 rounded-full border border-red-500/25 bg-red-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-red-300/90">
+                  {p.tag}
+                </span>
               </div>
             </Reveal>
           );
         })}
       </div>
+
+      {/* the real problem, named */}
+      <div className="relative mt-auto flex items-center gap-3 pt-6 text-[10.5px] uppercase tracking-[0.2em] text-white/30">
+        <span className="h-px flex-1 bg-white/10" />
+        No system holding it together
+        <span className="h-px flex-1 bg-white/10" />
+      </div>
     </div>
   );
 }
 
+/* The "after" state — one connected operating system. Deep emerald glass, soft
+   green glow: confidence, automation and control. */
 function AfterState() {
-  const outcomes = [
-    "Every call answered — even mid-job",
-    "Leads followed up within seconds",
-    "Your nights and weekends back",
-    "Follow-up that runs on its own",
-    "Every job visible in one place",
+  const flow = [
+    { icon: PhoneCall, label: "Answer" },
+    { icon: CheckCircle2, label: "Qualify" },
+    { icon: CalendarCheck, label: "Book" },
+    { icon: Database, label: "Sync" },
+    { icon: Workflow, label: "Nurture" },
+  ];
+  const stats = [
+    { v: "0", l: "Missed" },
+    { v: "0.8s", l: "Response" },
+    { v: "100%", l: "Booked" },
   ];
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-emerald-500/20 bg-white p-6 shadow-[0_34px_80px_-44px_rgba(16,185,129,0.45),inset_0_1px_0_0_rgba(255,255,255,0.9)] sm:p-7">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-b from-[#06281d] to-[#03120c] p-6 shadow-[0_40px_90px_-46px_rgba(16,185,129,0.5)] sm:p-7">
+      {/* soft green ambient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-48 w-[130%] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.12), transparent 65%)" }}
+        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[130%] -translate-x-1/2 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.2), transparent 65%)" }}
       />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
 
-      {/* header */}
+      {/* one connected system, always on */}
       <div className="relative flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.07] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-700">
-          <LiveDot /> Automatic
+        <span className="inline-flex items-center gap-2 text-[12px] font-medium text-emerald-100/85">
+          <LiveDot /> One connected system
         </span>
-        <span className="text-[10.5px] font-medium uppercase tracking-[0.24em] text-emerald-700/60">After Montarro</span>
+        <span className="text-[12px] tabular-nums text-emerald-200/40">24/7</span>
       </div>
 
-      {/* the calm metric */}
-      <div className="relative mt-6 flex items-end gap-2.5">
-        <span className="font-headline text-5xl font-extrabold leading-none tabular-nums text-foreground">100%</span>
-        <span className="mb-1 text-[13px] text-muted-foreground">of calls handled</span>
+      {/* the pipeline — one flow, automation moving through it */}
+      <div className="relative mt-8 flex items-center justify-between">
+        {flow.map((n, i) => {
+          const I = n.icon;
+          return (
+            <div key={n.label} className="flex flex-1 flex-col items-center last:flex-none">
+              <div className="relative flex w-full items-center justify-center">
+                <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/[0.08] text-emerald-200">
+                  <I className="h-4 w-4" />
+                </span>
+                {i < flow.length - 1 && (
+                  <div className="relative mx-1 h-px flex-1 bg-emerald-400/20">
+                    <motion.span
+                      className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.9)]"
+                      animate={{ left: ["-6px", "100%"] }}
+                      transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 }}
+                    />
+                  </div>
+                )}
+              </div>
+              <span className="mt-2 text-[9px] uppercase tracking-wider text-emerald-200/55">{n.label}</span>
+            </div>
+          );
+        })}
       </div>
-      <div className="relative mt-3 text-[12px] font-medium text-emerald-700/75">Nothing waiting. Nothing slipping through.</div>
 
-      {/* the outcomes — settling into place */}
-      <div className="relative mt-6 space-y-2">
-        {outcomes.map((o, i) => (
-          <motion.div
-            key={o}
-            initial={{ opacity: 0, x: 8 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ delay: 0.2 + i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-3.5 py-2.5"
-          >
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/[0.12] text-emerald-600">
-              <Check className="h-3.5 w-3.5" />
-            </span>
-            <span className="flex-1 text-[13px] font-medium leading-snug text-foreground">{o}</span>
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-          </motion.div>
+      {/* calm proof */}
+      <div className="relative mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-emerald-400/15 bg-emerald-400/[0.06]">
+        {stats.map((s) => (
+          <div key={s.l} className="bg-[#04160f]/85 px-3 py-3 text-center">
+            <div className="font-display text-lg tabular-nums text-white">{s.v}</div>
+            <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-emerald-200/45">{s.l}</div>
+          </div>
         ))}
+      </div>
+
+      <div className="relative mt-auto pt-6 text-[12px] font-medium text-emerald-100/75">
+        Nothing waiting. Nothing slipping. It just runs.
       </div>
     </div>
   );
@@ -1530,17 +1574,17 @@ function AfterState() {
 function LifeAfter() {
   return (
     <section id="transformation" className="relative overflow-hidden py-24 lg:py-32">
-      {/* bright, airy canvas — emerald dawn glow signals relief after the dark cost beat */}
+      {/* bright, airy canvas — the two states sit on it as dark UI panels */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-white" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[460px]"
-        style={{ background: "radial-gradient(ellipse 62% 70% at 50% 0%, rgba(16,185,129,0.09), transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 62% 70% at 50% 0%, rgba(16,185,129,0.08), transparent 70%)" }}
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_70%)]" />
 
       <div className="mx-auto max-w-6xl px-6">
-        {/* relief intro */}
+        {/* intro */}
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
             <div className="mb-6 inline-flex items-center gap-3">
@@ -1556,31 +1600,50 @@ function LifeAfter() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-muted-foreground">
-              Your team, your trade, your reputation — none of it changes. The only
-              thing that changes is the system running underneath it. No more
-              chasing, no more bottlenecks, no more dropped balls — just a business
-              that answers, books and follows up on its own, and finally hands you
-              back control.
+              You&rsquo;re not missing skill. You&rsquo;re missing structure. One
+              connected system answers, captures, follows up and books
+              automatically &mdash; so your business finally runs with you, not
+              against you.
             </p>
           </Reveal>
         </div>
 
-        {/* two states of the business — heavy & chaotic → light & in control */}
-        <div className="mt-16 grid items-stretch gap-4 lg:mt-20 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
+        {/* two states of the business — overloaded chaos → one calm system */}
+        <div className="mt-16 grid items-stretch gap-5 lg:mt-20 lg:grid-cols-[1fr_auto_1fr] lg:gap-7">
           <Reveal className="h-full">
             <BeforeState />
           </Reveal>
 
-          {/* the transformation */}
-          <div className="flex items-center justify-center py-1 lg:py-0">
-            <motion.span
-              aria-hidden
-              animate={{ scale: [1, 1.07, 1] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-emerald-500/25 bg-white text-emerald-600 shadow-[0_14px_34px_-14px_rgba(16,185,129,0.55)]"
-            >
+          {/* the transformation — the business flowing from one state into the other */}
+          <div className="relative flex items-center justify-center py-1 lg:py-0">
+            {/* horizontal conduit (desktop) */}
+            <div aria-hidden className="absolute left-1/2 top-1/2 hidden h-px w-28 -translate-x-1/2 -translate-y-1/2 lg:block">
+              <div className="h-full w-full rounded-full bg-gradient-to-r from-white/10 via-emerald-500/40 to-emerald-400/70" />
+              <motion.span
+                className="absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(16,185,129,1)]"
+                animate={{ left: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
+            {/* vertical conduit (mobile) */}
+            <div aria-hidden className="absolute left-1/2 top-1/2 block h-16 w-px -translate-x-1/2 -translate-y-1/2 lg:hidden">
+              <div className="h-full w-full rounded-full bg-gradient-to-b from-white/10 via-emerald-500/40 to-emerald-400/70" />
+              <motion.span
+                className="absolute left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(16,185,129,1)]"
+                animate={{ top: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
+            {/* node */}
+            <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-emerald-400/30 bg-[#04160f] text-emerald-300 shadow-[0_14px_34px_-12px_rgba(16,185,129,0.7)]">
+              <motion.span
+                aria-hidden
+                className="absolute inset-0 rounded-full border border-emerald-400/40"
+                animate={{ scale: [1, 1.4], opacity: [0.6, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              />
               <ArrowRight className="h-5 w-5 rotate-90 lg:rotate-0" />
-            </motion.span>
+            </span>
           </div>
 
           <Reveal className="h-full" delay={0.12}>

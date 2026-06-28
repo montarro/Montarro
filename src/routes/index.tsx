@@ -1421,7 +1421,7 @@ function CostOfStandingStill() {
    transformation reads at a glance. Left: charcoal + red. Right: emerald glass. */
 function StateCard({ tone }: { tone: "before" | "after" }) {
   const before = tone === "before";
-  const countRef = useCountUp(before ? 12 : 0, true);
+  const countRef = useCountUp(before ? 12 : 86, true);
   const rows: { icon: typeof PhoneCall; label: string; tag: string }[] = before
     ? [
         { icon: PhoneCall, label: "Missed call — Mark B.", tag: "missed" },
@@ -1481,13 +1481,13 @@ function StateCard({ tone }: { tone: "before" | "after" }) {
           )}
           {before ? "Overloaded" : "Running"}
         </span>
-        <span className={`text-[12px] tabular-nums ${before ? "text-white/30" : "text-emerald-200/40"}`}>9:41 PM</span>
+        <span className={`text-[12px] tabular-nums ${before ? "text-white/55" : "text-emerald-200/40"}`}>9:41 PM</span>
       </div>
 
       {/* metric — same position, same label, only the number + colour change */}
       <div className="relative mt-6 flex items-end gap-2.5">
         <span ref={countRef} className="font-headline text-6xl font-extrabold leading-none tabular-nums text-white">0</span>
-        <span className={`mb-1.5 text-[13px] ${before ? "text-white/40" : "text-emerald-100/55"}`}>missed this week</span>
+        <span className="mb-1.5 text-[15px] font-medium text-white/90">{before ? "missed this week" : "captured this month"}</span>
       </div>
 
       {/* load bar — same component, opposite state */}
@@ -1522,7 +1522,7 @@ function StateCard({ tone }: { tone: "before" | "after" }) {
                 >
                   <I className="h-3.5 w-3.5" />
                 </span>
-                <span className={`flex-1 truncate text-[13px] ${before ? "text-white/65" : "text-emerald-50/90"}`}>{r.label}</span>
+                <span className={`flex-1 truncate text-[13px] ${before ? "text-white/85" : "text-emerald-50/90"}`}>{r.label}</span>
                 <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${tag}`}>{r.tag}</span>
               </div>
             </Reveal>
@@ -1531,7 +1531,7 @@ function StateCard({ tone }: { tone: "before" | "after" }) {
       </div>
 
       {/* footer — same position, mirrored truth */}
-      <div className={`relative mt-auto flex items-center gap-3 pt-6 text-[10.5px] uppercase tracking-[0.2em] ${before ? "text-white/30" : "text-emerald-200/55"}`}>
+      <div className={`relative mt-auto flex items-center gap-3 pt-6 text-[10.5px] uppercase tracking-[0.2em] ${before ? "text-white/55" : "text-emerald-200/55"}`}>
         <span className={`h-px flex-1 ${before ? "bg-white/10" : "bg-emerald-400/15"}`} />
         {before ? "No system holding it together" : "One system, holding it together"}
         <span className={`h-px flex-1 ${before ? "bg-white/10" : "bg-emerald-400/15"}`} />

@@ -32,6 +32,9 @@ import {
   RefreshCw,
   Inbox,
   ArrowDown,
+  TrendingDown,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -1158,16 +1161,6 @@ function HiddenLeaks() {
       <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
 
       <div className="mx-auto max-w-6xl px-6">
-        {/* TEMP VERIFICATION MARKER — remove once confirmed visible in preview */}
-        <div className="mb-10 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 px-5 py-4 text-center">
-          <p className="font-headline text-lg md:text-xl font-extrabold uppercase tracking-wide text-emerald-700">
-            ✦ Beat 3 — “The Hidden Problem” is now live ✦
-          </p>
-          <p className="mt-1 text-xs font-medium text-emerald-700/80">
-            Temporary verification marker. Once you can see this, tell Claude and it will be removed.
-          </p>
-        </div>
-
         {/* editorial intro — deliberately not a card grid */}
         <div className="max-w-3xl">
           <Reveal>
@@ -1240,6 +1233,181 @@ function HiddenLeaks() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ---------------- BEAT 4 · THE COST OF STANDING STILL ---------------- */
+
+/* Precise −/+ control — engineered feel, full visual control on the dark canvas. */
+function Stepper({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format,
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  min: number;
+  max: number;
+  step: number;
+  format: (v: number) => string;
+}) {
+  const set = (v: number) => onChange(Math.min(max, Math.max(min, v)));
+  const btn =
+    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.12] bg-white/[0.04] text-white/70 transition-all duration-200 hover:border-emerald-500/40 hover:text-white active:scale-95 disabled:opacity-30 disabled:hover:border-white/[0.12]";
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+      <div className="text-[11px] uppercase tracking-[0.22em] text-white/45">{label}</div>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <button type="button" aria-label={`Decrease ${label}`} disabled={value <= min} onClick={() => set(value - step)} className={btn}>
+          <Minus className="h-4 w-4" />
+        </button>
+        <div className="font-display text-3xl tabular-nums text-white">{format(value)}</div>
+        <button type="button" aria-label={`Increase ${label}`} disabled={value >= max} onClick={() => set(value + step)} className={btn}>
+          <Plus className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* Tween a currency figure to its new value — counts up on entry, eases on change. */
+function AnimatedMoney({ value, className = "" }: { value: number; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const prev = useRef(0);
+  const started = useRef(false);
+  const inView = useInView(ref, { margin: "-40px" });
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (!started.current && !inView) {
+      node.textContent = `$${Math.round(value).toLocaleString()}`;
+      return;
+    }
+    started.current = true;
+    const controls = animate(prev.current, value, {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate(v) {
+        node.textContent = `$${Math.round(v).toLocaleString()}`;
+      },
+    });
+    prev.current = value;
+    return () => controls.stop();
+  }, [value, inView]);
+  return (
+    <span ref={ref} className={className}>{`$${Math.round(value).toLocaleString()}`}</span>
+  );
+}
+
+function CostOfStandingStill() {
+  const [missed, setMissed] = useState(15);
+  const [avgJob, setAvgJob] = useState(400);
+  const BOOK_RATE = 0.3;
+  const perYear = Math.round(missed * 52 * avgJob * BOOK_RATE);
+  const perMonth = Math.round(perYear / 12);
+  return (
+    <>
+      {/* fade from the light story into the dark tension beat */}
+      <div
+        aria-hidden
+        style={{
+          height: "100px",
+          marginBottom: "-1px",
+          background: "linear-gradient(180deg, #f5f6f7 0%, #d6d9d8 45%, #0a0c0b 100%)",
+        }}
+      />
+      <section
+        id="cost"
+        className="relative overflow-hidden py-20 lg:py-28"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 85% 8%, rgba(16,185,129,0.06), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
+        }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+        />
+
+        <div className="relative mx-auto max-w-6xl px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <Reveal>
+              <div className="mb-6 inline-flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-500/70" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/55">
+                  The Cost of Standing Still
+                </span>
+                <span className="h-px w-10 bg-emerald-500/70" />
+              </div>
+              <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em]">
+                <span className="bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent">
+                  Standing still isn&rsquo;t free.
+                </span>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mx-auto mt-5 max-w-md text-[15px] md:text-base leading-relaxed text-white/55">
+                Put in your own numbers. This is what those gaps quietly cost you
+                every single year.
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:items-center">
+            {/* inputs */}
+            <Reveal>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Stepper label="Missed calls / week" value={missed} onChange={setMissed} min={0} max={80} step={1} format={(v) => `${v}`} />
+                <Stepper label="Average job value" value={avgJob} onChange={setAvgJob} min={50} max={5000} step={50} format={(v) => `$${v.toLocaleString()}`} />
+              </div>
+            </Reveal>
+
+            {/* result */}
+            <Reveal delay={0.12}>
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-7 backdrop-blur-xl shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)]">
+                <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }} />
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/45">
+                  <TrendingDown className="h-4 w-4 text-white/40" /> Revenue lost / year
+                </div>
+                <AnimatedMoney value={perYear} className="mt-2 block font-headline text-5xl md:text-6xl font-extrabold tabular-nums text-white" />
+                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/[0.08] pt-4 text-[13px] text-white/55">
+                  <span><AnimatedMoney value={perMonth} className="font-semibold text-white/80" /> / month</span>
+                  <span className="text-white/25">·</span>
+                  <span>at a conservative {Math.round(BOOK_RATE * 100)}% booking rate</span>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* the turn toward the solution */}
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-12 max-w-xl text-center text-[15px] md:text-base leading-relaxed text-white/60">
+              Every month you wait, that number repeats.{" "}
+              <span className="text-white">Now imagine it working for you instead.</span>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+      {/* fade back out of the dark beat into the light story */}
+      <div
+        aria-hidden
+        style={{
+          height: "100px",
+          marginTop: "-1px",
+          background: "linear-gradient(180deg, #0a0c0b 0%, #d6d9d8 55%, #ffffff 100%)",
+        }}
+      />
+    </>
   );
 }
 
@@ -1615,12 +1783,12 @@ type Stage = {
 
 function SystemJourney() {
   const stages: Stage[] = [
-    { n: "01", icon: Megaphone, title: "Lead Generation", desc: "Google & Meta campaigns bring qualified demand to your door.", hash: "lead-generation" },
+    { n: "01", icon: Megaphone, title: "Lead Generation", desc: "Google & Meta campaigns bring qualified demand to your door." },
     { n: "02", icon: PhoneCall, title: "Lead Capture", desc: "Every call, form and enquiry captured the moment it arrives." },
     { n: "03", icon: Bot, title: "AI Qualification", desc: "The AI receptionist answers, qualifies and prioritises each lead — 24/7.", href: "/services/ai-receptionists", core: true },
-    { n: "04", icon: Database, title: "CRM", desc: "Every contact organised in one live source of truth.", hash: "crm-automation" },
+    { n: "04", icon: Database, title: "CRM", desc: "Every contact organised in one live source of truth." },
     { n: "05", icon: CalendarCheck, title: "Booking", desc: "Appointments booked straight into your calendar, automatically." },
-    { n: "06", icon: Workflow, title: "Follow-Up", desc: "Automated SMS & email sequences so no lead ever goes cold.", hash: "crm-automation" },
+    { n: "06", icon: Workflow, title: "Follow-Up", desc: "Automated SMS & email sequences so no lead ever goes cold." },
     { n: "07", icon: BarChart3, title: "Reporting", desc: "Real-time visibility on pipeline, response times and revenue." },
     { n: "08", icon: TrendingUp, title: "Growth", desc: "Compounding, predictable revenue — month after month." },
   ];
@@ -2718,100 +2886,6 @@ function Integrations() {
 
 /* ------------------------------ PAGE ------------------------------ */
 
-/* ----------------------------- CRM & AUTOMATION ----------------------------- */
-function CrmAutomation() {
-  const features: { icon: typeof Database; title: string; desc: string }[] = [
-    { icon: Database, title: "Centralised CRM", desc: "Every lead, call and conversation in one organised place." },
-    { icon: Workflow, title: "Automated Follow-Up", desc: "Instant SMS and email sequences so no lead goes cold." },
-    { icon: CheckCircle2, title: "Lead Qualification", desc: "Enquiries scored and routed before they reach your team." },
-    { icon: BarChart3, title: "Real-Time Reporting", desc: "See pipeline, response times and conversion at a glance." },
-  ];
-  return (
-    <section id="crm-automation" className="relative py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-px w-10 bg-emerald-500/70" />
-            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Part of the System · CRM &amp; Automation</span>
-          </div>
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
-              Every Lead, Managed Automatically.
-            </h2>
-            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
-              The system that captures, organises and follows up — so your team
-              only spends time on leads ready to buy.
-            </p>
-          </div>
-        </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <Reveal key={f.title} delay={0.06 * i}>
-                <div className="group h-full rounded-2xl border border-black/[0.07] bg-white/70 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30 hover:bg-white hover:shadow-[0_30px_70px_-50px_rgba(16,185,129,0.5)]">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div className="mt-5 text-[15px] font-medium text-foreground">{f.title}</div>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{f.desc}</p>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ----------------------------- LEAD GENERATION ----------------------------- */
-function LeadGeneration() {
-  const features: { icon: typeof Megaphone; title: string; desc: string }[] = [
-    { icon: Megaphone, title: "Google Ads", desc: "Capture high-intent searches the moment demand appears." },
-    { icon: Facebook, title: "Meta Ads", desc: "Build demand and stay top-of-mind across Facebook & Instagram." },
-    { icon: BarChart3, title: "Conversion Tracking", desc: "Every dollar measured from click to booked job." },
-    { icon: Users, title: "Audience Targeting", desc: "Reach the right local customers, not wasted impressions." },
-  ];
-  return (
-    <section id="lead-generation" className="relative border-t border-black/[0.06] bg-card/30 py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-px w-10 bg-emerald-500/70" />
-            <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Part of the System · Lead Generation</span>
-          </div>
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <h2 className="max-w-[16ch] font-display text-4xl md:text-6xl leading-[1.04] tracking-tight text-gradient-chrome">
-              Demand That Fills Your Pipeline.
-            </h2>
-            <p className="max-w-sm text-muted-foreground leading-relaxed md:text-right">
-              Google &amp; Meta campaigns engineered to put qualified enquiries
-              in front of your AI receptionist — ready to be booked.
-            </p>
-          </div>
-        </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <Reveal key={f.title} delay={0.06 * i}>
-                <div className="group h-full rounded-2xl border border-black/[0.07] bg-white/70 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30 hover:bg-white hover:shadow-[0_30px_70px_-50px_rgba(16,185,129,0.5)]">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div className="mt-5 text-[15px] font-medium text-foreground">{f.title}</div>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{f.desc}</p>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* --------------------------------- FAQ --------------------------------- */
 function Faq() {
   const items: { q: string; a: string }[] = [
@@ -2982,10 +3056,9 @@ function Landing() {
         <Hero />
         <Trust />
         <HiddenLeaks />
+        <CostOfStandingStill />
         <SystemJourney />
         <ExperienceInfra />
-        <CrmAutomation />
-        <LeadGeneration />
         <Results />
         <CaseStudy />
         <Integrations />

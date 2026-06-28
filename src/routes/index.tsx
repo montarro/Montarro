@@ -87,7 +87,7 @@ function Nav() {
         <a href="#top" className="flex items-center">
           <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </a>
-        <nav className="hidden md:flex items-center gap-10 text-[13.5px] font-semibold">
+        <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold">
           {(() => {
             const cls = "tracking-tight text-foreground/75 transition-colors duration-300 hover:text-foreground";
             return (
@@ -101,20 +101,22 @@ function Nav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <a href="#packages" className={cls}>Packages</a>
+                <a href="#results" className={cls}>About</a>
+                <a href="#faq" className={cls}>FAQ</a>
+                <Link to="/contact" className={cls}>Contact</Link>
               </>
             );
           })()}
         </nav>
         <Link
           to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
+          className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
         >
           Book a Strategy Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         {/* mobile actions — single CTA + bare hamburger, kept clean */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-4 lg:hidden">
           <Link to="/contact" className={`${primaryCta} inline-flex px-5 py-2.5 text-[13px]`}>
             Book a Call
           </Link>

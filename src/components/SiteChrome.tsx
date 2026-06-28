@@ -11,7 +11,7 @@ export function SiteNav() {
         <Link to="/" className="flex items-center">
           <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </Link>
-        <nav className="hidden md:flex items-center gap-9 text-[13.5px] font-semibold">
+        <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold">
           {(() => {
             const cls = "tracking-tight text-foreground/75 transition-colors duration-300 hover:text-foreground";
             return (
@@ -25,20 +25,22 @@ export function SiteNav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/" hash="packages" className={cls}>Packages</Link>
+                <Link to="/" hash="results" className={cls}>About</Link>
+                <Link to="/" hash="faq" className={cls}>FAQ</Link>
+                <Link to="/contact" className={cls}>Contact</Link>
               </>
             );
           })()}
         </nav>
         <Link
           to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
+          className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
         >
           Book a Strategy Call
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         {/* mobile actions — persistent call + qualify CTA beside the hamburger */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3 lg:hidden">
           <a
             href="tel:+610345145084"
             aria-label="Call Montarro"

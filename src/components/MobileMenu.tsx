@@ -7,22 +7,21 @@ import { primaryCta } from "@/lib/cta";
 
 type SubItem = { label: string; to: string; hash?: string };
 type NavItem =
-  | { kind: "link"; label: string; to: string; hash?: string; live?: boolean }
+  | { kind: "link"; label: string; to: string; hash?: string; live?: boolean; desc?: string }
   | { kind: "group"; label: string; items: SubItem[] };
 
 /**
- * Global mobile navigation. Direct links route straight there; the Services
- * group expands. Page items route directly; homepage-section items use a hash
- * so the root ScrollToTop navigates home (if needed) and smooth-scrolls,
- * resetting scroll cleanly.
+ * Global mobile navigation. Each row shows a label and a short description.
+ * Page items route directly; homepage-section items use a hash so the root
+ * ScrollToTop navigates home (if needed) and smooth-scrolls.
  */
 const NAV: NavItem[] = [
-  { kind: "link", label: "The System", to: "/", hash: "system" },
-  { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true },
-  { kind: "link", label: "Live Demo", to: "/demo" },
-  { kind: "link", label: "Packages", to: "/", hash: "packages" },
-  { kind: "link", label: "FAQ", to: "/", hash: "faq" },
-  { kind: "link", label: "Book a Free Consultation", to: "/contact" },
+  { kind: "link", label: "The System", to: "/", hash: "system", desc: "See the Infrastructure" },
+  { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true, desc: "Learn How It Works" },
+  { kind: "link", label: "Live Demo", to: "/demo", desc: "See It in Action" },
+  { kind: "link", label: "About", to: "/", hash: "results", desc: "Who We Are" },
+  { kind: "link", label: "FAQ", to: "/", hash: "faq", desc: "Common Questions" },
+  { kind: "link", label: "Contact", to: "/contact", desc: "Let's Talk" },
 ];
 
 export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
@@ -52,7 +51,7 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label="Open menu"
@@ -128,15 +127,20 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                             to={item.to}
                             hash={item.hash}
                             onClick={() => setOpen(false)}
-                            className="group/row flex items-center justify-between border-b border-white/[0.07] px-1 py-4 text-[15px] font-medium text-white/85 transition-colors duration-200 hover:text-white active:text-white"
+                            className="group/row flex items-center justify-between border-b border-white/[0.07] px-1 py-3.5 transition-colors duration-200"
                           >
-                            <span className="flex items-center gap-2">
-                              {item.label}
-                              {item.live && (
-                                <span className="relative flex h-1.5 w-1.5">
-                                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                </span>
+                            <span className="flex flex-col">
+                              <span className="flex items-center gap-2 text-[15px] font-medium text-white/90 transition-colors duration-200 group-hover/row:text-white">
+                                {item.label}
+                                {item.live && (
+                                  <span className="relative flex h-1.5 w-1.5">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                  </span>
+                                )}
+                              </span>
+                              {item.desc && (
+                                <span className="mt-0.5 text-[12px] font-normal text-white/40">{item.desc}</span>
                               )}
                             </span>
                             <ArrowUpRight className="h-4 w-4 text-white/25 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />

@@ -27,6 +27,11 @@ import {
   Star,
   ChevronLeft,
   ChevronRight,
+  PhoneMissed,
+  ClipboardList,
+  RefreshCw,
+  Inbox,
+  ArrowDown,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -1118,6 +1123,113 @@ function ScaleCard() {
         <Activity className="h-3.5 w-3.5 text-emerald-500" /> 5+ services automated
       </div>
     </div>
+  );
+}
+
+/* ---------------- BEAT 3 · THE HIDDEN PROBLEM (revenue leaks) ---------------- */
+
+/* A thin track whose fill quietly recedes once in view — money draining away. */
+function LeakBar() {
+  return (
+    <div className="relative h-1 w-24 overflow-hidden rounded-full bg-black/[0.06]">
+      <motion.div
+        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-black/30 to-black/10"
+        initial={{ width: "100%" }}
+        whileInView={{ width: "22%" }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 1.7, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+      />
+    </div>
+  );
+}
+
+function HiddenLeaks() {
+  const leaks: { icon: typeof Clock; title: string; desc: string }[] = [
+    { icon: Clock, title: "Slow responses", desc: "Leads go cold in minutes. Reply late and they've already called someone else." },
+    { icon: PhoneMissed, title: "Missed calls", desc: "On a job, after hours, double-booked — every call you can't take is handed to a competitor." },
+    { icon: ClipboardList, title: "Manual admin", desc: "Hours lost to data entry, callbacks and chasing — instead of billable work." },
+    { icon: RefreshCw, title: "Weak follow-up", desc: "Most enquiries need five touches to convert. Most businesses stop after one." },
+    { icon: Inbox, title: "Lost enquiries", desc: "Forms, DMs and voicemails that slip through the cracks and never come back." },
+  ];
+  return (
+    <section id="problem" className="relative overflow-hidden border-y border-black/[0.05] py-20 lg:py-28">
+      {/* tonal background + faint grid — same material language as the rest of the page */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-[#fafafb] to-[#f5f6f7]" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
+
+      <div className="mx-auto max-w-6xl px-6">
+        {/* editorial intro — deliberately not a card grid */}
+        <div className="max-w-3xl">
+          <Reveal>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
+                The Hidden Problem
+              </span>
+            </div>
+            <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
+              The real problem isn&rsquo;t missed calls.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 text-lg md:text-xl leading-relaxed text-muted-foreground">
+              It&rsquo;s everything that leaks out around them — the slow replies, the
+              dropped follow-ups, the enquiries no one ever saw. Each gap looks small.
+              Together, they cost you more than any single lost job.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* the leak ledger — hairline rows, revenue quietly draining */}
+        <div className="mt-14 lg:mt-16">
+          <Reveal>
+            <div className="mb-4 flex items-center justify-between text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground/60">
+              <span>Where the revenue goes</span>
+              <span className="hidden sm:inline">Leaking</span>
+            </div>
+          </Reveal>
+          <div className="border-t border-black/[0.08]">
+            {leaks.map((l, i) => {
+              const Icon = l.icon;
+              return (
+                <Reveal key={l.title} delay={0.06 * i}>
+                  <div className="group flex items-center gap-5 border-b border-black/[0.08] py-6 transition-colors duration-300 hover:bg-black/[0.015]">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-foreground/70 transition-colors duration-300 group-hover:border-black/15 group-hover:text-foreground">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[16px] md:text-[17px] font-semibold tracking-tight text-foreground">{l.title}</div>
+                      <p className="mt-1 max-w-xl text-[13.5px] md:text-sm leading-relaxed text-muted-foreground">{l.desc}</p>
+                    </div>
+                    <div className="hidden shrink-0 items-center gap-3 sm:flex">
+                      <LeakBar />
+                      <ArrowDown className="h-4 w-4 text-foreground/25" />
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+
+          {/* the turn — pulls the eye toward the cost of standing still */}
+          <Reveal delay={0.1}>
+            <div className="mt-12 flex flex-col items-center gap-4 text-center">
+              <p className="text-[15px] md:text-base font-medium text-foreground/80">
+                And that&rsquo;s one week. Now count every week you&rsquo;ve been open.
+              </p>
+              <motion.span
+                aria-hidden
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut" }}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-black/[0.08] text-foreground/40"
+              >
+                <ArrowDown className="h-4 w-4" />
+              </motion.span>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -2859,7 +2971,7 @@ function Landing() {
       <main>
         <Hero />
         <Trust />
-        <MissedRevenue />
+        <HiddenLeaks />
         <SystemJourney />
         <ExperienceInfra />
         <CrmAutomation />

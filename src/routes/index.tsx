@@ -1185,10 +1185,10 @@ function ProblemReframe() {
               <Link
                 to="/"
                 hash="cost"
-                className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-foreground/70 transition-colors duration-300 hover:text-foreground"
+                className="group mt-10 inline-flex items-center gap-2 rounded-full border border-black/85 bg-white px-5 py-2.5 text-sm font-medium text-black transition-colors duration-300 ease-out hover:bg-black hover:text-white"
               >
                 See what it&rsquo;s costing you
-                <ArrowDown className="h-4 w-4 text-emerald-600 transition-transform duration-300 group-hover:translate-y-0.5" />
+                <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
               </Link>
             </div>
           </Reveal>

@@ -127,10 +127,10 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                             to={item.to}
                             hash={item.hash}
                             onClick={() => setOpen(false)}
-                            className="group/row flex items-center justify-between border-b border-white/[0.07] px-1 py-3.5 transition-colors duration-200"
+                            className="group/row flex items-center justify-between border-b border-white/[0.05] px-1 py-5 transition-colors duration-200"
                           >
                             <span className="flex flex-col">
-                              <span className="flex items-center gap-2 text-[15px] font-medium text-white/90 transition-colors duration-200 group-hover/row:text-white">
+                              <span className="flex items-center gap-2 text-[16px] font-semibold text-white/90 transition-colors duration-200 group-hover/row:text-white">
                                 {item.label}
                                 {item.live && (
                                   <span className="relative flex h-1.5 w-1.5">
@@ -140,10 +140,10 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                                 )}
                               </span>
                               {item.desc && (
-                                <span className="mt-0.5 text-[12px] font-normal text-white/40">{item.desc}</span>
+                                <span className="mt-1.5 text-[11px] font-normal text-white/35">{item.desc}</span>
                               )}
                             </span>
-                            <ArrowUpRight className="h-4 w-4 text-white/25 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />
+                            <ArrowUpRight className="h-4 w-4 text-white/20 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />
                           </Link>
                         );
                       }
@@ -194,7 +194,7 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                     })}
                   </nav>
 
-                  <div className="px-6 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+                  <div className="px-6 pt-9 pb-[max(1.75rem,env(safe-area-inset-bottom))]">
                     <Link
                       to="/contact"
                       onClick={() => setOpen(false)}

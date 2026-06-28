@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
+import { motion, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -2272,19 +2272,18 @@ function useCountUp(target: number, enabled: boolean) {
   return ref;
 }
 
-/* ---------------- HOW IT WORKS · pinned single-stage system tour ---------------- */
-/* One sticky viewport over a 500vh track. scrollYProgress drives a single
-   activeStage (0..n-1); only ONE stage renders at a time and AnimatePresence
-   crossfades outgoing -> incoming so the dashboard morphs in place — no stacking,
-   no overlap. Left heading/copy/progress and the dashboard all read activeStage.
-   Keeps the #results anchor (the 'About' nav links + hero secondary CTA). */
+/* ---------------- SEE THE SYSTEM IN MOTION · dark scrollytelling ---------------- */
+/* A cinematic dark section. Left: a vertical waterfall of text stages that scroll
+   normally. Right: ONE sticky Montarro OS dashboard that stays fixed and morphs to
+   match whichever stage is centred (IntersectionObserver center-line). Keeps the
+   #results anchor (the 'About' nav links + hero secondary CTA). */
 
 const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
-  { title: "Capture", icon: Inbox, copy: "Every call, web enquiry, Facebook lead and form lands in one place — instantly." },
-  { title: "AI Receptionist", icon: Bot, copy: "Answers in seconds, qualifies the caller and books the job — 24/7." },
-  { title: "CRM", icon: Database, copy: "Every conversation, quote and opportunity, organised automatically." },
-  { title: "Automation", icon: Workflow, copy: "Follow-ups, reminders, SMS, missed-call texts and reviews — all on their own." },
-  { title: "Reporting", icon: BarChart3, copy: "Every lead tracked from enquiry to booked job — response times, conversion, revenue." },
+  { title: "Capture", icon: Inbox, copy: "Every call, form, Facebook lead and web enquiry enters one place instantly." },
+  { title: "AI Receptionist", icon: Bot, copy: "The AI answers, qualifies the customer and books the next step while your team keeps working." },
+  { title: "CRM", icon: Database, copy: "The customer, quote, appointment and source are organised automatically." },
+  { title: "Automation", icon: Workflow, copy: "Confirmations, follow-ups, reminders and internal notifications fire without manual chasing." },
+  { title: "Reporting", icon: BarChart3, copy: "Every lead becomes visible — response times, booked jobs, revenue and missed opportunities." },
 ];
 
 function StageVisual({ step }: { step: number }) {
@@ -2297,21 +2296,21 @@ function StageVisual({ step }: { step: number }) {
     ];
     return (
       <div className="space-y-2.5">
-        <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Incoming · all channels</div>
+        <div className="text-[10.5px] uppercase tracking-[0.18em] text-white/40">Incoming · all channels</div>
         {channels.map((c) => {
           const I = c.icon;
           return (
-            <div key={c.label} className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 shadow-[0_10px_30px_-26px_rgba(0,0,0,0.4)]">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+            <div key={c.label} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-300">
                 <I className="h-3.5 w-3.5" />
               </span>
-              <span className="flex-1 text-[13px] font-medium text-foreground">{c.label}</span>
-              <span className="text-[10.5px] text-muted-foreground/70">{c.meta}</span>
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+              <span className="flex-1 text-[13px] font-medium text-white/90">{c.label}</span>
+              <span className="text-[10.5px] text-white/40">{c.meta}</span>
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
             </div>
           );
         })}
-        <div className="pt-1 text-center text-[11px] font-medium text-emerald-600">↓ one inbox</div>
+        <div className="pt-1 text-center text-[11px] font-medium text-emerald-300">↓ one inbox</div>
       </div>
     );
   }
@@ -2324,20 +2323,20 @@ function StageVisual({ step }: { step: number }) {
     ];
     return (
       <div className="space-y-3">
-        <div className="flex items-center justify-between rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
-          <span className="flex items-center gap-2 text-[12px] font-medium text-foreground">
-            <PhoneCall className="h-3.5 w-3.5 text-emerald-600" /> Incoming call
+        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
+          <span className="flex items-center gap-2 text-[12px] font-medium text-white/90">
+            <PhoneCall className="h-3.5 w-3.5 text-emerald-300" /> Incoming call
           </span>
-          <Waveform className="text-emerald-500" />
+          <Waveform className="text-emerald-400" />
         </div>
         {bubbles.map((b, i) => (
           <div key={i} className={`flex ${b.who === "caller" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 text-[13px] leading-snug ${b.who === "ai" ? "border-emerald-500/20 bg-emerald-500/[0.06] text-foreground" : "border-black/[0.08] bg-white text-foreground"}`}>
+            <div className={`max-w-[82%] rounded-2xl border px-3.5 py-2.5 text-[13px] leading-snug ${b.who === "ai" ? "border-emerald-500/25 bg-emerald-500/10 text-white/90" : "border-white/10 bg-white/[0.05] text-white/80"}`}>
               {b.text}
             </div>
           </div>
         ))}
-        <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] px-3 py-2 text-[12px] font-medium text-emerald-700">
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-[12px] font-medium text-emerald-200">
           <CalendarCheck className="h-4 w-4" /> Appointment booked · Thu 3:00 PM
         </div>
       </div>
@@ -2352,28 +2351,28 @@ function StageVisual({ step }: { step: number }) {
     ];
     return (
       <div className="space-y-3">
-        <div className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/10 text-[12px] font-semibold text-emerald-700">MB</span>
+        <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/15 text-[12px] font-semibold text-emerald-200">MB</span>
           <div className="min-w-0 flex-1">
-            <div className="text-[13px] font-semibold text-foreground">Mark B.</div>
-            <div className="text-[11px] text-muted-foreground">Roofing · new customer</div>
+            <div className="text-[13px] font-semibold text-white/90">Mark B.</div>
+            <div className="text-[11px] text-white/45">Roofing · new customer</div>
           </div>
-          <span className="rounded-full border border-emerald-500/25 bg-emerald-500/[0.07] px-2 py-0.5 text-[10px] font-medium text-emerald-700">Qualified</span>
+          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-200">Qualified</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {fields.map((f) => (
-            <div key={f.l} className="rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{f.l}</div>
-              <div className="mt-0.5 text-[12.5px] font-semibold text-foreground">{f.v}</div>
+            <div key={f.l} className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
+              <div className="text-[10px] uppercase tracking-wider text-white/40">{f.l}</div>
+              <div className="mt-0.5 text-[12.5px] font-semibold text-white/90">{f.v}</div>
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5 text-[11px] text-muted-foreground">
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Call</span>
-          <span className="h-px flex-1 bg-black/10" />
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Quote sent</span>
-          <span className="h-px flex-1 bg-black/10" />
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Booked</span>
+        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-[11px] text-white/50">
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Call</span>
+          <span className="h-px flex-1 bg-white/10" />
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Quote sent</span>
+          <span className="h-px flex-1 bg-white/10" />
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Booked</span>
         </div>
       </div>
     );
@@ -2389,16 +2388,16 @@ function StageVisual({ step }: { step: number }) {
     ];
     return (
       <div className="space-y-2">
-        <div className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">Automations · running</div>
+        <div className="text-[10.5px] uppercase tracking-[0.18em] text-white/40">Automations · running</div>
         {autos.map((a) => {
           const I = a.icon;
           return (
-            <div key={a.label} className="flex items-center gap-3 rounded-xl border border-black/[0.07] bg-white px-3 py-2.5">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.07] text-emerald-600">
+            <div key={a.label} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-300">
                 <I className="h-3.5 w-3.5" />
               </span>
-              <span className="flex-1 text-[13px] text-foreground">{a.label}</span>
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+              <span className="flex-1 text-[13px] text-white/90">{a.label}</span>
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
             </div>
           );
         })}
@@ -2421,21 +2420,21 @@ function StageVisual({ step }: { step: number }) {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-2">
         {kpis.map((k) => (
-          <div key={k.l} className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-3 py-3 text-center">
-            <div className="font-display text-xl tabular-nums text-foreground">{k.v}</div>
-            <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/70">{k.l}</div>
+          <div key={k.l} className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-3 text-center">
+            <div className="font-display text-xl tabular-nums text-white">{k.v}</div>
+            <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-white/45">{k.l}</div>
           </div>
         ))}
       </div>
       <div className="space-y-2.5">
         {funnel.map((f) => (
           <div key={f.l}>
-            <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+            <div className="mb-1 flex items-center justify-between text-[11px] text-white/55">
               <span>{f.l}</span>
-              <span className="tabular-nums text-foreground/70">{f.n}</span>
+              <span className="tabular-nums text-white/80">{f.n}</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
-              <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400" style={{ width: f.w }} />
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300" style={{ width: f.w }} />
             </div>
           </div>
         ))}
@@ -2450,8 +2449,8 @@ function RailIcon({ active, i, Icon }: { active: number; i: number; Icon: typeof
     <span
       className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
         on
-          ? "border-emerald-500/40 bg-emerald-500/[0.10] text-emerald-600 shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
-          : "border-transparent text-foreground/25"
+          ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-[0_0_18px_-4px_rgba(16,185,129,0.7)]"
+          : "border-transparent text-white/25"
       }`}
     >
       <Icon className="h-4 w-4" />
@@ -2461,121 +2460,157 @@ function RailIcon({ active, i, Icon }: { active: number; i: number; Icon: typeof
 
 function HiwDashboard({ active }: { active: number }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-[0_50px_120px_-50px_rgba(0,0,0,0.28)]">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+    <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#10130f] to-[#090b0a] shadow-[0_60px_140px_-50px_rgba(16,185,129,0.4),0_40px_90px_-40px_rgba(0,0,0,0.9)]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
       {/* window chrome — persistent */}
-      <div className="flex items-center justify-between border-b border-black/[0.06] px-4 py-3">
+      <div className="flex items-center justify-between border-b border-white/[0.07] px-4 py-3">
         <div className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
-          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
-          <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/12" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/12" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/12" />
         </div>
-        <span className="text-[11px] font-medium tracking-tight text-muted-foreground">
-          Montarro OS · <span className="text-foreground">{HIW_STEPS[active].title}</span>
+        <span className="text-[11px] font-medium tracking-tight text-white/45">
+          Montarro OS · <span className="text-white/90">{HIW_STEPS[active].title}</span>
         </span>
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-600">
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-300">
           <LiveDot /> Live
         </span>
       </div>
       <div className="flex">
         {/* module rail — persistent, current module highlighted */}
-        <div className="flex flex-col gap-1.5 border-r border-black/[0.06] p-2.5">
+        <div className="flex flex-col gap-1.5 border-r border-white/[0.07] p-2.5">
           {HIW_STEPS.map((s, i) => (
             <RailIcon key={s.title} active={active} i={i} Icon={s.icon} />
           ))}
         </div>
-        {/* body — ONE stage at a time, crossfaded; frame stays put */}
+        {/* body — morphs to the active stage. A keyed motion.div (no AnimatePresence
+           mode=wait) so rapid scroll-driven key changes can never leave it empty:
+           React remounts the new stage and it fades in; the old is dropped instantly. */}
         <div className="relative h-[360px] flex-1 overflow-hidden sm:h-[400px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-0 p-4 sm:p-5"
-            >
-              <StageVisual step={active} />
-            </motion.div>
-          </AnimatePresence>
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 p-4 sm:p-5"
+          >
+            <StageVisual step={active} />
+          </motion.div>
         </div>
       </div>
     </div>
   );
 }
 
-function HowItWorks() {
+/* a single text stage in the left waterfall; reports itself active when it crosses
+   the viewport centre line, and dims when it isn't the active stage */
+function WaterfallBlock({
+  stage,
+  index,
+  active,
+  setActive,
+}: {
+  stage: { title: string; copy: string };
+  index: number;
+  active: boolean;
+  setActive: (i: number) => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const n = HIW_STEPS.length;
-  const [active, setActive] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.min(n - 1, Math.max(0, Math.floor(v * n)));
-    setActive((p) => (p === idx ? p : idx));
-  });
-
+  const inView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+  useEffect(() => {
+    if (inView) setActive(index);
+  }, [inView, index, setActive]);
   return (
-    <section id="results" ref={ref} className="relative bg-white" style={{ height: "500vh" }}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        {/* soft emerald accent */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px]"
-          style={{ background: "radial-gradient(ellipse 60% 70% at 70% 0%, rgba(16,185,129,0.08), transparent 70%)" }}
-        />
-        <div aria-hidden className="absolute inset-0 -z-0 bg-grid opacity-[0.035] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]" />
+    <div ref={ref} className="flex min-h-[58vh] items-center">
+      <div className={`transition-all duration-500 ${active ? "opacity-100" : "opacity-35"}`}>
+        <div className="mb-4 flex items-center gap-3">
+          <span className={`h-px transition-all duration-500 ${active ? "w-12 bg-emerald-400" : "w-8 bg-white/20"}`} />
+          <span className={`text-[11px] font-semibold uppercase tracking-[0.3em] transition-colors duration-500 ${active ? "text-emerald-300" : "text-white/35"}`}>
+            Stage {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+        <h3 className={`font-headline text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] transition-colors duration-500 sm:text-5xl ${active ? "text-white" : "text-white/55"}`}>
+          {stage.title}
+        </h3>
+        <p className={`mt-4 max-w-md text-lg leading-relaxed transition-colors duration-500 ${active ? "text-white/75" : "text-white/35"}`}>
+          {stage.copy}
+        </p>
+      </div>
+    </div>
+  );
+}
 
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 lg:grid-cols-[0.82fr_1.18fr]">
-          {/* LEFT — narrative + progress, all from activeStage */}
-          <div>
-            <div className="mb-6 flex items-center gap-3">
-              <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">How It Works</span>
-            </div>
+function HowItWorks() {
+  const [active, setActive] = useState(0);
+  return (
+    <section
+      id="results"
+      className="relative overflow-clip"
+      style={{
+        background:
+          "radial-gradient(ellipse 48% 38% at 82% 14%, rgba(16,185,129,0.12), transparent 60%), radial-gradient(ellipse 42% 42% at 8% 78%, rgba(16,185,129,0.08), transparent 62%), linear-gradient(180deg,#070a09 0%,#0a0d0b 50%,#070a09 100%)",
+      }}
+    >
+      {/* fine grid + soft trails */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
+        animate={{ opacity: [0.5, 0.85, 0.5] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-            <div className="text-[12px] font-medium tabular-nums tracking-[0.2em] text-muted-foreground/60">
-              {String(active + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
-            </div>
+      <div className="relative mx-auto max-w-7xl px-6 py-24 lg:py-32">
+        {/* header */}
+        <div className="max-w-2xl">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-10 bg-emerald-400/70" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-300">How It Works</span>
+          </div>
+          <h2 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-6xl lg:text-7xl">
+            See the system in motion.
+          </h2>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/55">
+            One enquiry moves through the entire revenue engine — from first contact
+            to booked job, follow-up and reporting.
+          </p>
+        </div>
 
-            {/* single heading/copy, crossfaded */}
-            <div className="relative mt-3 h-[200px] sm:h-[210px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0"
-                >
-                  <h3 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b] sm:text-6xl">
-                    {HIW_STEPS[active].title}
-                  </h3>
-                  <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">{HIW_STEPS[active].copy}</p>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* progress segments — driven by activeStage */}
-            <div className="mt-6 flex items-center gap-2">
-              {HIW_STEPS.map((s, i) => (
-                <div key={s.title} className="h-1 flex-1 overflow-hidden rounded-full bg-black/10">
-                  <motion.div
-                    className="h-full rounded-full bg-emerald-500"
-                    initial={false}
-                    animate={{ width: i <= active ? "100%" : "0%" }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground/50 sm:block">
-              Scroll to watch the system run
+        {/* waterfall + sticky dashboard */}
+        <div className="mt-8 lg:mt-4 lg:grid lg:grid-cols-2 lg:gap-16">
+          {/* mobile sticky dashboard (direct child of the tall container) */}
+          <div className="sticky top-[76px] z-10 mb-6 lg:hidden">
+            <div className="relative">
+              <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-[36px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] blur-2xl" />
+              <HiwDashboard active={active} />
             </div>
           </div>
 
-          {/* RIGHT — the one dashboard */}
-          <HiwDashboard active={active} />
+          {/* LEFT — text waterfall */}
+          <div>
+            {HIW_STEPS.map((s, i) => (
+              <WaterfallBlock key={s.title} stage={s} index={i} active={active === i} setActive={setActive} />
+            ))}
+          </div>
+
+          {/* RIGHT — desktop sticky dashboard */}
+          <div className="hidden lg:block">
+            <div className="sticky top-0 flex h-screen items-center">
+              <div className="relative w-full">
+                <div aria-hidden className="pointer-events-none absolute -inset-10 -z-10 rounded-[44px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.20),transparent_70%)] blur-3xl" />
+                <HiwDashboard active={active} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

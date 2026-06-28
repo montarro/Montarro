@@ -35,6 +35,7 @@ import {
   TrendingDown,
   Plus,
   Minus,
+  AlertTriangle,
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
@@ -1408,6 +1409,118 @@ function CostOfStandingStill() {
         }}
       />
     </>
+  );
+}
+
+/* ---------------- BEAT 5 · LIFE AFTER MONTARRO (the transformation) ---------------- */
+
+function LifeAfter() {
+  const pairs: {
+    bIcon: typeof Clock;
+    before: string;
+    aIcon: typeof Clock;
+    after: string;
+  }[] = [
+    { bIcon: PhoneMissed, before: "Missed calls", aIcon: PhoneCall, after: "Every call answered" },
+    { bIcon: Clock, before: "Slow to respond", aIcon: CalendarCheck, after: "Booked on the spot" },
+    { bIcon: ClipboardList, before: "Manual admin", aIcon: Database, after: "The CRM updates itself" },
+    { bIcon: TrendingDown, before: "Leads going cold", aIcon: Workflow, after: "Follow-up that never stops" },
+    { bIcon: Inbox, before: "Scattered enquiries", aIcon: BarChart3, after: "One clear pipeline" },
+    { bIcon: AlertTriangle, before: "Constant firefighting", aIcon: CheckCircle2, after: "Calm, and in control" },
+  ];
+  return (
+    <section id="transformation" className="relative overflow-hidden py-20 lg:py-28">
+      {/* bright, airy canvas — emerald dawn glow signals relief after the dark cost beat */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-white" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[440px]"
+        style={{ background: "radial-gradient(ellipse 62% 70% at 50% 0%, rgba(16,185,129,0.09), transparent 70%)" }}
+      />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_70%)]" />
+
+      <div className="mx-auto max-w-6xl px-6">
+        {/* relief intro */}
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <div className="mb-6 inline-flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-500/70" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-600">
+                Life After Montarro
+              </span>
+              <span className="h-px w-10 bg-emerald-500/70" />
+            </div>
+            <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
+              From chaos to control.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-muted-foreground">
+              Nothing about your business changes — except that all of it is finally
+              handled. Every call answered, every lead followed, every job on the
+              books. Quietly, automatically, around the clock.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* before → after transformation panel */}
+        <div className="mx-auto mt-14 max-w-4xl lg:mt-16">
+          <Reveal>
+            <div className="mb-5 hidden grid-cols-[1fr_auto_1fr] items-center gap-5 sm:grid">
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.26em] text-muted-foreground/55">
+                Before
+              </div>
+              <div className="w-8" />
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.26em] text-emerald-600">
+                After Montarro
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="space-y-3">
+            {pairs.map((p, i) => {
+              const B = p.bIcon;
+              const A = p.aIcon;
+              return (
+                <Reveal key={p.after} delay={0.05 * i}>
+                  <div className="grid grid-cols-1 items-stretch gap-3 sm:grid-cols-[1fr_auto_1fr] sm:gap-5">
+                    {/* before — muted, draining of life */}
+                    <div className="flex items-center gap-3 rounded-xl border border-black/[0.05] bg-black/[0.025] px-4 py-3.5">
+                      <B className="h-4 w-4 shrink-0 text-foreground/30" />
+                      <span className="text-[14px] text-muted-foreground">{p.before}</span>
+                    </div>
+                    {/* the turn */}
+                    <div className="flex items-center justify-center">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600">
+                        <ArrowRight className="h-4 w-4 rotate-90 sm:rotate-0" />
+                      </span>
+                    </div>
+                    {/* after — emerald turns on */}
+                    <div className="flex items-center gap-3 rounded-xl border border-emerald-500/25 bg-white px-4 py-3.5 shadow-[0_20px_44px_-32px_rgba(16,185,129,0.55)]">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
+                        <A className="h-4 w-4" />
+                      </span>
+                      <span className="text-[14px] font-medium text-foreground">{p.after}</span>
+                      <CheckCircle2 className="ml-auto h-4 w-4 shrink-0 text-emerald-500" />
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+
+          {/* bridge into the system reveal */}
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-12 max-w-xl text-center text-[15px] md:text-base leading-relaxed text-muted-foreground">
+              And it isn&rsquo;t five tools doing five jobs.{" "}
+              <span className="font-medium text-foreground">
+                It&rsquo;s one system doing all of them.
+              </span>
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -3057,6 +3170,7 @@ function Landing() {
         <Trust />
         <HiddenLeaks />
         <CostOfStandingStill />
+        <LifeAfter />
         <SystemJourney />
         <ExperienceInfra />
         <Results />

@@ -1517,13 +1517,6 @@ function LifeAfter() {
         {/* intro */}
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
-            <div className="mb-6 inline-flex items-center gap-3">
-              <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-600">
-                Life After Montarro
-              </span>
-              <span className="h-px w-10 bg-emerald-500/70" />
-            </div>
             <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
               From chaos to control.
             </h2>

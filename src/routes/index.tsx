@@ -1416,156 +1416,125 @@ function CostOfStandingStill() {
 
 /* The "before" state — a business running without structure. Dark charcoal,
    subtle red accents, soft red ambient glow: stress and overload, not alarm. */
-function BeforeState() {
-  const missedRef = useCountUp(12, true);
-  const pile = [
-    { icon: PhoneMissed, label: "Missed call · Mark R.", tag: "2m" },
-    { icon: Mail, label: "Voicemail", tag: "unread" },
-    { icon: ClipboardList, label: "Quote #1184", tag: "overdue 3d" },
-    { icon: RefreshCw, label: "Follow-up · Sarah", tag: "forgotten" },
-  ];
+/* One interface, two states. The same card, the same rows, the same hierarchy —
+   only the state (and its colour theme) changes between before and after, so the
+   transformation reads at a glance. Left: charcoal + red. Right: emerald glass. */
+function StateCard({ tone }: { tone: "before" | "after" }) {
+  const before = tone === "before";
+  const countRef = useCountUp(before ? 12 : 0, true);
+  const rows: { icon: typeof PhoneCall; label: string; tag: string }[] = before
+    ? [
+        { icon: PhoneCall, label: "Missed call — Mark B.", tag: "missed" },
+        { icon: CalendarCheck, label: "Appointment — not booked", tag: "lost" },
+        { icon: ClipboardList, label: "Quote #1184 — overdue", tag: "3d late" },
+        { icon: RefreshCw, label: "Follow-up — forgotten", tag: "—" },
+        { icon: Database, label: "CRM — out of date", tag: "stale" },
+      ]
+    : [
+        { icon: PhoneCall, label: "Call answered — Mark B.", tag: "0:42" },
+        { icon: CalendarCheck, label: "Appointment booked", tag: "Thu 3:00" },
+        { icon: ClipboardList, label: "Quote #1184 — sent", tag: "auto" },
+        { icon: RefreshCw, label: "Follow-up — completed", tag: "done" },
+        { icon: Database, label: "CRM — updated", tag: "synced" },
+      ];
+
+  const tag = before
+    ? "border-red-500/25 bg-red-500/[0.08] text-red-300/90"
+    : "border-emerald-400/25 bg-emerald-400/[0.10] text-emerald-200/90";
+
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-b from-[#181311] to-[#0d0a09] p-6 shadow-[0_40px_90px_-50px_rgba(0,0,0,0.85)] sm:p-7">
-      {/* soft red ambient glow — stress, not alarm */}
+    <div
+      className={`relative flex h-full flex-col overflow-hidden rounded-3xl border p-6 sm:p-7 ${
+        before
+          ? "border-white/[0.06] bg-gradient-to-b from-[#181311] to-[#0d0a09] shadow-[0_40px_90px_-50px_rgba(0,0,0,0.85)]"
+          : "border-emerald-400/20 bg-gradient-to-b from-[#06281d] to-[#03120c] shadow-[0_40px_90px_-46px_rgba(16,185,129,0.5)]"
+      }`}
+    >
+      {/* ambient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-16 right-[-12%] h-60 w-72 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(208,66,58,0.18), transparent 65%)" }}
+        className="pointer-events-none absolute -top-16 left-1/2 h-56 w-[130%] -translate-x-1/2 rounded-full blur-3xl"
+        style={{
+          background: before
+            ? "radial-gradient(ellipse at center, rgba(208,66,58,0.16), transparent 65%)"
+            : "radial-gradient(ellipse at center, rgba(16,185,129,0.2), transparent 65%)",
+        }}
       />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-500/25 to-transparent" />
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          before ? "via-red-500/25" : "via-emerald-400/50"
+        }`}
+      />
 
-      {/* late, and the phone is still ringing with no one to answer */}
+      {/* header — status + time (identical structure on both cards) */}
       <div className="relative flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 text-[12px] font-medium text-white/45">
-          <motion.span
-            className="h-2 w-2 rounded-full bg-red-500/90"
-            animate={{ opacity: [1, 0.2, 1], scale: [1, 0.8, 1] }}
-            transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
-          />
-          Ringing — no answer
+        <span className={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${tag}`}>
+          {before ? (
+            <motion.span
+              className="h-1.5 w-1.5 rounded-full bg-red-500/90"
+              animate={{ opacity: [1, 0.25, 1] }}
+              transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
+            />
+          ) : (
+            <LiveDot />
+          )}
+          {before ? "Overloaded" : "Running"}
         </span>
-        <span className="text-[12px] tabular-nums text-white/30">9:41 PM</span>
+        <span className={`text-[12px] tabular-nums ${before ? "text-white/30" : "text-emerald-200/40"}`}>9:41 PM</span>
       </div>
 
-      {/* overwhelm — the number that keeps climbing */}
+      {/* metric — same position, same label, only the number + colour change */}
       <div className="relative mt-6 flex items-end gap-2.5">
-        <span ref={missedRef} className="font-headline text-6xl font-extrabold leading-none tabular-nums text-white">0</span>
-        <span className="mb-1.5 text-[13px] text-white/40">missed this week</span>
+        <span ref={countRef} className="font-headline text-6xl font-extrabold leading-none tabular-nums text-white">0</span>
+        <span className={`mb-1.5 text-[13px] ${before ? "text-white/40" : "text-emerald-100/55"}`}>missed this week</span>
       </div>
+
+      {/* load bar — same component, opposite state */}
       <div className="relative mt-3 flex items-center gap-2.5">
         <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
           <motion.div
-            className="h-full rounded-full bg-red-500/55"
-            initial={{ width: "34%" }}
-            whileInView={{ width: "96%" }}
+            className={`h-full rounded-full ${before ? "bg-red-500/55" : "bg-emerald-400/60"}`}
+            initial={{ width: before ? "34%" : "70%" }}
+            whileInView={{ width: before ? "96%" : "26%" }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           />
         </div>
-        <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-red-400/70">Overloaded</span>
+        <span className={`text-[10px] font-medium uppercase tracking-[0.16em] ${before ? "text-red-400/70" : "text-emerald-300/80"}`}>Load</span>
       </div>
 
-      {/* the pile — disconnected scraps, nothing tying them together */}
+      {/* the rows — same items, same order, only the state changes */}
       <div className="relative mt-6 space-y-2">
-        {pile.map((p, i) => {
-          const I = p.icon;
+        {rows.map((r, i) => {
+          const I = r.icon;
           return (
-            <Reveal key={p.label} delay={0.05 * i}>
-              <div className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] text-white/40">
+            <Reveal key={r.label} delay={0.05 * i}>
+              <div
+                className={`flex items-center gap-3 rounded-xl border px-3.5 py-2.5 ${
+                  before ? "border-white/[0.06] bg-white/[0.03]" : "border-emerald-400/[0.12] bg-emerald-400/[0.04]"
+                }`}
+              >
+                <span
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
+                    before ? "bg-white/[0.04] text-white/40" : "bg-emerald-400/[0.10] text-emerald-200"
+                  }`}
+                >
                   <I className="h-3.5 w-3.5" />
                 </span>
-                <span className="flex-1 truncate text-[13px] text-white/65">{p.label}</span>
-                <span className="shrink-0 rounded-full border border-red-500/25 bg-red-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-red-300/90">
-                  {p.tag}
-                </span>
+                <span className={`flex-1 truncate text-[13px] ${before ? "text-white/65" : "text-emerald-50/90"}`}>{r.label}</span>
+                <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${tag}`}>{r.tag}</span>
               </div>
             </Reveal>
           );
         })}
       </div>
 
-      {/* the real problem, named */}
-      <div className="relative mt-auto flex items-center gap-3 pt-6 text-[10.5px] uppercase tracking-[0.2em] text-white/30">
-        <span className="h-px flex-1 bg-white/10" />
-        No system holding it together
-        <span className="h-px flex-1 bg-white/10" />
-      </div>
-    </div>
-  );
-}
-
-/* The "after" state — one connected operating system. Deep emerald glass, soft
-   green glow: confidence, automation and control. */
-function AfterState() {
-  const flow = [
-    { icon: PhoneCall, label: "Answer" },
-    { icon: CheckCircle2, label: "Qualify" },
-    { icon: CalendarCheck, label: "Book" },
-    { icon: Database, label: "Sync" },
-    { icon: Workflow, label: "Nurture" },
-  ];
-  const stats = [
-    { v: "0", l: "Missed" },
-    { v: "0.8s", l: "Response" },
-    { v: "100%", l: "Booked" },
-  ];
-  return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-b from-[#06281d] to-[#03120c] p-6 shadow-[0_40px_90px_-46px_rgba(16,185,129,0.5)] sm:p-7">
-      {/* soft green ambient glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[130%] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.2), transparent 65%)" }}
-      />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
-
-      {/* one connected system, always on */}
-      <div className="relative flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 text-[12px] font-medium text-emerald-100/85">
-          <LiveDot /> One connected system
-        </span>
-        <span className="text-[12px] tabular-nums text-emerald-200/40">24/7</span>
-      </div>
-
-      {/* the pipeline — one flow, automation moving through it */}
-      <div className="relative mt-8 flex items-center justify-between">
-        {flow.map((n, i) => {
-          const I = n.icon;
-          return (
-            <div key={n.label} className="flex flex-1 flex-col items-center last:flex-none">
-              <div className="relative flex w-full items-center justify-center">
-                <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/[0.08] text-emerald-200">
-                  <I className="h-4 w-4" />
-                </span>
-                {i < flow.length - 1 && (
-                  <div className="relative mx-1 h-px flex-1 bg-emerald-400/20">
-                    <motion.span
-                      className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.9)]"
-                      animate={{ left: ["-6px", "100%"] }}
-                      transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 }}
-                    />
-                  </div>
-                )}
-              </div>
-              <span className="mt-2 text-[9px] uppercase tracking-wider text-emerald-200/55">{n.label}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* calm proof */}
-      <div className="relative mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-emerald-400/15 bg-emerald-400/[0.06]">
-        {stats.map((s) => (
-          <div key={s.l} className="bg-[#04160f]/85 px-3 py-3 text-center">
-            <div className="font-display text-lg tabular-nums text-white">{s.v}</div>
-            <div className="mt-0.5 text-[9.5px] uppercase tracking-[0.14em] text-emerald-200/45">{s.l}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="relative mt-auto pt-6 text-[12px] font-medium text-emerald-100/75">
-        Nothing waiting. Nothing slipping. It just runs.
+      {/* footer — same position, mirrored truth */}
+      <div className={`relative mt-auto flex items-center gap-3 pt-6 text-[10.5px] uppercase tracking-[0.2em] ${before ? "text-white/30" : "text-emerald-200/55"}`}>
+        <span className={`h-px flex-1 ${before ? "bg-white/10" : "bg-emerald-400/15"}`} />
+        {before ? "No system holding it together" : "One system, holding it together"}
+        <span className={`h-px flex-1 ${before ? "bg-white/10" : "bg-emerald-400/15"}`} />
       </div>
     </div>
   );
@@ -1608,13 +1577,13 @@ function LifeAfter() {
           </Reveal>
         </div>
 
-        {/* two states of the business — overloaded chaos → one calm system */}
+        {/* the same interface, before → after */}
         <div className="mt-16 grid items-stretch gap-5 lg:mt-20 lg:grid-cols-[1fr_auto_1fr] lg:gap-7">
           <Reveal className="h-full">
-            <BeforeState />
+            <StateCard tone="before" />
           </Reveal>
 
-          {/* the transformation — the business flowing from one state into the other */}
+          {/* the transformation — the same business flowing from one state into the other */}
           <div className="relative flex items-center justify-center py-1 lg:py-0">
             {/* horizontal conduit (desktop) */}
             <div aria-hidden className="absolute left-1/2 top-1/2 hidden h-px w-28 -translate-x-1/2 -translate-y-1/2 lg:block">
@@ -1647,7 +1616,7 @@ function LifeAfter() {
           </div>
 
           <Reveal className="h-full" delay={0.12}>
-            <AfterState />
+            <StateCard tone="after" />
           </Reveal>
         </div>
 

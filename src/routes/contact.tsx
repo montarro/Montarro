@@ -6,7 +6,6 @@ import {
   CalendarCheck,
   Check,
   CheckCircle2,
-  ChevronDown,
   Database,
   Loader2,
   PhoneCall,
@@ -38,7 +37,28 @@ const MINT_GRID =
 
 const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const REVENUE_RANGES = ["Under $20k", "$20k–50k", "$50k–100k", "$100k–250k", "$250k+"];
+const QUESTIONS: { key: keyof FormState; q: string; options: string[] }[] = [
+  {
+    key: "businessType",
+    q: "What best describes your business?",
+    options: ["Trades & Home Services", "Professional Services", "Healthcare", "Hospitality", "Other"],
+  },
+  {
+    key: "leads",
+    q: "How many leads do you receive each month?",
+    options: ["Under 20", "20–50", "50–100", "100+"],
+  },
+  {
+    key: "bottleneck",
+    q: "What's your biggest bottleneck?",
+    options: ["Missing Calls", "Low Lead Volume", "Follow-up", "Booking More Jobs", "Operations"],
+  },
+  {
+    key: "revenue",
+    q: "What's your monthly revenue?",
+    options: ["Under $30k", "$30k–$60k", "$60k–$150k", "$150k+"],
+  },
+];
 
 function splitName(full: string): { first: string; last: string } {
   const parts = full.trim().split(/\s+/).filter(Boolean);
@@ -202,24 +222,28 @@ function ResultsCard() {
 /* ------------------------------- FORM ------------------------------- */
 
 type FormState = {
+  businessType: string;
+  leads: string;
+  bottleneck: string;
+  revenue: string;
   fullName: string;
   businessName: string;
   email: string;
   phone: string;
-  industry: string;
-  revenue: string;
   notes: string;
 };
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
 function ContactFormSection() {
   const [form, setForm] = useState<FormState>({
+    businessType: "",
+    leads: "",
+    bottleneck: "",
+    revenue: "",
     fullName: "",
     businessName: "",
     email: "",
     phone: "",
-    industry: "",
-    revenue: "",
     notes: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -234,13 +258,14 @@ function ContactFormSection() {
 
   function validate(): FormErrors {
     const e: FormErrors = {};
+    QUESTIONS.forEach((qq) => {
+      if (!form[qq.key]) e[qq.key] = "Please choose an option.";
+    });
     if (!form.fullName.trim()) e.fullName = "Required.";
     if (!form.businessName.trim()) e.businessName = "Required.";
     if (!form.email.trim()) e.email = "Required.";
     else if (!EMAIL_RE.test(form.email.trim())) e.email = "Enter a valid email.";
     if (!form.phone.trim()) e.phone = "Required.";
-    if (!form.industry.trim()) e.industry = "Required.";
-    if (!form.revenue) e.revenue = "Required.";
     return e;
   }
 
@@ -262,10 +287,11 @@ function ContactFormSection() {
         email: form.email,
         phone: form.phone,
         company_name: form.businessName,
-        industry: form.industry,
+        industry: form.businessType,
+        leads_per_month: form.leads,
+        operational_bottleneck: form.bottleneck,
         budget_monthly_revenue: form.revenue,
         goals_notes: form.notes,
-        operational_bottleneck: form.notes,
         source: "Montarro Website",
         form_type: "Strategy Call Page",
       };
@@ -287,7 +313,7 @@ function ContactFormSection() {
   return (
     <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-2xl px-6">
-        <div className="rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.25)] sm:p-9">
+        <div className="rounded-3xl border border-[#D8F2E8] bg-white p-7 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-10 lg:p-12">
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -315,26 +341,42 @@ function ContactFormSection() {
                 noValidate
                 exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
                 transition={{ duration: 0.35 }}
-                className="space-y-4 sm:space-y-5"
+                className="space-y-9"
               >
-                <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-                  <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
-                  <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
-                  <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
-                  <Field id="phone" label="Mobile Number" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
-                  <Field id="industry" label="Industry" value={form.industry} onChange={(v) => update("industry", v)} error={errors.industry} />
-                  <SelectField id="revenue" label="Monthly Revenue" value={form.revenue} options={REVENUE_RANGES} onChange={(v) => update("revenue", v)} error={errors.revenue} />
+                {/* guided qualification questions */}
+                {QUESTIONS.map((qq, i) => (
+                  <OptionGroup
+                    key={qq.key}
+                    index={i + 1}
+                    question={qq.q}
+                    options={qq.options}
+                    value={form[qq.key]}
+                    onChange={(v) => update(qq.key, v)}
+                    error={errors[qq.key]}
+                  />
+                ))}
+
+                <div aria-hidden className="h-px w-full bg-emerald-900/[0.07]" />
+
+                {/* contact details */}
+                <div className="space-y-4 sm:space-y-5">
+                  <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+                    <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
+                    <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
+                    <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
+                    <Field id="phone" label="Mobile Number" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
+                  </div>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    aria-label="Tell us anything else about your business"
+                    value={form.notes}
+                    onChange={(e) => update("notes", e.target.value)}
+                    rows={5}
+                    placeholder="Tell us anything else about your business…"
+                    className="w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
+                  />
                 </div>
-                <textarea
-                  id="notes"
-                  name="notes"
-                  aria-label="Tell us about your business"
-                  value={form.notes}
-                  onChange={(e) => update("notes", e.target.value)}
-                  rows={4}
-                  placeholder="Tell us about your business…"
-                  className="w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
-                />
 
                 {submitError && (
                   <p role="alert" className="rounded-2xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600">
@@ -346,7 +388,7 @@ function ContactFormSection() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="group inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl bg-[#0a0b0b] px-7 text-[14px] font-semibold text-white shadow-[0_12px_30px_-12px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:-translate-y-[2px] hover:bg-black hover:shadow-[0_20px_44px_-14px_rgba(0,0,0,0.55)] disabled:opacity-70 disabled:hover:translate-y-0"
+                  className="group inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-emerald-600 to-emerald-700 px-7 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_14px_34px_-14px_rgba(5,150,105,0.6)] transition-all duration-300 ease-out hover:-translate-y-[2px] hover:from-emerald-500 hover:to-emerald-600 hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)] disabled:opacity-70 disabled:hover:translate-y-0"
                 >
                   {submitting ? (
                     <>
@@ -361,7 +403,7 @@ function ContactFormSection() {
                   )}
                 </button>
 
-                <div className="pt-1 text-center">
+                <div className="text-center">
                   <p className="text-[13px] font-medium leading-relaxed text-foreground">
                     No pressure. No generic sales pitch. Just a tailored strategy
                     showing how Montarro would fit your business.
@@ -384,6 +426,52 @@ function ContactFormSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+function OptionGroup({
+  index,
+  question,
+  options,
+  value,
+  onChange,
+  error,
+}: {
+  index: number;
+  question: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-baseline gap-2.5">
+        <span className="font-display text-[17px] font-bold tabular-nums text-emerald-600">{index}.</span>
+        <h3 className="text-[15.5px] font-semibold text-foreground">{question}</h3>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2.5">
+        {options.map((opt) => {
+          const selected = value === opt;
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onChange(opt)}
+              aria-pressed={selected}
+              className={`rounded-xl border px-4 py-2.5 text-[13.5px] font-medium transition-all duration-200 ease-out ${
+                selected
+                  ? "border-emerald-600 bg-emerald-600 text-white shadow-[0_10px_24px_-12px_rgba(5,150,105,0.6)]"
+                  : "border-black/[0.1] bg-white text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.05] hover:text-foreground"
+              }`}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+      {error && <p className="mt-2.5 text-[11px] text-red-600">{error}</p>}
+    </div>
   );
 }
 
@@ -425,55 +513,6 @@ function Field({
             : "border-black/[0.08] focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)]"
         }`}
       />
-      {error && <p className="mt-1.5 pl-1 text-[11px] text-red-600">{error}</p>}
-    </div>
-  );
-}
-
-function SelectField({
-  id,
-  label,
-  value,
-  options,
-  onChange,
-  error,
-}: {
-  id: string;
-  label: string;
-  value: string;
-  options: string[];
-  onChange: (v: string) => void;
-  error?: string;
-}) {
-  return (
-    <div>
-      <div className="relative">
-        <select
-          id={id}
-          name={id}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          aria-label={label}
-          aria-invalid={!!error}
-          className={`h-[58px] w-full appearance-none rounded-2xl border bg-white px-5 pr-11 text-[15px] shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:outline-none ${
-            value ? "text-foreground" : "text-foreground/45"
-          } ${
-            error
-              ? "border-red-400/60"
-              : "border-black/[0.08] focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)]"
-          }`}
-        >
-          <option value="" disabled>
-            {label}
-          </option>
-          {options.map((o) => (
-            <option key={o} value={o}>
-              {o}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
-      </div>
       {error && <p className="mt-1.5 pl-1 text-[11px] text-red-600">{error}</p>}
     </div>
   );

@@ -3193,7 +3193,6 @@ function Footer() {
 /* --------------------------------- FAQ --------------------------------- */
 function Faq() {
   const items: { q: string; a: string }[] = [
-    { q: "How much does it cost?", a: "Pricing is tailored to your business and the infrastructure you choose — not a fixed package. Every plan carries a guaranteed minimum of qualified leads, so it's built around return, not cost. On your strategy call we scope it to your call volume, goals and the systems you want connected." },
     { q: "Is this suitable for my business?", a: "If you rely on inbound calls and enquiries to win work, yes. We build for Australian service businesses — trades, healthcare, automotive, legal, real estate, hospitality and multi-location operations — where missed calls and slow follow-up quietly cost real revenue." },
     { q: "How long does implementation take?", a: "Most businesses are live within two weeks: week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
     { q: "What happens after I submit an enquiry?", a: "We review your business, map the right infrastructure for your stage, and reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
@@ -3208,7 +3207,7 @@ function Faq() {
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-6 inline-flex items-center gap-3">
               <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Common Questions</span>
+              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Answers</span>
               <span className="h-px w-10 bg-emerald-500/70" />
             </div>
             <h2 className="font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">

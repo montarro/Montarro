@@ -1274,19 +1274,9 @@ function CostOfStandingStill() {
   const perYear = Math.round(missed * 52 * avgJob * BOOK_RATE);
   const perMonth = Math.round(perYear / 12);
   return (
-    <>
-      {/* fade from the light story into the dark tension beat */}
-      <div
-        aria-hidden
-        style={{
-          height: "100px",
-          marginBottom: "-1px",
-          background: "linear-gradient(180deg, #f5f6f7 0%, #d6d9d8 45%, #0a0c0b 100%)",
-        }}
-      />
-      <section
-        id="cost"
-        className="relative overflow-hidden py-20 lg:py-28"
+    <section
+      id="cost"
+      className="relative overflow-hidden py-20 lg:py-28"
         style={{
           background:
             "radial-gradient(ellipse 60% 50% at 85% 8%, rgba(16,185,129,0.06), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
@@ -1361,16 +1351,6 @@ function CostOfStandingStill() {
           </Reveal>
         </div>
       </section>
-      {/* fade back out of the dark beat into the light story */}
-      <div
-        aria-hidden
-        style={{
-          height: "100px",
-          marginTop: "-1px",
-          background: "linear-gradient(180deg, #0a0c0b 0%, #d6d9d8 55%, #ffffff 100%)",
-        }}
-      />
-    </>
   );
 }
 
@@ -2161,16 +2141,6 @@ function CrmFeedPanel() {
 
 function ExperienceInfra() {
   return (
-    <>
-      {/* fade into the dark environment */}
-      <div
-        aria-hidden
-        style={{
-          height: "90px",
-          marginBottom: "-1px",
-          background: "linear-gradient(180deg, #ffffff 0%, #d6d9d8 55%, #0a0c0b 100%)",
-        }}
-      />
       <section
         id="experience"
         className="relative overflow-hidden py-20 lg:py-24"
@@ -2237,8 +2207,6 @@ function ExperienceInfra() {
           </div>
         </div>
       </section>
-      {/* HowItWorks below is dark — no fade-to-white seam */}
-    </>
   );
 }
 
@@ -2909,9 +2877,6 @@ function CaseStudy() {
   ];
 
   return (
-    <>
-      {/* HowItWorks above is dark — no fade-from-white seam */}
-
       <section
         id="case"
         className="relative overflow-hidden py-24 lg:py-28"
@@ -3059,18 +3024,6 @@ function CaseStudy() {
           </div>
         </div>
       </section>
-
-      {/* smooth fade out of the dark environment into the next section */}
-      <div
-        aria-hidden
-        style={{
-          height: "110px",
-          marginTop: "-1px",
-          background:
-            "linear-gradient(180deg, #0a0c0b 0%, #161918 28%, #5b605e 56%, #d6d9d8 80%, #ffffff 100%)",
-        }}
-      />
-    </>
   );
 }
 
@@ -3249,33 +3202,6 @@ function Footer() {
 
 /* ---------------------------- INTEGRATIONS ---------------------------- */
 
-function Integrations() {
-  const tools = ["GoHighLevel", "Cal.com", "Twilio", "Google Calendar"];
-  return (
-    <section className="relative border-t border-black/[0.04] py-12">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70">
-            Integrates with your stack
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {tools.map((t) => (
-              <span
-                key={t}
-                className="text-sm font-medium tracking-tight text-foreground/65 transition-colors duration-300 hover:text-foreground"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------ PAGE ------------------------------ */
-
 /* --------------------------------- FAQ --------------------------------- */
 function Faq() {
   const items: { q: string; a: string }[] = [
@@ -3452,7 +3378,6 @@ function Landing() {
         <ExperienceInfra />
         <HowItWorks />
         <CaseStudy />
-        <Integrations />
         <Pricing />
         <Faq />
         <CTA />

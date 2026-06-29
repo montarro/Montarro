@@ -108,7 +108,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       className={`relative mx-auto w-full max-w-xl ${className}`}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] px-6 py-8 shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_40px_100px_-50px_rgba(0,0,0,0.7)] sm:px-9 sm:py-10">
+      <div className="relative rounded-3xl border border-black/[0.07] bg-white px-6 py-8 shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset,0_24px_60px_-40px_rgba(0,0,0,0.18)] sm:px-9 sm:py-10">
 
         <AnimatePresence mode="wait">
           {submitted ? (
@@ -119,17 +119,16 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
               transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col items-center py-8 text-center"
             >
-              <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/[0.08] shadow-[0_18px_50px_-18px_rgba(16,185,129,0.6)]">
-                <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.4),transparent_70%)] blur-md" />
-                <Check className="relative h-6 w-6 text-emerald-400" strokeWidth={2.2} />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.08]">
+                <Check className="h-6 w-6 text-emerald-600" strokeWidth={2.2} />
               </div>
-              <p className="mt-7 text-[11px] uppercase tracking-[0.32em] text-emerald-400/80">
+              <p className="mt-7 text-[11px] uppercase tracking-[0.32em] text-emerald-600/80">
                 Enquiry Received
               </p>
-              <h3 className="mt-3 font-display text-3xl leading-tight tracking-[-0.03em] text-white">
+              <h3 className="mt-3 font-display text-3xl leading-tight tracking-[-0.03em] text-foreground">
                 Thanks, {splitName(form.fullName).first || "there"}.
               </h3>
-              <p className="mt-4 max-w-sm text-[14.5px] leading-relaxed text-white/55">
+              <p className="mt-4 max-w-sm text-[14.5px] leading-relaxed text-muted-foreground">
                 We'll review your business, map the right infrastructure and
                 contact you within one business day.
               </p>
@@ -144,15 +143,15 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
               transition={{ duration: 0.35 }}
             >
               <div className="grid gap-x-6 gap-y-7 sm:grid-cols-2">
-                <DarkField id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
-                <DarkField id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
-                <DarkField id="phone" label="Mobile Number" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
-                <DarkField id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
+                <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
+                <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
+                <Field id="phone" label="Mobile Number" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
+                <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
                 <div className="sm:col-span-2">
-                  <DarkField id="industry" label="Business / Industry" value={form.industry} onChange={(v) => update("industry", v)} error={errors.industry} />
+                  <Field id="industry" label="Business / Industry" value={form.industry} onChange={(v) => update("industry", v)} error={errors.industry} />
                 </div>
                 <div className="sm:col-span-2">
-                  <label htmlFor="notes" className="block text-[10.5px] uppercase tracking-[0.28em] text-white/45">
+                  <label htmlFor="notes" className="block text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground/80">
                     Tell us about your business
                   </label>
                   <textarea
@@ -162,13 +161,13 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
                     onChange={(e) => update("notes", e.target.value)}
                     rows={4}
                     placeholder="What you do, where you're at, and what you'd like to improve…"
-                    className="mt-3 w-full resize-none rounded-2xl border border-white/[0.10] bg-white/[0.02] p-4 text-[15px] leading-relaxed text-white placeholder:text-white/30 transition-colors duration-500 hover:border-white/20 focus:border-emerald-400/50 focus:bg-white/[0.04] focus:outline-none"
+                    className="mt-3 w-full resize-none rounded-2xl border border-black/[0.10] bg-black/[0.015] p-4 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/50 transition-colors duration-500 hover:border-black/20 focus:border-emerald-500/40 focus:bg-white focus:outline-none"
                   />
                 </div>
               </div>
 
               {submitError && (
-                <p role="alert" className="mt-6 rounded-xl border border-red-500/25 bg-red-500/[0.08] px-4 py-3 text-[13px] leading-relaxed text-red-300">
+                <p role="alert" className="mt-6 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600">
                   Something went wrong sending your enquiry. Please try again — or
                   email us at montarromedia@outlook.com.
                 </p>
@@ -193,11 +192,11 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
                 )}
               </button>
 
-              <p className="mx-auto mt-5 max-w-md text-center text-[13px] leading-relaxed text-white/50">
+              <p className="mx-auto mt-5 max-w-md text-center text-[13px] leading-relaxed text-muted-foreground">
                 We'll review your business, map the right infrastructure and
                 contact you within one business day.
               </p>
-              <p className="mt-2 text-center text-[12px] text-white/35">
+              <p className="mt-2 text-center text-[12px] text-muted-foreground/70">
                 No obligation. No spam. Just a tailored growth strategy.
               </p>
             </motion.form>
@@ -208,7 +207,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
   );
 }
 
-function DarkField({
+function Field({
   id,
   label,
   value,
@@ -231,7 +230,7 @@ function DarkField({
     <div className="group relative">
       <label
         htmlFor={id}
-        className="block text-[10.5px] uppercase tracking-[0.28em] text-white/45 transition-colors duration-300 group-focus-within:text-emerald-400/90"
+        className="block text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground/80 transition-colors duration-300 group-focus-within:text-emerald-600/90"
       >
         {label}
       </label>
@@ -246,17 +245,17 @@ function DarkField({
           inputMode={inputMode}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`peer block w-full border-0 border-b bg-transparent px-0 py-3 text-[15px] text-white caret-emerald-400 selection:bg-emerald-500/20 placeholder:text-white/30 transition-colors duration-500 focus:outline-none focus:ring-0 ${
-            error ? "border-red-400/60" : "border-white/[0.14] focus:border-emerald-400/70"
+          className={`peer block w-full border-0 border-b bg-transparent px-0 py-3 text-[15px] text-foreground caret-emerald-500 selection:bg-emerald-500/20 placeholder:text-muted-foreground/50 transition-colors duration-500 focus:outline-none focus:ring-0 ${
+            error ? "border-destructive/60" : "border-black/[0.12] focus:border-emerald-500/70"
           }`}
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-gradient-to-r from-emerald-400/0 via-emerald-400/80 to-emerald-400/0 shadow-[0_0_12px_rgba(16,185,129,0.45)] transition-transform duration-700 ease-out peer-focus:scale-x-100"
+          className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/80 to-emerald-500/0 transition-transform duration-700 ease-out peer-focus:scale-x-100"
         />
       </div>
       {error && (
-        <p id={`${id}-error`} className="mt-2 text-[11px] text-white/45">
+        <p id={`${id}-error`} className="mt-2 text-[11px] text-muted-foreground">
           {error}
         </p>
       )}

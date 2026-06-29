@@ -3032,37 +3032,25 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <div className="bg-background px-4 pt-10 pb-16 sm:px-6 lg:px-8 lg:pt-16 lg:pb-24">
-      <section
-        id="cta"
-        className="relative isolate overflow-hidden rounded-[28px] border border-white/[0.05] bg-[#0B0B0B] pt-20 pb-20 lg:pt-24 lg:pb-24 shadow-[0_50px_120px_-50px_rgba(0,0,0,0.7)]"
-      >
-        {/* the only lighting: an extremely subtle emerald tint behind the form */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(ellipse 48% 42% at 50% 64%, rgba(16,185,129,0.05), transparent 72%)" }}
-        />
-
-        <div className="relative mx-auto max-w-2xl px-6">
-          <div className="text-center">
-            <Reveal delay={0.05}>
-              <h2 className="font-display text-gradient-white-grey text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
-                Put the whole system to work.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
-                Tell us about your business and we'll map the right infrastructure for you.
-              </p>
-            </Reveal>
-          </div>
-
-          {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
-          <QuickEnquiryForm className="mt-10" />
+    <section id="cta" className="relative py-20 lg:py-28">
+      <div className="mx-auto max-w-2xl px-6">
+        <div className="text-center">
+          <Reveal delay={0.05}>
+            <h2 className="font-display text-gradient-chrome text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
+              Put the whole system to work.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-muted-foreground">
+              Tell us about your business and we'll map the right infrastructure for you.
+            </p>
+          </Reveal>
         </div>
-      </section>
-    </div>
+
+        {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
+        <QuickEnquiryForm className="mt-10" />
+      </div>
+    </section>
   );
 }
 

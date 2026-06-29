@@ -3028,18 +3028,7 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <section id="cta" className="relative isolate overflow-hidden bg-[#E9F7EE] py-24 lg:py-32">
-      {/* same fine engineered grid as the Hero — barely noticeable */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
-        }}
-      />
-
+    <section id="cta" className="relative bg-[#E9F7EE] py-24 lg:py-32">
       <div className="relative mx-auto max-w-2xl px-6">
         <div className="text-center">
           <Reveal delay={0.05}>
@@ -3222,18 +3211,7 @@ function Faq() {
     { q: "What happens during the strategy call?", a: "We review your current lead flow, map the infrastructure that fits your stage, and show you exactly how it would work for your business. It's a working session, not a sales pitch — you leave with clarity whether or not you proceed." },
   ];
   return (
-    <section id="faq" className="relative isolate overflow-hidden bg-[#E9F7EE] py-24 lg:py-32">
-      {/* same fine engineered grid as the Hero — barely noticeable */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
-        }}
-      />
-
+    <section id="faq" className="relative bg-white py-24 lg:py-32">
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
           {/* LEFT — heading */}

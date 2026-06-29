@@ -181,10 +181,6 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
                 </>
               )}
             </button>
-
-            <p className="pt-1 text-center text-[13px] font-medium leading-relaxed text-foreground/80">
-              We'll review your business and contact you within one business day.
-            </p>
           </motion.form>
         )}
       </AnimatePresence>

@@ -3021,22 +3021,46 @@ function CaseStudy() {
 function CTA() {
   return (
     <section id="cta" className="relative bg-[#E9F7EE] py-24 lg:py-36">
-      <div className="relative mx-auto max-w-xl px-6">
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="text-center">
           <Reveal delay={0.05}>
-            <h2 className="font-display text-[clamp(2.75rem,7.5vw,5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-[#0a0b0b]">
-              Put the whole system to work.
+            <h2 className="font-headline text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
+              <span className="block whitespace-nowrap">Put the whole</span>
+              <span className="block whitespace-nowrap">System to work.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
-            <p className="mx-auto mt-6 max-w-md text-[16px] font-medium leading-relaxed text-foreground">
-              <span className="font-semibold text-foreground">Tell us about your business</span> and we'll map the right infrastructure for you.
+            <p className="mx-auto mt-7 max-w-2xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
+              We'll walk you through your business, identify what's costing you
+              revenue, and map out the revenue infrastructure built to help you grow.
             </p>
           </Reveal>
         </div>
 
         {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
         <QuickEnquiryForm className="mt-12" />
+
+        {/* conversion copy — beneath the button */}
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-7 max-w-xl text-center">
+            <p className="text-[13.5px] font-medium leading-relaxed text-foreground">
+              No pressure. No generic sales pitch. Just a tailored strategy showing
+              exactly how Montarro would be implemented in your business.
+            </p>
+            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+              Not ready yet?{" "}
+              <a href="#system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                Explore the System →
+              </a>{" "}
+              <span className="px-1 text-foreground/30">·</span>{" "}
+              Or call{" "}
+              <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                0450 731 109
+              </a>{" "}
+              to speak with our team.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

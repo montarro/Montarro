@@ -108,18 +108,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       className={`relative mx-auto w-full max-w-xl ${className}`}
     >
-      {/* soft emerald lighting behind the card */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-x-10 -top-10 bottom-0 -z-10 rounded-[40px] blur-3xl"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.12), transparent 70%)" }}
-      />
-      <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] px-6 py-8 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_40px_100px_-50px_rgba(0,0,0,0.7)] sm:px-9 sm:py-10">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.4), transparent)" }}
-        />
+      <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] px-6 py-8 shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_40px_100px_-50px_rgba(0,0,0,0.7)] sm:px-9 sm:py-10">
 
         <AnimatePresence mode="wait">
           {submitted ? (

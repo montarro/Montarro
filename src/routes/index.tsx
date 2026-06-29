@@ -3100,62 +3100,23 @@ function CTA() {
     <div className="bg-background px-4 pt-10 pb-16 sm:px-6 lg:px-8 lg:pt-16 lg:pb-24">
       <section
         id="cta"
-        className="relative isolate overflow-hidden rounded-[28px] border border-white/[0.06] bg-gradient-to-b from-[#171717] to-[#0a0a0a] pt-20 pb-20 lg:pt-24 lg:pb-24 shadow-[0_50px_120px_-50px_rgba(0,0,0,0.7),0_1px_0_0_rgba(255,255,255,0.04)_inset]"
+        className="relative isolate overflow-hidden rounded-[28px] border border-white/[0.05] bg-[#0B0B0B] pt-20 pb-20 lg:pt-24 lg:pb-24 shadow-[0_50px_120px_-50px_rgba(0,0,0,0.7)]"
       >
-        {/* top emerald hairline */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.4), transparent)" }}
-        />
-        {/* faint grid texture */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.06] [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-          }}
-        />
-        {/* layered atmospheric + emerald lighting */}
+        {/* the only lighting: an extremely subtle emerald tint behind the form */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 50% at 50% 16%, rgba(16,185,129,0.07), transparent 60%), radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.04), transparent 70%)",
-          }}
-        />
-        {/* soft vignette edges */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.5) 100%)" }}
-        />
-        {/* soft grain */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-          }}
+          style={{ background: "radial-gradient(ellipse 48% 42% at 50% 64%, rgba(16,185,129,0.05), transparent 72%)" }}
         />
 
         <div className="relative mx-auto max-w-2xl px-6">
           <div className="text-center">
             <Reveal delay={0.05}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
-                <LiveDot /> Begin Deployment
-              </div>
-            </Reveal>
-            <Reveal delay={0.12}>
               <h2 className="font-display text-gradient-white-grey text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
                 Put the whole system to work.
               </h2>
             </Reveal>
-            <Reveal delay={0.24}>
+            <Reveal delay={0.16}>
               <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
                 Tell us about your business and we'll map the right infrastructure for you.
               </p>

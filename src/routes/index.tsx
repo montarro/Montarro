@@ -2236,15 +2236,7 @@ function ExperienceInfra() {
           </div>
         </div>
       </section>
-      {/* fade back out into the light section */}
-      <div
-        aria-hidden
-        style={{
-          height: "90px",
-          marginTop: "-1px",
-          background: "linear-gradient(180deg, #0a0c0b 0%, #d6d9d8 55%, #ffffff 100%)",
-        }}
-      />
+      {/* HowItWorks below is dark — no fade-to-white seam */}
     </>
   );
 }
@@ -2823,26 +2815,7 @@ function CaseStudy() {
 
   return (
     <>
-      {/* tight cinematic fade from the white section into the dark environment */}
-      <div
-        aria-hidden
-        className="relative"
-        style={{
-          height: "120px",
-          marginBottom: "-1px",
-          background:
-            "linear-gradient(180deg, #ffffff 0%, #f7f8f8 22%, #d6d9d8 42%, #5b605e 62%, #161918 84%, #0a0c0b 100%)",
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 100% at 50% 100%, rgba(16,185,129,0.08), transparent 70%)",
-          }}
-        />
-      </div>
+      {/* HowItWorks above is dark — no fade-from-white seam */}
 
       <section
         id="case"

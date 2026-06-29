@@ -3193,26 +3193,37 @@ function Footer() {
 /* --------------------------------- FAQ --------------------------------- */
 function Faq() {
   const items: { q: string; a: string }[] = [
-    { q: "What is the AI Receptionist?", a: "An always-on voice agent that answers your calls, qualifies the caller, books appointments and updates your CRM — in under a second, 24/7." },
-    { q: "How quickly can we go live?", a: "Most businesses are live within two weeks: week one for setup and training, week two for testing and launch." },
-    { q: "Will it sound robotic?", a: "No. It holds a natural, low-latency conversation trained on your services, pricing and booking rules." },
-    { q: "Does it work after hours?", a: "Yes — it answers every call day or night, so after-hours enquiries become booked jobs instead of voicemails." },
-    { q: "How does it connect to my calendar and CRM?", a: "It books directly into your calendar and syncs every conversation into your CRM automatically." },
-    { q: "What does it cost?", a: "Pricing is tailored to your business. Book a free consultation and we'll scope it to your call volume and goals." },
+    { q: "What is an AI Receptionist?", a: "An always-on voice agent that answers your calls, holds a natural conversation, qualifies the caller, books appointments and updates your CRM — in under a second, 24/7. It's the front door of your revenue infrastructure." },
+    { q: "Will it sound like a real person?", a: "Yes. It holds a natural, low-latency conversation trained on your services, pricing and booking rules, so callers feel looked after rather than screened by a machine." },
+    { q: "How quickly can we go live?", a: "Most businesses are live within two weeks: week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
+    { q: "How does it work after hours?", a: "It answers every call day or night, weekends and holidays included. After-hours enquiries become booked jobs and qualified leads instead of voicemails your competitors pick up first." },
+    { q: "How does it connect with my existing CRM and calendar?", a: "It books directly into your calendar and syncs every conversation, contact and outcome into your CRM automatically. We integrate with the tools you already use rather than replacing them." },
+    { q: "Can it qualify leads before booking them?", a: "Yes. It asks your qualifying questions, captures intent and job details, and only books the appointments worth your time — so your calendar fills with genuine opportunities, not tyre-kickers." },
+    { q: "What if someone needs to speak to a real person?", a: "It can warm-transfer live calls to you or your team, or take a detailed message and trigger an immediate follow-up. The caller is always one step away from a human when it matters." },
+    { q: "Will it work with my current phone number?", a: "Yes. We route your existing number through the system, so nothing changes for your customers — calls are simply answered, every time, instead of being missed." },
+    { q: "How much work is required from my team?", a: "Very little. We do the setup, training and integration. Once you're live, the system runs in the background and your team only sees qualified, booked outcomes landing in your CRM and calendar." },
+    { q: "What industries do you work with?", a: "We focus on Australian service businesses — trades, healthcare, automotive, legal, real estate, hospitality and other multi-location or high-volume operations where missed calls quietly cost real revenue." },
+    { q: "How is pricing structured?", a: "Pricing is tailored to your business and the infrastructure you choose — not a fixed package. On your strategy call we scope it to your call volume, goals and the systems you want connected." },
+    { q: "What happens after I submit an enquiry?", a: "We review your business, map the right infrastructure for your stage, and reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
   ];
   return (
     <section id="faq" className="relative border-t border-black/[0.06] py-20 lg:py-28">
       <div className="mx-auto max-w-3xl px-6">
         <Reveal>
-          <div className="text-center">
+          <div className="mx-auto max-w-2xl text-center">
             <div className="mb-6 inline-flex items-center gap-3">
               <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">FAQ</span>
+              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Common Questions</span>
               <span className="h-px w-10 bg-emerald-500/70" />
             </div>
             <h2 className="font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">
-              Questions, Answered.
+              What Businesses Usually Ask.
             </h2>
+            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+              Everything you need to know before implementing an AI revenue
+              infrastructure into your business. If your question isn't below,
+              we'll happily answer it on your strategy call.
+            </p>
           </div>
         </Reveal>
         <div className="mt-12 space-y-3">

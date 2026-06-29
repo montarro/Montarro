@@ -3237,7 +3237,7 @@ function Footer() {
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href="#top"
+                    href="#about"
                     className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80"
                   >
                     About

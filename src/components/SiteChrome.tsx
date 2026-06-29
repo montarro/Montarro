@@ -17,7 +17,7 @@ export function SiteNav() {
             return (
               <>
                 <Link to="/" hash="system" className={cls}>The System</Link>
-                <Link to="/services/ai-receptionists" className={`group inline-flex items-center gap-1.5 ${cls}`}>
+                <Link to="/" hash="experience" className={`group inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
@@ -25,9 +25,9 @@ export function SiteNav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/" hash="results" className={cls}>About</Link>
+                <Link to="/about" className={cls}>About</Link>
                 <Link to="/" hash="faq" className={cls}>FAQ</Link>
-                <Link to="/contact" className={cls}>Contact</Link>
+                <Link to="/" hash="cta" className={cls}>Contact</Link>
               </>
             );
           })()}
@@ -97,6 +97,7 @@ export function SiteFooter() {
               </h4>
               <ul className="mt-4 space-y-2">
                 <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">The System</Link></li>
+                <li><Link to="/about" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">About</Link></li>
                 <li><Link to="/" hash="packages" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Packages</Link></li>
                 <li><Link to="/" hash="faq" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">FAQ</Link></li>
               </ul>

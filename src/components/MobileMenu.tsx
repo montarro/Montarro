@@ -17,11 +17,11 @@ type NavItem =
  */
 const NAV: NavItem[] = [
   { kind: "link", label: "The System", to: "/", hash: "system", desc: "See the Infrastructure" },
-  { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true, desc: "Learn How It Works" },
+  { kind: "link", label: "AI Receptionist", to: "/", hash: "experience", live: true, desc: "Hear It in Action" },
   { kind: "link", label: "Live Demo", to: "/demo", desc: "See It in Action" },
-  { kind: "link", label: "About", to: "/", hash: "results", desc: "Who We Are" },
+  { kind: "link", label: "About", to: "/about", desc: "Who We Are" },
   { kind: "link", label: "FAQ", to: "/", hash: "faq", desc: "Common Questions" },
-  { kind: "link", label: "Contact", to: "/contact", desc: "Let's Talk" },
+  { kind: "link", label: "Contact", to: "/", hash: "cta", desc: "Let's Talk" },
 ];
 
 export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {

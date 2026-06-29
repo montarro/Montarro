@@ -103,17 +103,17 @@ function Nav() {
             return (
               <>
                 <a href="#system" className={cls}>The System</a>
-                <Link to="/services/ai-receptionists" className={`group inline-flex items-center gap-1.5 ${cls}`}>
+                <a href="#experience" className={`group inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   </span>
-                </Link>
+                </a>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <a href="#results" className={cls}>About</a>
+                <Link to="/about" className={cls}>About</Link>
                 <a href="#faq" className={cls}>FAQ</a>
-                <Link to="/contact" className={cls}>Contact</Link>
+                <a href="#cta" className={cls}>Contact</a>
               </>
             );
           })()}

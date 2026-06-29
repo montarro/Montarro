@@ -19,7 +19,7 @@ const NAV: NavItem[] = [
   { kind: "link", label: "The System", to: "/", hash: "system", desc: "See the Infrastructure" },
   { kind: "link", label: "AI Receptionist", to: "/", hash: "experience", live: true, desc: "Hear It in Action" },
   { kind: "link", label: "Live Demo", to: "/demo", desc: "See It in Action" },
-  { kind: "link", label: "About", to: "/about", desc: "Who We Are" },
+  { kind: "link", label: "About", to: "/", hash: "about", desc: "Who We Are" },
   { kind: "link", label: "FAQ", to: "/", hash: "faq", desc: "Common Questions" },
   { kind: "link", label: "Contact", to: "/", hash: "cta", desc: "Let's Talk" },
 ];

@@ -25,7 +25,7 @@ export function SiteNav() {
                   </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/about" className={cls}>About</Link>
+                <Link to="/" hash="about" className={cls}>About</Link>
                 <Link to="/" hash="faq" className={cls}>FAQ</Link>
                 <Link to="/" hash="cta" className={cls}>Contact</Link>
               </>
@@ -97,7 +97,7 @@ export function SiteFooter() {
               </h4>
               <ul className="mt-4 space-y-2">
                 <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">The System</Link></li>
-                <li><Link to="/about" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">About</Link></li>
+                <li><Link to="/" hash="about" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">About</Link></li>
                 <li><Link to="/" hash="packages" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Packages</Link></li>
                 <li><Link to="/" hash="faq" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">FAQ</Link></li>
               </ul>

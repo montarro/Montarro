@@ -111,7 +111,7 @@ function Nav() {
                   </span>
                 </a>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/about" className={cls}>About</Link>
+                <a href="#about" className={cls}>About</a>
                 <a href="#faq" className={cls}>FAQ</a>
                 <a href="#cta" className={cls}>Contact</a>
               </>
@@ -627,7 +627,7 @@ function Hero() {
                   <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
                 <a
-                  href="#results"
+                  href="#system"
                   className="btn-pulse-ring group flex w-full items-center justify-center gap-2 rounded-xl border border-black/40 bg-white px-7 py-4 text-[15px] font-semibold text-foreground transition-all duration-200 ease-out hover:-translate-y-[3px] hover:bg-black/[0.04] hover:shadow-[0_16px_34px_-16px_rgba(0,0,0,0.4)] sm:w-auto"
                 >
                   See What&rsquo;s Missing
@@ -1927,9 +1927,9 @@ function ModuleCard({
   );
 }
 
-/* ---------------- BEAT 6 · WHY BUSINESSES CHOOSE MONTARRO ---------------- */
-/* Premium editorial positioning — typical agency vs Montarro. Carries the
-   #system nav anchor so the existing "The System" links keep resolving. */
+/* ---------------- REVENUE INFRASTRUCTURE · typical agency vs Montarro ---------------- */
+/* Premium editorial positioning. Sits below Packages as the "Revenue
+   Infrastructure" section (id="revenue-infrastructure"). */
 
 function WhyMontarro() {
   const rows: { agency: string; montarro: string }[] = [
@@ -1941,7 +1941,7 @@ function WhyMontarro() {
     { agency: "Reactive support.", montarro: "A long-term operational partner." },
   ];
   return (
-    <section id="system" className="relative overflow-hidden bg-[#fafaf9] py-24 lg:py-36">
+    <section id="revenue-infrastructure" className="relative overflow-hidden bg-[#fafaf9] py-24 lg:py-36">
       {/* hairline top edge to separate from the transformation beat */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-black/[0.06]" />
 
@@ -2016,6 +2016,65 @@ function WhyMontarro() {
               ))}
             </div>
           </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------- ABOUT ------------------------------- */
+
+function About() {
+  const points: { lead: string; body: string }[] = [
+    {
+      lead: "Montarro builds AI revenue infrastructure — not one-off agency services.",
+      body: "We don't run a campaign and hand you a report. We build the connected system your growth runs on, then operate it with you.",
+    },
+    {
+      lead: "The AI Receptionist is the entry point.",
+      body: "It answers every call, qualifies the lead and books the appointment — but it's the front door to something much bigger than a single tool.",
+    },
+    {
+      lead: "The goal is one connected system.",
+      body: "Capture, qualify, follow up and book more leads automatically — every part talking to the next, so no opportunity falls through the cracks.",
+    },
+    {
+      lead: "And we partner for the long term.",
+      body: "We implement the infrastructure, manage it and keep improving it as you grow — not deliver a project and disappear.",
+    },
+  ];
+  return (
+    <section id="about" className="border-t border-black/[0.06] bg-white py-24 lg:py-32">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
+          {/* LEFT — heading */}
+          <div className="lg:col-span-5">
+            <Reveal>
+              <div className="mb-6 flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-500/70" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-600">
+                  About Montarro
+                </span>
+              </div>
+              <h2 className="font-headline text-[clamp(2.25rem,4vw,3.25rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b]">
+                Infrastructure, not agency services.
+              </h2>
+            </Reveal>
+          </div>
+
+          {/* RIGHT — narrative */}
+          <div className="lg:col-span-7">
+            <div className="space-y-7">
+              {points.map((p) => (
+                <Reveal key={p.lead}>
+                  <p className="max-w-2xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
+                    <span className="font-semibold text-foreground">{p.lead}</span>{" "}
+                    {p.body}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2232,8 +2291,8 @@ function useCountUp(target: number, enabled: boolean) {
 /* ---------------- SEE THE SYSTEM IN MOTION · dark scrollytelling ---------------- */
 /* A cinematic dark section. Left: a vertical waterfall of text stages that scroll
    normally. Right: ONE sticky connected-system dashboard that stays fixed and morphs to
-   match whichever stage is centred (IntersectionObserver center-line). Keeps the
-   #results anchor (the 'About' nav links + hero secondary CTA). */
+   match whichever stage is centred (IntersectionObserver center-line). Carries the
+   #system anchor (the 'The System' nav links + hero secondary CTA). */
 
 const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
   { title: "Capture", icon: Inbox, copy: "Every call, form, Facebook lead and web enquiry enters one place instantly." },
@@ -2544,7 +2603,7 @@ function HowItWorks() {
   }, []);
   return (
     <section
-      id="results"
+      id="system"
       className="relative overflow-clip bg-[#081510]"
     >
       {/* fine grid — kept, just quieter so the depth reads as space, not pattern */}
@@ -3418,11 +3477,14 @@ function Landing() {
         <ProblemReframe />
         <CostOfStandingStill />
         <LifeAfter />
-        <WhyMontarro />
+        {/* System area */}
         <ExperienceInfra />
         <HowItWorks />
         <CaseStudy />
+        {/* Packages → Revenue Infrastructure → About */}
         <Pricing />
+        <WhyMontarro />
+        <About />
         <Faq />
         <CTA />
       </main>

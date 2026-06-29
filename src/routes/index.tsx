@@ -1028,7 +1028,7 @@ function CaptureCard() {
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Capture Every Call</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        AI answers after-hours, during busy periods, and when staff are unavailable.
+        <span className="font-semibold text-foreground">AI answers after-hours</span>, during busy periods, and when staff are unavailable.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
         <TrendingUp className="h-3.5 w-3.5 text-emerald-500" /> 128 recovered this month
@@ -1078,7 +1078,7 @@ function BookingCard() {
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Book More Jobs</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        Qualified leads are routed into bookings, reminders, and follow-up flows.
+        <span className="font-semibold text-foreground">Qualified leads</span> are routed into bookings, reminders, and follow-up flows.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
         <CalendarCheck className="h-3.5 w-3.5 text-emerald-500" /> 34 jobs booked this week
@@ -1122,7 +1122,7 @@ function ScaleCard() {
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Scale Without Hiring</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        Increase response speed and capacity without adding receptionist overhead.
+        <span className="font-semibold text-foreground">Increase response speed and capacity</span> without adding receptionist overhead.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
         <Activity className="h-3.5 w-3.5 text-emerald-500" /> 5+ services automated
@@ -1309,8 +1309,8 @@ function CostOfStandingStill() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-5 max-w-md text-[15px] md:text-base leading-relaxed text-white/55">
-                Put in your own numbers. This is what those gaps quietly cost you
+              <p className="mx-auto mt-5 max-w-md text-[15px] md:text-base leading-relaxed text-white/70">
+                <span className="font-semibold text-white">Put in your own numbers.</span> This is what those gaps quietly cost you
                 every single year.
               </p>
             </Reveal>
@@ -1966,7 +1966,7 @@ function WhyMontarro() {
               <p className="mt-7 max-w-md text-[16px] leading-relaxed text-muted-foreground">
                 You can already see the problem, the cost, and what changes. The only
                 question left is who builds it. Most companies sell you services and
-                disappear. We engineer one system that runs your growth — and stay to
+                disappear. <span className="font-semibold text-foreground">We engineer one system that runs your growth</span> — and stay to
                 run it with you.
               </p>
             </Reveal>
@@ -2173,8 +2173,8 @@ function ExperienceInfra() {
                   Hear the AI receptionist answer.
                 </span>
               </h2>
-              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
-                The core of the Montarro System — it answers, qualifies and books
+              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/70">
+                <span className="font-semibold text-white">The core of the Montarro System</span> — it answers, qualifies and books
                 every call in real time, 24/7.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -2568,8 +2568,8 @@ function HowItWorks() {
           <h2 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-6xl lg:text-7xl">
             See the system in motion.
           </h2>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/55">
-            One enquiry moves through the entire revenue engine — from first contact
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+            <span className="font-semibold text-white">One enquiry</span> moves through the entire revenue engine — from first contact
             to booked job, follow-up and reporting.
           </p>
         </div>
@@ -2619,7 +2619,8 @@ function HowItWorks() {
 const TIERS = [
   {
     name: "AI Receptionist",
-    tagline: "For businesses that just want to stop missing enquiries.",
+    taglineLead: "Stop missing enquiries.",
+    tagline: "For businesses that just want their phone answered, every time.",
     cta: "Book an AI Receptionist Call",
     to: "/services/ai-receptionists",
     features: [
@@ -2638,7 +2639,8 @@ const TIERS = [
   },
   {
     name: "Revenue Infrastructure",
-    tagline: "The operating system behind your business — every part connected, automated and managed for you.",
+    taglineLead: "The operating system behind your business —",
+    tagline: "every part connected, automated and managed for you.",
     featured: true,
     cta: "Book an Infrastructure Call",
     to: "/contact",
@@ -2661,7 +2663,8 @@ const TIERS = [
   },
   {
     name: "Enterprise",
-    tagline: "For multi-location and high-volume operations that want Montarro embedded in their team.",
+    taglineLead: "Built for multi-location and high-volume operations",
+    tagline: "that want Montarro embedded in their team.",
     cta: "Book an Enterprise Strategy Call",
     to: "/contact",
     features: [
@@ -2699,7 +2702,7 @@ function Pricing() {
               Choose the infrastructure<br className="hidden sm:block" /> that fits your business.
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base leading-relaxed text-muted-foreground">
-              Start with the system that matches your current stage — then scale
+              <span className="font-semibold text-foreground">Start with the system that matches your current stage</span> — then scale
               up as your business grows, without rebuilding from scratch.
             </p>
           </div>
@@ -2738,7 +2741,7 @@ function Pricing() {
                     )}
                   </div>
                   <p className="mt-2.5 min-h-[40px] text-[13px] leading-relaxed text-muted-foreground">
-                    {t.tagline}
+                    <span className="font-semibold text-foreground">{t.taglineLead}</span> {t.tagline}
                   </p>
 
                   <div className="my-6 h-px w-full bg-black/[0.07]" />
@@ -2904,8 +2907,8 @@ function CaseStudy() {
                 </span>
                 <span className="text-emerald-400">instrumented.</span>
               </h2>
-              <p className="mt-6 max-w-md text-[15px] leading-relaxed text-white/55">
-                A live system orchestrating inbound demand — AI qualification,
+              <p className="mt-6 max-w-md text-[15px] leading-relaxed text-white/70">
+                <span className="font-semibold text-white">A live system orchestrating inbound demand</span> — AI qualification,
                 booking, follow-up, and CRM sync — so every lead is captured,
                 qualified, and accounted for. Not a dashboard. Infrastructure.
               </p>
@@ -3027,7 +3030,7 @@ function CTA() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-muted-foreground">
-              Tell us about your business and we'll map the right infrastructure for you.
+              <span className="font-semibold text-foreground">Tell us about your business</span> and we'll map the right infrastructure for you.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
@@ -3187,15 +3190,15 @@ function Footer() {
 
 /* --------------------------------- FAQ --------------------------------- */
 function Faq() {
-  const items: { q: string; a: string }[] = [
-    { q: "Is this suitable for my business?", a: "If you rely on inbound calls and enquiries to win work, yes. We build for Australian service businesses — trades, healthcare, automotive, legal, real estate, hospitality and multi-location operations — where missed calls and slow follow-up quietly cost real revenue." },
-    { q: "How quickly can we get started?", a: "Most businesses are live within two weeks: week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
-    { q: "What happens after I submit an enquiry?", a: "We review your business, map the right infrastructure for your stage, and reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
-    { q: "Will the AI sound like a real person?", a: "Yes. It holds a natural, low-latency conversation trained on your services, pricing and booking rules, so callers feel looked after rather than screened by a machine — and it can warm-transfer to your team whenever a human is needed." },
-    { q: "Can it work with my existing systems?", a: "Yes. It books directly into your calendar and syncs every conversation, contact and outcome into your CRM automatically. We integrate with the tools you already use rather than asking you to replace them." },
-    { q: "What results can I realistically expect?", a: "Fewer missed calls, faster follow-up and a calendar that fills with qualified appointments instead of voicemails. Each plan is backed by a guaranteed minimum of qualified leads per month, so the outcome is committed up front — not hoped for." },
-    { q: "How is Montarro different from a traditional marketing agency?", a: "Agencies typically run ads and hand you leads. We build and manage a complete, connected revenue infrastructure that captures, qualifies, books and follows up automatically — strategy-first, integrated with your systems, and backed by a written lead guarantee." },
-    { q: "What happens during the strategy call?", a: "We review your current lead flow, map the infrastructure that fits your stage, and show you exactly how it would work for your business. It's a working session, not a sales pitch — you leave with clarity whether or not you proceed." },
+  const items: { q: string; lead: string; a: string }[] = [
+    { q: "Is this suitable for my business?", lead: "If you rely on inbound calls and enquiries to win work, yes.", a: "We build for Australian service businesses — trades, healthcare, automotive, legal, real estate, hospitality and multi-location operations — where missed calls and slow follow-up quietly cost real revenue." },
+    { q: "How quickly can we get started?", lead: "Most businesses are live within two weeks:", a: "week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
+    { q: "What happens after I submit an enquiry?", lead: "We review your business and map the right infrastructure for your stage,", a: "then reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
+    { q: "Will the AI sound like a real person?", lead: "Yes — it holds a natural, low-latency conversation", a: "trained on your services, pricing and booking rules, so callers feel looked after rather than screened by a machine. It can warm-transfer to your team whenever a human is needed." },
+    { q: "Can it work with my existing systems?", lead: "Yes — it connects to the tools you already use.", a: "It books directly into your calendar and syncs every conversation, contact and outcome into your CRM automatically, rather than asking you to replace anything." },
+    { q: "What results can I realistically expect?", lead: "Fewer missed calls, faster follow-up and a calendar that fills with qualified appointments", a: "instead of voicemails. Each plan is backed by a guaranteed minimum of qualified leads per month, so the outcome is committed up front — not hoped for." },
+    { q: "How is Montarro different from a traditional marketing agency?", lead: "We build and manage a complete, connected revenue infrastructure,", a: "not just ads and hand-off leads. It captures, qualifies, books and follows up automatically — strategy-first, integrated with your systems, and backed by a written lead guarantee." },
+    { q: "What happens during the strategy call?", lead: "We review your current lead flow and map the infrastructure that fits your stage,", a: "then show you exactly how it would work for your business. It's a working session, not a sales pitch — you leave with clarity whether or not you proceed." },
   ];
   return (
     <section id="faq" className="relative bg-white py-24 lg:py-32">
@@ -3220,7 +3223,9 @@ function Faq() {
                       {it.q}
                       <Plus className="h-5 w-5 shrink-0 text-foreground/70 transition-transform duration-300 ease-out group-open:rotate-45" strokeWidth={2.25} />
                     </summary>
-                    <p className="max-w-[52ch] pb-6 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">{it.a}</p>
+                    <p className="max-w-[52ch] pb-6 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-foreground">{it.lead}</span> {it.a}
+                    </p>
                   </details>
                 </Reveal>
               ))}

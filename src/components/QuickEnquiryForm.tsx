@@ -193,7 +193,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
               </button>
 
               <p className="mx-auto mt-5 max-w-md text-center text-[13px] leading-relaxed text-muted-foreground">
-                We'll review your business, map the right infrastructure and
+                <span className="font-semibold text-foreground">We'll review your business</span>, map the right infrastructure and
                 contact you within one business day.
               </p>
               <p className="mt-2 text-center text-[12px] text-muted-foreground/70">

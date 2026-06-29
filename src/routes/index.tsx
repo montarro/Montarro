@@ -2664,46 +2664,50 @@ function HowItWorks() {
 
 const TIERS = [
   {
-    name: "Starter",
-    tagline: "Core infrastructure to capture every lead.",
-    cta: "View Infrastructure",
+    name: "AI Receptionist",
+    tagline: "For businesses that just want to stop missing enquiries.",
+    cta: "Explore AI Receptionist",
+    to: "/services/ai-receptionists",
     features: [
-      "AI Reception System",
-      "CRM Setup",
-      "Lead Capture Flows",
-      "Call & Form Routing",
-      "Appointment Automation",
-      "Monthly Reporting",
+      "24/7 AI Receptionist",
+      "Lead Qualification",
+      "Appointment Booking",
+      "Missed-Call Recovery",
+      "Call Summaries",
+      "CRM Sync",
     ],
   },
   {
-    name: "Growth",
-    tagline: "Full acquisition and revenue systems, engineered.",
+    name: "Revenue Infrastructure",
+    tagline: "The operating system behind your business — every part connected, automated and managed for you.",
     featured: true,
-    cta: "Scale With Montarro",
+    cta: "Book Strategy Call",
+    to: "/contact",
     features: [
-      "Everything in Starter",
-      "CRM Automation Systems",
-      "Website Optimisation",
-      "Paid Acquisition Systems",
-      "Content Infrastructure",
-      "Follow-Up Sequences",
-      "Conversion Tracking",
+      "AI Receptionist",
+      "CRM System",
+      "Lead Routing",
+      "Automated Follow-Up",
+      "Review Generation",
+      "Reporting Dashboard",
+      "Revenue Tracking",
+      "Website Integration",
+      "Operational Automation",
     ],
   },
   {
-    name: "Scale",
-    tagline: "A complete revenue operation, fully managed.",
-    cta: "Apply For Partnership",
+    name: "Enterprise",
+    tagline: "For multi-location and high-volume operations that want Montarro embedded in their team.",
+    cta: "Apply for Partnership",
+    to: "/contact",
     features: [
-      "Full Revenue Infrastructure",
+      "Multi-Location Support",
+      "High-Volume Lead Generation",
+      "Custom AI Workflows",
       "Dedicated Strategy",
-      "Multi-Channel Acquisition",
-      "Funnel Systems",
-      "Conversion Optimisation",
-      "Weekly Growth Reviews",
+      "Custom Integrations",
       "Priority Support",
-      "Ongoing System Expansion",
+      "Ongoing Optimisation",
     ],
   },
 ];
@@ -2731,51 +2735,49 @@ function Pricing() {
           </div>
         </Reveal>
 
-        <div className="mt-12 md:mt-16 grid items-stretch gap-5 lg:grid-cols-3">
+        {/* the centre card is the flagship: slightly wider, naturally taller, bottoms
+            aligned so every CTA lands on the same line */}
+        <div className="mt-12 grid gap-5 md:mt-16 lg:grid-cols-[1fr_1.1fr_1fr] lg:items-end">
           {TIERS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
-                to="/contact"
-                className={`group relative block h-full overflow-hidden rounded-2xl border p-8 backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 hover:scale-[1.02] active:scale-[0.99] ${
+                to={t.to}
+                className={`group relative flex flex-col overflow-hidden rounded-2xl border p-7 backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 active:scale-[0.99] ${
                   t.featured
-                    ? "border-emerald-500/45 bg-gradient-to-b from-emerald-500/[0.06] to-white/55 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_30px_70px_-34px_rgba(16,185,129,0.4)] hover:border-emerald-500/60 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_48px_100px_-34px_rgba(16,185,129,0.55)]"
-                    : "border-black/[0.08] bg-gradient-to-b from-white/80 to-white/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_40px_90px_-32px_rgba(16,185,129,0.38)]"
+                    ? "border-emerald-500/50 bg-gradient-to-b from-emerald-500/[0.07] to-white/60 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_82px_-34px_rgba(16,185,129,0.45)] hover:border-emerald-500/65 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.85),0_52px_112px_-34px_rgba(16,185,129,0.6)]"
+                    : "border-black/[0.08] bg-gradient-to-b from-white/85 to-white/45 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_80px_-32px_rgba(16,185,129,0.32)]"
                 }`}
               >
-                {t.featured && (
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[140%] -translate-x-1/2 rounded-full blur-3xl"
-                    style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.10), transparent 65%)" }}
-                  />
-                )}
-                {/* soft emerald glow on hover (this card only) */}
+                {/* restrained emerald top sheen on hover (no heavy always-on glow) */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{ background: "radial-gradient(ellipse 85% 55% at 50% 0%, rgba(16,185,129,0.10), transparent 65%)" }}
+                  style={{ background: "radial-gradient(ellipse 85% 50% at 50% 0%, rgba(16,185,129,0.08), transparent 65%)" }}
                 />
-                <div className="relative flex h-full flex-col">
+
+                <div className="relative flex flex-col">
+                  {/* header */}
                   <div className="flex items-start justify-between gap-3">
-                    <div className="font-display text-5xl tracking-tight text-gradient-chrome">
+                    <h3 className="font-display text-2xl tracking-tight text-gradient-chrome sm:text-[28px]">
                       {t.name}
-                    </div>
+                    </h3>
                     {t.featured && (
-                      <span className="mt-1.5 shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-700">
-                        Most Popular
+                      <span className="mt-1 shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+                        Recommended
                       </span>
                     )}
                   </div>
-                  <p className="mt-3 text-sm text-muted-foreground">
+                  <p className="mt-2.5 min-h-[40px] text-[13px] leading-relaxed text-muted-foreground">
                     {t.tagline}
                   </p>
 
-                  <div className="my-8 h-px w-full bg-black/[0.07]" />
+                  <div className="my-6 h-px w-full bg-black/[0.07]" />
 
-                  <ul className="space-y-3.5 text-sm">
+                  {/* features */}
+                  <ul className="space-y-2.5 text-[13.5px]">
                     {t.features.map((f) => (
-                      <li key={f} className="flex items-center gap-3">
-                        <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${t.featured ? "border-emerald-500/50" : "border-black/[0.12]"}`}>
+                      <li key={f} className="flex items-center gap-2.5">
+                        <span className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border ${t.featured ? "border-emerald-500/50 bg-emerald-500/10" : "border-black/[0.12]"}`}>
                           <Check className={`h-3 w-3 ${t.featured ? "text-emerald-600" : "text-foreground/50"}`} />
                         </span>
                         <span className="text-foreground/90">{f}</span>
@@ -2783,9 +2785,10 @@ function Pricing() {
                     ))}
                   </ul>
 
-                  <div style={{ marginTop: "auto" }} className="pt-10">
+                  {/* CTA — same size/style on every card, bottom-aligned via items-end */}
+                  <div className="mt-7">
                     <span
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[13px] transition-all duration-300 ${
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[13px] transition-all duration-300 ${
                         t.featured
                           ? "bg-gradient-to-b from-emerald-600 to-emerald-700 font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_12px_30px_-14px_rgba(5,150,105,0.6)] group-hover:from-emerald-500 group-hover:to-emerald-600 group-hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)]"
                           : "border border-black/[0.12] font-medium text-foreground/80 group-hover:border-emerald-500/45 group-hover:bg-emerald-500/[0.04] group-hover:text-foreground"

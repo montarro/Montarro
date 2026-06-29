@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView, animate } from "motion/react";
+import { AnimatePresence, motion, useScroll, useTransform, useInView, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -3213,20 +3213,12 @@ function Faq() {
             </Reveal>
           </div>
 
-          {/* RIGHT — Rockmelon-style divided rows */}
+          {/* RIGHT — divided rows with a circular +/x control */}
           <div className="lg:col-span-7">
             <div className="border-t border-black/[0.09]">
               {items.map((it, i) => (
                 <Reveal key={it.q} delay={0.04 * i}>
-                  <details className="group border-b border-black/[0.09] transition-colors duration-300 hover:bg-black/[0.02]">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 pl-1 pr-3 text-[17px] font-medium text-foreground sm:text-[18px]">
-                      {it.q}
-                      <Plus className="h-5 w-5 shrink-0 text-foreground/70 transition-transform duration-300 ease-out group-open:rotate-45" strokeWidth={2.25} />
-                    </summary>
-                    <p className="max-w-[52ch] pb-6 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">
-                      <span className="font-semibold text-foreground">{it.lead}</span> {it.a}
-                    </p>
-                  </details>
+                  <FaqRow q={it.q} lead={it.lead} a={it.a} />
                 </Reveal>
               ))}
             </div>
@@ -3234,6 +3226,52 @@ function Faq() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FaqRow({ q, lead, a }: { q: string; lead: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-black/[0.09]">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="group flex w-full items-center justify-between gap-6 py-7 pl-1 pr-1 text-left"
+      >
+        <span className="text-[17px] font-semibold tracking-tight text-foreground sm:text-[18px]">
+          {q}
+        </span>
+        <span
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200 ease-out ${
+            open
+              ? "border-emerald-600 bg-emerald-600 text-white"
+              : "border-emerald-600 text-emerald-600 group-hover:bg-emerald-500/10"
+          }`}
+        >
+          <Plus
+            className={`h-4 w-4 transition-transform duration-200 ease-out ${open ? "rotate-45" : ""}`}
+            strokeWidth={2.5}
+          />
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="max-w-[52ch] pb-7 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">
+              <span className="font-semibold text-foreground">{lead}</span> {a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

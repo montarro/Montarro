@@ -39,7 +39,7 @@ import {
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
-import { StrategyCallForm } from "@/components/StrategyCallForm";
+import { QuickEnquiryForm } from "@/components/QuickEnquiryForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -3157,13 +3157,13 @@ function CTA() {
             </Reveal>
             <Reveal delay={0.24}>
               <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
-                Tell us about your business and book your strategy call — no obligation.
+                Tell us about your business and we'll map the right infrastructure for you.
               </p>
             </Reveal>
           </div>
 
-          {/* the exact same Strategy Call form as the /contact page (shared component) */}
-          <StrategyCallForm className="mt-10" />
+          {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
+          <QuickEnquiryForm className="mt-10" />
         </div>
       </section>
     </div>

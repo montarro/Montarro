@@ -3032,8 +3032,19 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <section id="cta" className="relative py-20 lg:py-28">
-      <div className="mx-auto max-w-2xl px-6">
+    <section id="cta" className="relative isolate overflow-hidden bg-[#E9F7EE] py-24 lg:py-32">
+      {/* same fine engineered grid as the Hero — barely noticeable */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-2xl px-6">
         <div className="text-center">
           <Reveal delay={0.05}>
             <h2 className="font-display text-gradient-chrome text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
@@ -3045,10 +3056,20 @@ function CTA() {
               Tell us about your business and we'll map the right infrastructure for you.
             </p>
           </Reveal>
+          <Reveal delay={0.24}>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-emerald-900/65">
+              {["Melbourne-based", "Typical setup in 7–14 days", "No-obligation strategy call"].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1.5">
+                  <span className="h-1 w-1 rounded-full bg-emerald-600/70" />
+                  {t}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
-        <QuickEnquiryForm className="mt-10" />
+        <QuickEnquiryForm className="mt-9" />
       </div>
     </section>
   );
@@ -3194,44 +3215,63 @@ function Footer() {
 function Faq() {
   const items: { q: string; a: string }[] = [
     { q: "Is this suitable for my business?", a: "If you rely on inbound calls and enquiries to win work, yes. We build for Australian service businesses — trades, healthcare, automotive, legal, real estate, hospitality and multi-location operations — where missed calls and slow follow-up quietly cost real revenue." },
-    { q: "How long does implementation take?", a: "Most businesses are live within two weeks: week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
+    { q: "How quickly can we get started?", a: "Most businesses are live within two weeks: week one for setup and training on your services and scripts, week two for testing and launch. We handle the build — you simply review and approve." },
     { q: "What happens after I submit an enquiry?", a: "We review your business, map the right infrastructure for your stage, and reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
-    { q: "Will it replace my receptionist or work alongside them?", a: "Either — it's your call. Most clients run it alongside their team to catch overflow, after-hours and missed calls, while others let it handle reception end to end. It can always warm-transfer to a real person when it matters." },
+    { q: "Will the AI sound like a real person?", a: "Yes. It holds a natural, low-latency conversation trained on your services, pricing and booking rules, so callers feel looked after rather than screened by a machine — and it can warm-transfer to your team whenever a human is needed." },
+    { q: "Can it work with my existing systems?", a: "Yes. It books directly into your calendar and syncs every conversation, contact and outcome into your CRM automatically. We integrate with the tools you already use rather than asking you to replace them." },
+    { q: "What happens after hours or on weekends?", a: "Every call is answered, day or night, weekends and holidays included. After-hours enquiries become booked jobs and qualified leads instead of voicemails your competitors pick up first." },
+    { q: "How much work is required from my team?", a: "Very little. We do the setup, training and integration. Once you're live, the system runs in the background and your team only sees qualified, booked outcomes landing in your CRM and calendar." },
     { q: "What results can I realistically expect?", a: "Fewer missed calls, faster follow-up and a calendar that fills with qualified appointments instead of voicemails. Each plan is backed by a guaranteed minimum of qualified leads per month, so the outcome is committed up front — not hoped for." },
-    { q: "Why choose Montarro over other agencies?", a: "Most agencies sell you a tool and leave you to run it. We build and manage a complete, connected revenue infrastructure for you — strategy-first, fully integrated with your existing systems, and backed by a written lead guarantee." },
+    { q: "How is Montarro different from a traditional marketing agency?", a: "Agencies typically run ads and hand you leads. We build and manage a complete, connected revenue infrastructure that captures, qualifies, books and follows up automatically — strategy-first, integrated with your systems, and backed by a written lead guarantee." },
+    { q: "What happens during the strategy call?", a: "We review your current lead flow, map the infrastructure that fits your stage, and show you exactly how it would work for your business. It's a working session, not a sales pitch — you leave with clarity whether or not you proceed." },
   ];
   return (
-    <section id="faq" className="relative border-t border-black/[0.06] py-20 lg:py-28">
-      <div className="mx-auto max-w-3xl px-6">
-        <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-6 inline-flex items-center gap-3">
-              <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Answers</span>
-              <span className="h-px w-10 bg-emerald-500/70" />
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">
-              What Businesses Usually Ask.
-            </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-              Everything you need to know before implementing an AI revenue
-              infrastructure into your business. If your question isn't below,
-              we'll happily answer it on your strategy call.
-            </p>
-          </div>
-        </Reveal>
-        <div className="mt-12 space-y-3">
-          {items.map((it, i) => (
-            <Reveal key={it.q} delay={0.04 * i}>
-              <details className="group rounded-2xl border border-black/[0.07] bg-white/70 px-5 py-4 backdrop-blur transition-colors duration-300 hover:border-emerald-500/30 open:border-emerald-500/30">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-foreground">
-                  {it.q}
-                  <ArrowRight className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-open:rotate-90" />
-                </summary>
-                <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{it.a}</p>
-              </details>
+    <section id="faq" className="relative isolate overflow-hidden bg-[#E9F7EE] py-24 lg:py-32">
+      {/* same fine engineered grid as the Hero — barely noticeable */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
+          {/* LEFT — heading */}
+          <div className="lg:col-span-5">
+            <Reveal>
+              <div className="inline-flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-500/70" />
+                <span className="text-[11px] uppercase tracking-[0.28em] text-emerald-900/60">Frequently Asked Questions</span>
+              </div>
+              <h2 className="mt-6 font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">
+                Questions Businesses Usually Ask.
+              </h2>
+              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+                Everything you need to know before implementing AI revenue
+                infrastructure into your business. If your question isn't
+                answered below, we'll cover it during your strategy call.
+              </p>
             </Reveal>
-          ))}
+          </div>
+
+          {/* RIGHT — accordion */}
+          <div className="space-y-3 lg:col-span-7">
+            {items.map((it, i) => (
+              <Reveal key={it.q} delay={0.04 * i}>
+                <details className="group rounded-2xl border border-black/[0.07] bg-white/70 px-5 py-4 backdrop-blur transition-colors duration-300 hover:border-emerald-500/30 open:border-emerald-500/30">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-foreground">
+                    {it.q}
+                    <ArrowRight className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-open:rotate-90" />
+                  </summary>
+                  <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{it.a}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

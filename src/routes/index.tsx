@@ -2677,6 +2677,11 @@ const TIERS = [
       "Call Summaries",
       "CRM Sync",
     ],
+    commitment: {
+      metric: "5+",
+      unit: "qualified leads / month",
+      note: "A baseline of genuine, qualified enquiries — committed in writing.",
+    },
   },
   {
     name: "Revenue Infrastructure",
@@ -2695,6 +2700,11 @@ const TIERS = [
       "Website Integration",
       "Operational Automation",
     ],
+    commitment: {
+      metric: "15+",
+      unit: "qualified opportunities / month",
+      note: "A serious growth commitment, backed by your full revenue system.",
+    },
   },
   {
     name: "Enterprise",
@@ -2710,15 +2720,14 @@ const TIERS = [
       "Priority Support",
       "Ongoing Optimisation",
     ],
+    commitment: {
+      points: [
+        "Custom KPIs built around your targets",
+        "Dedicated implementation team",
+        "Ongoing strategic partnership",
+      ],
+    },
   },
-];
-
-const TRUST_POINTS = [
-  "Built specifically for Australian service businesses",
-  "No long-term lock-in",
-  "Strategy-first implementation",
-  "Dedicated onboarding",
-  "Future upgrades as your business grows",
 ];
 
 function Pricing() {
@@ -2735,9 +2744,13 @@ function Pricing() {
             <p className="text-[12px] uppercase tracking-[0.22em] text-emerald-600">
               Infrastructure Systems
             </p>
-            <h2 className="mt-5 font-display text-5xl md:text-7xl leading-[1.05] text-gradient-chrome">
-              Choose the infrastructure that fits your business.
+            <h2 className="mt-5 font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
+              Choose the infrastructure<br className="hidden sm:block" /> that fits your business.
             </h2>
+            <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base leading-relaxed text-muted-foreground">
+              Start with the system that matches your current stage — then scale
+              up as your business grows, without rebuilding from scratch.
+            </p>
           </div>
         </Reveal>
 
@@ -2791,28 +2804,44 @@ function Pricing() {
                     ))}
                   </ul>
 
-                  {/* trust panel — quiet reassurance, present on every card */}
+                  {/* commitment panel — tailored to this specific system */}
                   <div
                     className={`mt-6 rounded-xl border p-4 ${
                       t.featured
-                        ? "border-emerald-600/20 bg-white/55"
+                        ? "border-emerald-600/25 bg-white/60"
                         : "border-black/[0.07] bg-black/[0.015]"
                     }`}
                   >
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700/80">
-                      Built to last
+                      Our commitment
                     </p>
-                    <ul className="mt-3 space-y-2">
-                      {TRUST_POINTS.map((p) => (
-                        <li
-                          key={p}
-                          className="flex items-start gap-2.5 text-[12px] leading-snug text-foreground/65"
-                        >
-                          <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-emerald-600/70" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {"metric" in t.commitment ? (
+                      <>
+                        <div className="mt-2.5 flex items-baseline gap-2">
+                          <span className="font-headline text-[34px] font-extrabold leading-none tracking-[-0.02em] text-emerald-700">
+                            {t.commitment.metric}
+                          </span>
+                          <span className="text-[12px] font-medium leading-tight text-foreground/70">
+                            {t.commitment.unit}
+                          </span>
+                        </div>
+                        <p className="mt-2.5 text-[12px] leading-snug text-foreground/55">
+                          {t.commitment.note}
+                        </p>
+                      </>
+                    ) : (
+                      <ul className="mt-3 space-y-2">
+                        {t.commitment.points.map((p) => (
+                          <li
+                            key={p}
+                            className="flex items-start gap-2.5 text-[12.5px] leading-snug text-foreground/70"
+                          >
+                            <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-emerald-600/70" />
+                            <span>{p}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
                   {/* CTA — refined, names the conversation it starts */}

@@ -2679,8 +2679,8 @@ const TIERS = [
     ],
     commitment: {
       metric: "5+",
-      unit: "qualified leads / month",
-      note: "A baseline of genuine, qualified enquiries — committed in writing.",
+      unit: "Qualified Leads / Month",
+      note: "A guaranteed minimum of 5 qualified leads every month, or we'll continue working until that target is achieved.",
     },
   },
   {
@@ -2702,8 +2702,8 @@ const TIERS = [
     ],
     commitment: {
       metric: "15+",
-      unit: "qualified opportunities / month",
-      note: "A serious growth commitment, backed by your full revenue system.",
+      unit: "Qualified Leads / Month",
+      note: "A guaranteed minimum of 15 qualified leads every month, backed by a complete revenue infrastructure.",
     },
   },
   {
@@ -2721,11 +2721,9 @@ const TIERS = [
       "Ongoing Optimisation",
     ],
     commitment: {
-      points: [
-        "Custom KPIs built around your targets",
-        "Dedicated implementation team",
-        "Ongoing strategic partnership",
-      ],
+      metric: "50+",
+      unit: "Qualified Leads / Month",
+      note: "A guaranteed minimum of 50 qualified leads every month, supported by dedicated strategy, custom infrastructure and ongoing optimisation.",
     },
   },
 ];
@@ -2813,35 +2811,19 @@ function Pricing() {
                     }`}
                   >
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700/80">
-                      Our commitment
+                      Guaranteed
                     </p>
-                    {"metric" in t.commitment ? (
-                      <>
-                        <div className="mt-2.5 flex items-baseline gap-2">
-                          <span className="font-headline text-[34px] font-extrabold leading-none tracking-[-0.02em] text-emerald-700">
-                            {t.commitment.metric}
-                          </span>
-                          <span className="text-[12px] font-medium leading-tight text-foreground/70">
-                            {t.commitment.unit}
-                          </span>
-                        </div>
-                        <p className="mt-2.5 text-[12px] leading-snug text-foreground/55">
-                          {t.commitment.note}
-                        </p>
-                      </>
-                    ) : (
-                      <ul className="mt-3 space-y-2">
-                        {t.commitment.points.map((p) => (
-                          <li
-                            key={p}
-                            className="flex items-start gap-2.5 text-[12.5px] leading-snug text-foreground/70"
-                          >
-                            <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-emerald-600/70" />
-                            <span>{p}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <div className="mt-2.5 flex items-baseline gap-2">
+                      <span className="font-headline text-[34px] font-extrabold leading-none tracking-[-0.02em] text-emerald-700">
+                        {t.commitment.metric}
+                      </span>
+                      <span className="text-[12px] font-medium leading-tight text-foreground/70">
+                        {t.commitment.unit}
+                      </span>
+                    </div>
+                    <p className="mt-2.5 text-[12px] leading-snug text-foreground/55">
+                      {t.commitment.note}
+                    </p>
                   </div>
 
                   {/* CTA — refined, names the conversation it starts */}

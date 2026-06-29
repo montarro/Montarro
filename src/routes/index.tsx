@@ -3219,7 +3219,7 @@ function Footer() {
                 ].map((item) => (
                   <li key={item}>
                     <a
-                      href="#services"
+                      href="#packages"
                       className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80"
                     >
                       {item}
@@ -3395,21 +3395,7 @@ function FaqRow({ q, lead, a }: { q: string; lead: string; a: string }) {
   );
 }
 
-/* ------------------------------ REVIEWS ------------------------------ */
-function GoogleWordmark() {
-  const letters: [string, string][] = [
-    ["G", "#4285F4"], ["o", "#EA4335"], ["o", "#FBBC05"],
-    ["g", "#4285F4"], ["l", "#34A853"], ["e", "#EA4335"],
-  ];
-  return (
-    <span className="font-semibold tracking-tight" aria-label="Google">
-      {letters.map(([c, col], i) => (
-        <span key={i} style={{ color: col }}>{c}</span>
-      ))}
-    </span>
-  );
-}
-
+/* --------------------- GOOGLE RATING WIDGETS (Hero + Trust) --------------------- */
 function GoogleG({ className = "h-[18px] w-[18px]" }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" className={className} aria-label="Google" role="img">
@@ -3446,71 +3432,6 @@ function Stars({ className = "", rating = 5 }: { className?: string; rating?: nu
         ))}
       </span>
     </span>
-  );
-}
-
-function Reviews() {
-  const reviews = [
-    { quote: "We were missing calls every afternoon. Montarro answers everything now — we've booked jobs we would have lost completely.", name: "Daniel R.", role: "Plumbing · Melbourne" },
-    { quote: "It books straight into our calendar and updates the CRM automatically. Our front desk finally has breathing room.", name: "Sarah K.", role: "Dental Practice" },
-    { quote: "Live in two weeks. Within the first month the system had already paid for itself in recovered work.", name: "James T.", role: "Electrical Contractor" },
-  ];
-  return (
-    <section id="reviews" className="relative border-t border-black/[0.06] py-20 lg:py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[360px] max-w-4xl rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.05),transparent_70%)] blur-3xl" />
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.08] bg-card/50 px-4 py-2 text-[13px] backdrop-blur">
-              <GoogleWordmark />
-              <span aria-hidden className="h-3.5 w-px bg-black/10" />
-              <Stars />
-              <span className="font-semibold tabular-nums text-foreground">5.0</span>
-            </div>
-            <h2 className="mt-7 font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.03em] text-gradient-chrome">
-              Operators who can&rsquo;t afford to miss a call.
-            </h2>
-            <p className="mx-auto mt-5 max-w-lg leading-relaxed text-muted-foreground">
-              Real outcomes from the businesses running on the Montarro System.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="mt-14 grid gap-4 md:grid-cols-3">
-          {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={0.08 * i}>
-              <figure className="flex h-full flex-col rounded-2xl border border-black/[0.08] bg-gradient-to-b from-white to-[#f6f7f8] p-7 shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-44px_rgba(0,0,0,0.22)]">
-                <Stars />
-                <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-foreground/90">
-                  &ldquo;{r.quote}&rdquo;
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3 border-t border-black/[0.06] pt-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 font-display text-sm font-semibold text-emerald-700">
-                    {r.name.charAt(0)}
-                  </span>
-                  <div className="flex-1">
-                    <div className="text-[14px] font-medium text-foreground">{r.name}</div>
-                    <div className="text-[12px] text-muted-foreground">{r.role}</div>
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Google
-                  </span>
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={0.1}>
-          <div className="mt-10 text-center">
-            <a href="#" className="group inline-flex items-center gap-2 text-[13px] font-medium text-emerald-700 transition-colors hover:text-emerald-600">
-              Read more reviews on Google
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </section>
   );
 }
 

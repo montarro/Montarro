@@ -86,8 +86,8 @@ export function SiteFooter() {
               </h4>
               <ul className="mt-4 space-y-2">
                 <li><Link to="/services/ai-receptionists" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">AI Receptionist</Link></li>
-                <li><Link to="/" hash="crm-automation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">CRM &amp; Automation</Link></li>
-                <li><Link to="/" hash="lead-generation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Lead Generation</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">CRM &amp; Automation</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Lead Generation</Link></li>
                 <li><Link to="/demo" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Live Demo</Link></li>
               </ul>
             </div>

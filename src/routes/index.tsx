@@ -2266,15 +2266,15 @@ function useCountUp(target: number, enabled: boolean) {
 
 /* ---------------- SEE THE SYSTEM IN MOTION · dark scrollytelling ---------------- */
 /* A cinematic dark section. Left: a vertical waterfall of text stages that scroll
-   normally. Right: ONE sticky Montarro OS dashboard that stays fixed and morphs to
+   normally. Right: ONE sticky connected-system dashboard that stays fixed and morphs to
    match whichever stage is centred (IntersectionObserver center-line). Keeps the
    #results anchor (the 'About' nav links + hero secondary CTA). */
 
 const HIW_STEPS: { title: string; icon: typeof Inbox; copy: string }[] = [
   { title: "Capture", icon: Inbox, copy: "Every call, form, Facebook lead and web enquiry enters one place instantly." },
-  { title: "AI Receptionist", icon: Bot, copy: "The AI answers, qualifies the customer and books the next step while your team keeps working." },
-  { title: "CRM", icon: Database, copy: "The customer, quote, appointment and source are organised automatically." },
-  { title: "Automation", icon: Workflow, copy: "Confirmations, follow-ups, reminders and internal notifications fire without manual chasing." },
+  { title: "AI Receptionist", icon: Bot, copy: "The AI answers, qualifies the caller and books straight into your calendar — while your team keeps working." },
+  { title: "CRM", icon: Database, copy: "Every enquiry is captured, tagged and organised in your CRM automatically." },
+  { title: "Automation", icon: Workflow, copy: "Confirmations, reminders and follow-ups go out by email and SMS — automatically, no chasing." },
   { title: "Reporting", icon: BarChart3, copy: "Every lead becomes visible — response times, booked jobs, revenue and missed opportunities." },
 ];
 
@@ -2337,8 +2337,8 @@ function StageVisual({ step }: { step: number }) {
 
   if (step === 2) {
     const fields = [
-      { l: "Quote", v: "$1,200" },
-      { l: "Appointment", v: "Thu · 3:00 PM" },
+      { l: "Tag", v: "Roofing" },
+      { l: "Calendar", v: "Thu · 3:00 PM" },
       { l: "Source", v: "Facebook Lead" },
     ];
     return (
@@ -2360,11 +2360,11 @@ function StageVisual({ step }: { step: number }) {
           ))}
         </div>
         <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-[11px] text-white/50">
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Call</span>
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Captured</span>
           <span className="h-px flex-1 bg-white/10" />
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Quote sent</span>
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Tagged</span>
           <span className="h-px flex-1 bg-white/10" />
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Booked</span>
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Synced</span>
         </div>
       </div>
     );
@@ -2439,7 +2439,7 @@ function RailIcon({ active, i, Icon }: { active: number; i: number; Icon: typeof
   const on = i === active;
   return (
     <span
-      className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
+      className={`relative z-10 flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-500 ${
         on
           ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-[0_0_18px_-4px_rgba(16,185,129,0.7)]"
           : "border-transparent text-white/25"
@@ -2462,15 +2462,16 @@ function HiwDashboard({ active }: { active: number }) {
           <span className="h-2.5 w-2.5 rounded-full bg-white/12" />
         </div>
         <span className="text-[11px] font-medium tracking-tight text-white/45">
-          Montarro OS · <span className="text-white/90">{HIW_STEPS[active].title}</span>
+          Connected system · <span className="text-white/90">{HIW_STEPS[active].title}</span>
         </span>
         <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-300">
           <LiveDot /> Live
         </span>
       </div>
       <div className="flex">
-        {/* module rail — persistent, current module highlighted */}
-        <div className="flex flex-col gap-1.5 border-r border-white/[0.07] p-2.5">
+        {/* connected modules — real tools wired together, current one highlighted */}
+        <div className="relative flex flex-col gap-1.5 border-r border-white/[0.07] p-2.5">
+          <span aria-hidden className="absolute left-1/2 top-4 bottom-4 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-400/25 to-transparent" />
           {HIW_STEPS.map((s, i) => (
             <RailIcon key={s.title} active={active} i={i} Icon={s.icon} />
           ))}
@@ -2489,6 +2490,12 @@ function HiwDashboard({ active }: { active: number }) {
             <StageVisual step={active} />
           </motion.div>
         </div>
+      </div>
+      {/* connected infrastructure — the real tools wired together, not a proprietary app */}
+      <div className="flex items-center gap-2 border-t border-white/[0.07] px-4 py-2.5 text-[10px] text-white/40">
+        <Workflow className="h-3 w-3 shrink-0 text-emerald-400/80" />
+        <span className="truncate">AI Receptionist · CRM · Calendar · Workflows · Reporting</span>
+        <span className="ml-auto shrink-0 text-emerald-300/80">connected</span>
       </div>
     </div>
   );

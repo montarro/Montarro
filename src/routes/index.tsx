@@ -2740,7 +2740,7 @@ const TIERS = [
     commitment: {
       metric: "5+",
       unit: "Qualified Leads / Month",
-      note: "A guaranteed minimum of 5 qualified leads every month, or we'll continue working until that target is achieved.",
+      note: "Guaranteed minimum of 5 qualified leads every month. If we don't achieve it, we'll work for free until you do.",
     },
   },
   {
@@ -2764,7 +2764,7 @@ const TIERS = [
     commitment: {
       metric: "15+",
       unit: "Qualified Leads / Month",
-      note: "A guaranteed minimum of 15 qualified leads every month, backed by a complete revenue infrastructure.",
+      note: "Guaranteed minimum of 15 qualified leads every month. If we don't achieve it, we'll work for free until you do.",
     },
   },
   {
@@ -2785,7 +2785,7 @@ const TIERS = [
     commitment: {
       metric: "50+",
       unit: "Qualified Leads / Month",
-      note: "A guaranteed minimum of 50 qualified leads every month, supported by dedicated strategy, custom infrastructure and ongoing optimisation.",
+      note: "Guaranteed minimum of 50 qualified leads every month. If we don't achieve it, we'll work for free until you do.",
     },
   },
 ];

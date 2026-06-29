@@ -2634,16 +2634,33 @@ function HowItWorks() {
           </p>
         </div>
 
-        {/* waterfall + sticky dashboard */}
-        <div className="mt-8 lg:mt-4 lg:grid lg:grid-cols-2 lg:gap-16">
-          {/* mobile sticky dashboard (direct child of the tall container) */}
-          <div className="sticky top-[76px] z-10 mb-6 lg:hidden">
-            <div className="relative">
-              <div aria-hidden className="pointer-events-none absolute -inset-8 -z-10 rounded-[40px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-2xl" />
-              <HiwDashboard active={active} />
+        {/* MOBILE — text first, visual second, per stage (natural reading flow) */}
+        <div className="mt-9 space-y-16 lg:hidden">
+          {HIW_STEPS.map((s, i) => (
+            <div key={s.title}>
+              <div className="mb-4 flex items-center gap-3">
+                <span className="h-px w-12 bg-emerald-400" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-300">
+                  Stage {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <h3 className="font-headline text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-5xl">
+                {s.title}
+              </h3>
+              <p className="mt-4 text-lg font-medium leading-relaxed text-white/90">
+                {s.copy}
+              </p>
+              {/* UI mockup underneath — ~36px gap, full width, rounded */}
+              <div className="relative mt-9">
+                <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-2xl" />
+                <HiwDashboard active={i} />
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
 
+        {/* DESKTOP — text waterfall + sticky morphing dashboard (unchanged) */}
+        <div className="mt-4 hidden lg:grid lg:grid-cols-2 lg:gap-16">
           {/* LEFT — text waterfall */}
           <div>
             {HIW_STEPS.map((s, i) => (
@@ -2659,8 +2676,8 @@ function HowItWorks() {
             ))}
           </div>
 
-          {/* RIGHT — desktop sticky dashboard */}
-          <div className="hidden lg:block">
+          {/* RIGHT — sticky dashboard */}
+          <div>
             <div className="sticky top-0 flex h-screen items-center">
               <div className="relative w-full">
                 <div aria-hidden className="pointer-events-none absolute -inset-16 -z-10 rounded-[60px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-3xl" />

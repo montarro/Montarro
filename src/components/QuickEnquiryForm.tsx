@@ -123,7 +123,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
             <h3 className="mt-7 font-display text-3xl font-bold leading-tight tracking-[-0.03em] text-[#0a0b0b]">
               Thanks, {splitName(form.fullName).first || "there"}.
             </h3>
-            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-foreground/80">
+            <p className="mt-4 max-w-sm text-[15px] font-medium leading-relaxed text-foreground">
               We'll review your business and contact you within one business day.
             </p>
           </motion.div>
@@ -182,7 +182,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
               )}
             </button>
 
-            <p className="pt-1 text-center text-[13px] leading-relaxed text-foreground/70">
+            <p className="pt-1 text-center text-[13px] font-medium leading-relaxed text-foreground/80">
               We'll review your business and contact you within one business day.
             </p>
           </motion.form>

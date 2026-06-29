@@ -39,19 +39,29 @@ const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const QUESTIONS: { key: keyof FormState; q: string; options: string[] }[] = [
   {
-    key: "businessType",
-    q: "What best describes your business?",
-    options: ["Trades & Home Services", "Professional Services", "Healthcare", "Hospitality", "Other"],
-  },
-  {
     key: "revenue",
-    q: "What's your monthly revenue?",
-    options: ["Under $30k", "$30k–$60k", "$60k–$150k", "$150k+"],
+    q: "What's your average monthly revenue?",
+    options: ["Under $30k", "$30k to $60k", "$60k to $150k", "$150k+"],
   },
   {
-    key: "bottleneck",
-    q: "What's your biggest challenge?",
-    options: ["Missing Calls", "Low Lead Volume", "Follow-up", "Booking More Jobs", "Operations"],
+    key: "headcount",
+    q: "How many people work in the business, including you?",
+    options: ["Just me", "2 to 4", "5 to 10", "10+"],
+  },
+  {
+    key: "platforms",
+    q: "What social platforms are you currently using?",
+    options: ["Facebook", "Instagram", "TikTok", "Google", "LinkedIn", "Not active yet"],
+  },
+  {
+    key: "goals",
+    q: "What does the next 60 days need to look like?",
+    options: [
+      "More qualified enquiries coming through",
+      "Fewer missed calls and lost opportunities",
+      "More booked jobs without chasing people",
+      "A clearer system for leads, follow-up and growth",
+    ],
   },
 ];
 
@@ -217,9 +227,10 @@ function ResultsCard() {
 /* ------------------------------- FORM ------------------------------- */
 
 type FormState = {
-  businessType: string;
   revenue: string;
-  bottleneck: string;
+  headcount: string;
+  platforms: string;
+  goals: string;
   fullName: string;
   businessName: string;
   email: string;
@@ -232,9 +243,10 @@ const TOTAL_STEPS = 5;
 
 function ContactFormSection() {
   const [form, setForm] = useState<FormState>({
-    businessType: "",
     revenue: "",
-    bottleneck: "",
+    headcount: "",
+    platforms: "",
+    goals: "",
     fullName: "",
     businessName: "",
     email: "",
@@ -282,9 +294,10 @@ function ContactFormSection() {
         email: form.email,
         phone: form.phone,
         company_name: form.businessName,
-        industry: form.businessType,
-        operational_bottleneck: form.bottleneck,
         budget_monthly_revenue: form.revenue,
+        team_size: form.headcount,
+        social_platforms: form.platforms,
+        goal: form.goals,
         goals_notes: form.notes,
         source: "Montarro Website",
         form_type: "Strategy Call Page",
@@ -304,15 +317,13 @@ function ContactFormSection() {
     }
   }
 
-  // Guided reveal: each section appears once the previous one is answered.
+  // Progress reflects how many sections are complete (whole form shown at once).
   const contactComplete = !!(
     form.fullName.trim() &&
     form.businessName.trim() &&
     form.email.trim() &&
     form.phone.trim()
   );
-  const showQuestion = (i: number) => QUESTIONS.slice(0, i).every((q) => !!form[q.key]);
-  const allQuestionsAnswered = QUESTIONS.every((q) => !!form[q.key]);
   const completed =
     QUESTIONS.filter((q) => !!form[q.key]).length + (contactComplete ? 1 : 0);
   const currentStep = Math.min(TOTAL_STEPS, completed + 1);
@@ -351,94 +362,82 @@ function ContactFormSection() {
                 </div>
 
                 <div className="space-y-8">
-                  {/* Steps 1–3 — qualification questions */}
+                  {/* qualification questions (1–4) — all visible at once */}
                   {QUESTIONS.map((qq, i) => (
-                    <RevealStep key={qq.key} show={showQuestion(i)}>
-                      <OptionGroup
-                        index={i + 1}
-                        question={qq.q}
-                        options={qq.options}
-                        value={form[qq.key]}
-                        onChange={(v) => update(qq.key, v)}
-                        error={errors[qq.key]}
-                      />
-                    </RevealStep>
+                    <OptionGroup
+                      key={qq.key}
+                      index={i + 1}
+                      question={qq.q}
+                      options={qq.options}
+                      value={form[qq.key]}
+                      onChange={(v) => update(qq.key, v)}
+                      error={errors[qq.key]}
+                    />
                   ))}
 
-                  {/* Step 4 — contact details */}
-                  <RevealStep show={allQuestionsAnswered}>
-                    <div>
-                      <NumberedHeader index={4} title="Your contact details" />
-                      <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-5">
-                        <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
-                        <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
-                        <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
-                        <Field id="phone" label="Mobile Number" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
-                      </div>
+                  {/* contact details */}
+                  <div>
+                    <NumberedHeader index={5} title="Your contact details" />
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-5">
+                      <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
+                      <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
+                      <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
+                      <Field id="phone" label="Best Mobile" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
                     </div>
-                  </RevealStep>
+                    <textarea
+                      id="notes"
+                      name="notes"
+                      aria-label="Tell us anything else about your business"
+                      value={form.notes}
+                      onChange={(e) => update("notes", e.target.value)}
+                      rows={4}
+                      placeholder="Tell us anything else about your business…"
+                      className="mt-4 w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
+                    />
+                  </div>
 
-                  {/* Step 5 — additional information + submit */}
-                  <RevealStep show={allQuestionsAnswered && contactComplete}>
-                    <div className="space-y-6">
-                      <div>
-                        <NumberedHeader index={5} title="Anything else?" />
-                        <textarea
-                          id="notes"
-                          name="notes"
-                          aria-label="Tell us anything else about your business"
-                          value={form.notes}
-                          onChange={(e) => update("notes", e.target.value)}
-                          rows={4}
-                          placeholder="Tell us anything else about your business…"
-                          className="mt-4 w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
-                        />
-                      </div>
+                  {submitError && (
+                    <p role="alert" className="rounded-2xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600">
+                      Something went wrong sending your enquiry. Please try again — or
+                      email us at montarromedia@outlook.com.
+                    </p>
+                  )}
 
-                      {submitError && (
-                        <p role="alert" className="rounded-2xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600">
-                          Something went wrong sending your enquiry. Please try again — or
-                          email us at montarromedia@outlook.com.
-                        </p>
-                      )}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="group inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-emerald-600 to-emerald-700 px-7 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_14px_34px_-14px_rgba(5,150,105,0.6)] transition-all duration-300 ease-out hover:-translate-y-[2px] hover:from-emerald-500 hover:to-emerald-600 hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)] disabled:opacity-70 disabled:hover:translate-y-0"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending
+                      </>
+                    ) : (
+                      <>
+                        Book My Strategy Call
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </>
+                    )}
+                  </button>
 
-                      <button
-                        type="submit"
-                        disabled={submitting}
-                        className="group inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-emerald-600 to-emerald-700 px-7 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_14px_34px_-14px_rgba(5,150,105,0.6)] transition-all duration-300 ease-out hover:-translate-y-[2px] hover:from-emerald-500 hover:to-emerald-600 hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)] disabled:opacity-70 disabled:hover:translate-y-0"
-                      >
-                        {submitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Sending
-                          </>
-                        ) : (
-                          <>
-                            Book My Strategy Call
-                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                          </>
-                        )}
-                      </button>
-
-                      <div className="text-center">
-                        <p className="text-[13px] font-medium leading-relaxed text-foreground">
-                          No pressure. No generic sales pitch. Just a tailored strategy
-                          showing how Montarro would fit your business.
-                        </p>
-                        <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-                          Not ready yet?{" "}
-                          <Link to="/" hash="system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                            Explore the System →
-                          </Link>{" "}
-                          <span className="px-1 text-foreground/30">·</span>{" "}
-                          or call{" "}
-                          <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                            0450 731 109
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-                  </RevealStep>
+                  <div className="text-center">
+                    <p className="text-[13px] font-medium leading-relaxed text-foreground">
+                      No pressure. No generic sales pitch. Just a tailored strategy
+                      showing how Montarro would fit your business.
+                    </p>
+                    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+                      Not ready yet?{" "}
+                      <Link to="/" hash="system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                        Explore the System →
+                      </Link>{" "}
+                      <span className="px-1 text-foreground/30">·</span>{" "}
+                      or call{" "}
+                      <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                        0450 731 109
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </motion.form>
             )}
@@ -446,27 +445,6 @@ function ContactFormSection() {
         </div>
       </div>
     </section>
-  );
-}
-
-function RevealStep({ show, children }: { show: boolean; children: React.ReactNode }) {
-  const [overflow, setOverflow] = useState<"hidden" | "visible">(show ? "visible" : "hidden");
-  return (
-    <AnimatePresence initial={false}>
-      {show && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          style={{ overflow }}
-          onAnimationStart={() => setOverflow("hidden")}
-          onAnimationComplete={() => setOverflow("visible")}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
   );
 }
 

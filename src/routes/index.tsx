@@ -1026,7 +1026,7 @@ function CaptureCard() {
           <span className="text-[10px] text-emerald-600">0.8s</span>
         </div>
       </div>
-      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Capture Every Call</h3>
+      <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Capture Every Call</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         AI answers after-hours, during busy periods, and when staff are unavailable.
       </p>
@@ -1076,7 +1076,7 @@ function BookingCard() {
           </div>
         </div>
       </div>
-      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Book More Jobs</h3>
+      <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Book More Jobs</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         Qualified leads are routed into bookings, reminders, and follow-up flows.
       </p>
@@ -1120,7 +1120,7 @@ function ScaleCard() {
           </span>
         </div>
       </div>
-      <h3 className="mt-5 font-display text-2xl tracking-tight text-foreground">Scale Without Hiring</h3>
+      <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Scale Without Hiring</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         Increase response speed and capacity without adding receptionist overhead.
       </p>
@@ -1279,7 +1279,7 @@ function CostOfStandingStill() {
       className="relative overflow-hidden py-20 lg:py-28"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 85% 8%, rgba(16,185,129,0.06), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
+            "radial-gradient(ellipse 60% 50% at 85% 8%, rgba(16,185,129,0.06), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
         }}
       >
         <div
@@ -1735,7 +1735,7 @@ function DemandViz() {
       <div className="flex items-end justify-between">
         <div className="transition-transform duration-500 group-hover:-translate-y-0.5">
           <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">ROAS</div>
-          <div className="font-display text-2xl tracking-tight text-foreground tabular-nums">6.4x</div>
+          <div className="font-display text-2xl font-semibold tracking-tight text-foreground tabular-nums">6.4x</div>
         </div>
         <span className="text-[11px] font-medium text-emerald-600">+92%</span>
       </div>
@@ -2142,7 +2142,7 @@ function ExperienceInfra() {
         className="relative overflow-hidden py-20 lg:py-24"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
+            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
         }}
       >
         <div
@@ -2168,7 +2168,7 @@ function ExperienceInfra() {
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
                 <LiveDot /> Part of the System · AI Receptionist
               </div>
-              <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
+              <h2 className="font-display text-4xl md:text-6xl font-semibold leading-[1.04] tracking-[-0.02em]">
                 <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
                   Hear the AI receptionist answer.
                 </span>
@@ -2728,7 +2728,7 @@ function Pricing() {
                 <div className="relative flex flex-col">
                   {/* header */}
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-display text-2xl tracking-tight text-gradient-chrome sm:text-[28px]">
+                    <h3 className="font-display text-2xl font-semibold tracking-tight text-gradient-chrome sm:text-[28px]">
                       {t.name}
                     </h3>
                     {t.featured && (
@@ -2867,7 +2867,7 @@ function CaseStudy() {
         className="relative overflow-hidden py-24 lg:py-28"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #0a0c0b 0%, #070908 55%, #0a0c0b 100%)",
+            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
         }}
       >
         {/* faint structural grid + slow ambient breathing */}
@@ -2898,7 +2898,7 @@ function CaseStudy() {
                   Operational Intelligence
                 </span>
               </div>
-              <h2 className="font-display text-4xl md:text-5xl leading-[1.12] tracking-[-0.02em]">
+              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-[1.12] tracking-[-0.02em]">
                 <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
                   Revenue capture,{" "}
                 </span>
@@ -2997,7 +2997,7 @@ function CaseStudy() {
                   {/* secondary metrics */}
                   <div className="mt-5 grid grid-cols-4 gap-px overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.05]">
                     {secondary.map(([l, v]) => (
-                      <div key={l} className="bg-[#0a0c0b]/85 px-3 py-2.5 text-center">
+                      <div key={l} className="bg-[#111315]/85 px-3 py-2.5 text-center">
                         <div className="text-[13px] font-semibold tabular-nums text-white">{v}</div>
                         <div className="mt-0.5 text-[9px] uppercase tracking-[0.14em] text-white/40">{l}</div>
                       </div>
@@ -3021,7 +3021,7 @@ function CTA() {
       <div className="relative mx-auto max-w-2xl px-6">
         <div className="text-center">
           <Reveal delay={0.05}>
-            <h2 className="font-display text-gradient-chrome text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
+            <h2 className="font-display text-gradient-chrome text-[clamp(2.25rem,6.5vw,4.25rem)] font-semibold leading-[0.92] tracking-[-0.04em]">
               Put the whole system to work.
             </h2>
           </Reveal>
@@ -3193,8 +3193,6 @@ function Faq() {
     { q: "What happens after I submit an enquiry?", a: "We review your business, map the right infrastructure for your stage, and reach out within one business day to walk you through it on a strategy call. No obligation, no pressure." },
     { q: "Will the AI sound like a real person?", a: "Yes. It holds a natural, low-latency conversation trained on your services, pricing and booking rules, so callers feel looked after rather than screened by a machine — and it can warm-transfer to your team whenever a human is needed." },
     { q: "Can it work with my existing systems?", a: "Yes. It books directly into your calendar and syncs every conversation, contact and outcome into your CRM automatically. We integrate with the tools you already use rather than asking you to replace them." },
-    { q: "What happens after hours or on weekends?", a: "Every call is answered, day or night, weekends and holidays included. After-hours enquiries become booked jobs and qualified leads instead of voicemails your competitors pick up first." },
-    { q: "How much work is required from my team?", a: "Very little. We do the setup, training and integration. Once you're live, the system runs in the background and your team only sees qualified, booked outcomes landing in your CRM and calendar." },
     { q: "What results can I realistically expect?", a: "Fewer missed calls, faster follow-up and a calendar that fills with qualified appointments instead of voicemails. Each plan is backed by a guaranteed minimum of qualified leads per month, so the outcome is committed up front — not hoped for." },
     { q: "How is Montarro different from a traditional marketing agency?", a: "Agencies typically run ads and hand you leads. We build and manage a complete, connected revenue infrastructure that captures, qualifies, books and follows up automatically — strategy-first, integrated with your systems, and backed by a written lead guarantee." },
     { q: "What happens during the strategy call?", a: "We review your current lead flow, map the infrastructure that fits your stage, and show you exactly how it would work for your business. It's a working session, not a sales pitch — you leave with clarity whether or not you proceed." },
@@ -3206,34 +3204,27 @@ function Faq() {
           {/* LEFT — heading */}
           <div className="lg:col-span-5">
             <Reveal>
-              <div className="inline-flex items-center gap-3">
-                <span className="h-px w-10 bg-emerald-500/70" />
-                <span className="text-[11px] uppercase tracking-[0.28em] text-emerald-900/60">Frequently Asked Questions</span>
-              </div>
-              <h2 className="mt-6 font-display text-4xl md:text-5xl leading-[1.04] tracking-tight text-gradient-chrome">
-                Questions Businesses Usually Ask.
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.02] tracking-[-0.03em] text-[#0a0b0b]">
+                Questions Businesses Ask Us.
               </h2>
-              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-                Everything you need to know before implementing AI revenue
-                infrastructure into your business. If your question isn't
-                answered below, we'll cover it during your strategy call.
-              </p>
             </Reveal>
           </div>
 
-          {/* RIGHT — accordion */}
-          <div className="space-y-3 lg:col-span-7">
-            {items.map((it, i) => (
-              <Reveal key={it.q} delay={0.04 * i}>
-                <details className="group rounded-2xl border border-black/[0.07] bg-white/70 px-5 py-4 backdrop-blur transition-colors duration-300 hover:border-emerald-500/30 open:border-emerald-500/30">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-foreground">
-                    {it.q}
-                    <ArrowRight className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-open:rotate-90" />
-                  </summary>
-                  <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{it.a}</p>
-                </details>
-              </Reveal>
-            ))}
+          {/* RIGHT — Rockmelon-style divided rows */}
+          <div className="lg:col-span-7">
+            <div className="border-t border-black/[0.09]">
+              {items.map((it, i) => (
+                <Reveal key={it.q} delay={0.04 * i}>
+                  <details className="group border-b border-black/[0.09] transition-colors duration-300 hover:bg-black/[0.02]">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 pl-1 pr-3 text-[17px] font-medium text-foreground sm:text-[18px]">
+                      {it.q}
+                      <Plus className="h-5 w-5 shrink-0 text-foreground/70 transition-transform duration-300 ease-out group-open:rotate-45" strokeWidth={2.25} />
+                    </summary>
+                    <p className="max-w-[52ch] pb-6 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">{it.a}</p>
+                  </details>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </div>

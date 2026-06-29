@@ -1945,82 +1945,78 @@ function WhyMontarro() {
       {/* hairline top edge to separate from the transformation beat */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-black/[0.06]" />
 
-      <div className="mx-auto max-w-5xl px-6">
-        {/* editorial header — left-aligned, generous air */}
-        <div className="max-w-3xl">
-          <Reveal>
-            <div className="mb-7 flex items-center gap-3">
-              <span className="h-px w-10 bg-emerald-500/70" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
-                Why Montarro
-              </span>
-            </div>
-            <h2 className="font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
-              This isn&rsquo;t an agency.
-              <br />
-              It&rsquo;s <span className="text-emerald-600">revenue infrastructure.</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              You can already see the problem, the cost, and what changes. The only
-              question left is who builds it. Most companies sell you services and
-              disappear. We engineer one system that runs your growth — and stay to
-              run it with you.
-            </p>
-          </Reveal>
-        </div>
-
-        {/* the comparison — borderless editorial spine, deliberately not cards */}
-        <div className="mt-16 lg:mt-24">
-          {/* column labels */}
-          <Reveal>
-            <div className="grid grid-cols-2">
-              <div className="pb-5 pr-4 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/45 sm:pr-10">
-                Most agencies
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* LEFT — editorial header */}
+          <div className="lg:pt-2">
+            <Reveal>
+              <div className="mb-7 flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-500/70" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-emerald-600">
+                  Why Montarro
+                </span>
               </div>
-              <div className="border-l border-black/10 pb-5 pl-4 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-emerald-600 sm:pl-10">
-                Montarro
-              </div>
-            </div>
-          </Reveal>
-
-          {rows.map((r, i) => (
-            <Reveal key={r.montarro} delay={0.05 * i}>
-              <div className="group grid grid-cols-2 border-t border-black/[0.08]">
-                {/* agency — receding */}
-                <div className="py-7 pr-4 sm:pr-10">
-                  <span className="text-[15px] font-light leading-snug text-muted-foreground/70 transition-colors duration-500 group-hover:text-muted-foreground/45 sm:text-lg">
-                    {r.agency}
-                  </span>
-                </div>
-                {/* montarro — confident, anchored to the spine */}
-                <div className="relative border-l border-black/10 py-7 pl-4 sm:pl-10">
-                  <span
-                    aria-hidden
-                    className="absolute -left-[3.5px] top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-emerald-500/60 transition-all duration-500 group-hover:h-2 group-hover:w-2 group-hover:bg-emerald-500"
-                  />
-                  <span className="relative inline-block text-[15px] font-medium leading-snug text-foreground sm:text-lg">
-                    {r.montarro}
-                    <span
-                      aria-hidden
-                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-emerald-500/60 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                    />
-                  </span>
-                </div>
-              </div>
+              <h2 className="font-headline text-4xl md:text-5xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
+                This isn&rsquo;t an agency.
+                <br />
+                It&rsquo;s <span className="text-emerald-600">revenue infrastructure.</span>
+              </h2>
             </Reveal>
-          ))}
-          <div aria-hidden className="border-t border-black/[0.08]" />
-        </div>
+            <Reveal delay={0.1}>
+              <p className="mt-7 max-w-md text-[16px] leading-relaxed text-muted-foreground">
+                You can already see the problem, the cost, and what changes. The only
+                question left is who builds it. Most companies sell you services and
+                disappear. We engineer one system that runs your growth — and stay to
+                run it with you.
+              </p>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="mt-8 max-w-md text-lg leading-snug text-foreground">
+                <span className="text-muted-foreground">You don&rsquo;t need another agency.</span>{" "}
+                You need infrastructure that runs without you.
+              </p>
+            </Reveal>
+          </div>
 
-        {/* the takeaway */}
-        <Reveal delay={0.1}>
-          <p className="mt-16 max-w-2xl text-xl leading-snug text-foreground sm:text-2xl">
-            <span className="text-muted-foreground">You don&rsquo;t need another agency.</span>{" "}
-            You need infrastructure that runs without you.
-          </p>
-        </Reveal>
+          {/* RIGHT — premium comparison panel */}
+          <Reveal delay={0.1}>
+            <div className="overflow-hidden rounded-3xl border border-black/[0.07] bg-white shadow-[0_30px_70px_-45px_rgba(0,0,0,0.22)]">
+              {/* column headers */}
+              <div className="grid grid-cols-2">
+                <div className="px-6 py-5 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/50">
+                  Most Agencies
+                </div>
+                <div className="border-l border-black/[0.06] px-6 py-5 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-emerald-600">
+                  Montarro
+                </div>
+              </div>
+
+              {rows.map((r) => (
+                <div
+                  key={r.montarro}
+                  className="grid grid-cols-2 border-t border-black/[0.06] transition-colors duration-300 hover:bg-black/[0.015]"
+                >
+                  {/* most agencies — receding, muted minus */}
+                  <div className="flex items-start gap-3 px-6 py-6">
+                    <Minus className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/40" strokeWidth={2.2} />
+                    <span className="text-[14px] leading-snug text-muted-foreground/70">
+                      {r.agency}
+                    </span>
+                  </div>
+                  {/* montarro — confident, emerald check */}
+                  <div className="flex items-start gap-3 border-l border-black/[0.06] px-6 py-6">
+                    <span className="mt-px flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
+                      <Check className="h-3 w-3 text-emerald-600" strokeWidth={2.6} />
+                    </span>
+                    <span className="text-[14px] font-medium leading-snug text-foreground">
+                      {r.montarro}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

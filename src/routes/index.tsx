@@ -2667,7 +2667,7 @@ const TIERS = [
   {
     name: "AI Receptionist",
     tagline: "For businesses that just want to stop missing enquiries.",
-    cta: "Explore AI Receptionist",
+    cta: "Book an AI Receptionist Call",
     to: "/services/ai-receptionists",
     features: [
       "24/7 AI Receptionist",
@@ -2682,7 +2682,7 @@ const TIERS = [
     name: "Revenue Infrastructure",
     tagline: "The operating system behind your business — every part connected, automated and managed for you.",
     featured: true,
-    cta: "Book Strategy Call",
+    cta: "Book an Infrastructure Call",
     to: "/contact",
     features: [
       "AI Receptionist",
@@ -2699,7 +2699,7 @@ const TIERS = [
   {
     name: "Enterprise",
     tagline: "For multi-location and high-volume operations that want Montarro embedded in their team.",
-    cta: "Apply for Partnership",
+    cta: "Book an Enterprise Strategy Call",
     to: "/contact",
     features: [
       "Multi-Location Support",
@@ -2713,6 +2713,14 @@ const TIERS = [
   },
 ];
 
+const TRUST_POINTS = [
+  "Built specifically for Australian service businesses",
+  "No long-term lock-in",
+  "Strategy-first implementation",
+  "Dedicated onboarding",
+  "Future upgrades as your business grows",
+];
+
 function Pricing() {
   return (
     <section id="packages" className="relative overflow-hidden border-t border-border py-20 lg:py-28">
@@ -2723,30 +2731,27 @@ function Pricing() {
       />
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="text-center">
-            <h2 className="font-display text-5xl md:text-7xl leading-[1.1] text-gradient-chrome">
-              Packages tailored to your{" "}
-              <span className="text-emerald-500">growth.</span>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[12px] uppercase tracking-[0.22em] text-emerald-600">
+              Infrastructure Systems
+            </p>
+            <h2 className="mt-5 font-display text-5xl md:text-7xl leading-[1.05] text-gradient-chrome">
+              Choose the infrastructure that fits your business.
             </h2>
-            <Reveal delay={0.1}>
-              <p className="mt-5 text-[12px] uppercase tracking-[0.22em] text-emerald-600">
-                Now onboarding founding Melbourne clients.
-              </p>
-            </Reveal>
           </div>
         </Reveal>
 
-        {/* the centre card is the flagship: slightly wider, naturally taller, bottoms
-            aligned so every CTA lands on the same line */}
-        <div className="mt-12 grid gap-5 md:mt-16 lg:grid-cols-[1fr_1.1fr_1fr] lg:items-end">
+        {/* the centre card is the flagship: wider, naturally taller, vertically centred
+            against the side cards so it overhangs equally top and bottom (raised feel) */}
+        <div className="mt-12 grid gap-5 md:mt-16 lg:grid-cols-[1fr_1.18fr_1fr] lg:items-center">
           {TIERS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
                 to={t.to}
-                className={`group relative flex flex-col overflow-hidden rounded-2xl border p-7 backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 active:scale-[0.99] ${
+                className={`group relative flex flex-col overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 active:scale-[0.99] ${
                   t.featured
-                    ? "border-emerald-500/50 bg-gradient-to-b from-emerald-500/[0.07] to-white/60 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_82px_-34px_rgba(16,185,129,0.45)] hover:border-emerald-500/65 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.85),0_52px_112px_-34px_rgba(16,185,129,0.6)]"
-                    : "border-black/[0.08] bg-gradient-to-b from-white/85 to-white/45 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_80px_-32px_rgba(16,185,129,0.32)]"
+                    ? "border-emerald-600/40 bg-[#E9F7EE] p-7 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_82px_-34px_rgba(16,185,129,0.45)] hover:border-emerald-600/55 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.85),0_52px_112px_-34px_rgba(16,185,129,0.6)]"
+                    : "border-black/[0.08] bg-gradient-to-b from-white/85 to-white/45 p-7 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),0_20px_50px_-32px_rgba(0,0,0,0.16)] hover:border-emerald-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_80px_-32px_rgba(16,185,129,0.32)]"
                 }`}
               >
                 {/* restrained emerald top sheen on hover (no heavy always-on glow) */}
@@ -2763,8 +2768,8 @@ function Pricing() {
                       {t.name}
                     </h3>
                     {t.featured && (
-                      <span className="mt-1 shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
-                        Recommended
+                      <span className="mt-1 shrink-0 rounded-full border border-emerald-600/30 bg-white/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+                        Most Popular
                       </span>
                     )}
                   </div>
@@ -2786,10 +2791,34 @@ function Pricing() {
                     ))}
                   </ul>
 
-                  {/* CTA — same size/style on every card, bottom-aligned via items-end */}
-                  <div className="mt-7">
+                  {/* trust panel — quiet reassurance, present on every card */}
+                  <div
+                    className={`mt-6 rounded-xl border p-4 ${
+                      t.featured
+                        ? "border-emerald-600/20 bg-white/55"
+                        : "border-black/[0.07] bg-black/[0.015]"
+                    }`}
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700/80">
+                      Built to last
+                    </p>
+                    <ul className="mt-3 space-y-2">
+                      {TRUST_POINTS.map((p) => (
+                        <li
+                          key={p}
+                          className="flex items-start gap-2.5 text-[12px] leading-snug text-foreground/65"
+                        >
+                          <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-emerald-600/70" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* CTA — refined, names the conversation it starts */}
+                  <div className="mt-6">
                     <span
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[13px] transition-all duration-300 ${
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[13px] transition-all duration-300 ${
                         t.featured
                           ? "bg-gradient-to-b from-emerald-600 to-emerald-700 font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_12px_30px_-14px_rgba(5,150,105,0.6)] group-hover:from-emerald-500 group-hover:to-emerald-600 group-hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)]"
                           : "border border-black/[0.12] font-medium text-foreground/80 group-hover:border-emerald-500/45 group-hover:bg-emerald-500/[0.04] group-hover:text-foreground"

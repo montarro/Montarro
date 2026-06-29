@@ -2568,20 +2568,42 @@ function WaterfallBlock({
 
 function HowItWorks() {
   const blocks = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileWrap = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
-  // active = the waterfall block whose centre is nearest the viewport centre.
-  // Measured directly on scroll so it is exact and layout-independent (grid/sticky).
+  // Desktop: active = the waterfall block nearest the viewport centre.
+  // Mobile: active = scroll progress through the pinned mobile wrapper.
   useEffect(() => {
     let raf = 0;
     const compute = () => {
       raf = 0;
-      const mid = window.innerHeight / 2;
+      const vh = window.innerHeight;
+
+      // MOBILE (< lg): step through as the pinned wrapper scrolls.
+      if (window.innerWidth < 1024 && mobileWrap.current) {
+        const r = mobileWrap.current.getBoundingClientRect();
+        const total = r.height - vh;
+        if (total <= 0) {
+          setActive((p) => (p === 0 ? p : 0));
+          return;
+        }
+        const scrolled = Math.min(Math.max(-r.top, 0), total);
+        const idx = Math.min(
+          HIW_STEPS.length - 1,
+          Math.max(0, Math.floor((scrolled / total) * HIW_STEPS.length)),
+        );
+        setActive((p) => (p === idx ? p : idx));
+        return;
+      }
+
+      // DESKTOP: nearest waterfall block to viewport centre.
+      const mid = vh / 2;
       let best = 0;
       let bestDist = Infinity;
       for (let i = 0; i < blocks.current.length; i++) {
         const el = blocks.current[i];
         if (!el) continue;
         const r = el.getBoundingClientRect();
+        if (r.height === 0) continue;
         const dist = Math.abs(r.top + r.height / 2 - mid);
         if (dist < bestDist) {
           bestDist = dist;
@@ -2634,29 +2656,36 @@ function HowItWorks() {
           </p>
         </div>
 
-        {/* MOBILE — text first, visual second, per stage (natural reading flow) */}
-        <div className="mt-9 space-y-16 lg:hidden">
-          {HIW_STEPS.map((s, i) => (
-            <div key={s.title}>
-              <div className="mb-4 flex items-center gap-3">
+        {/* MOBILE — scrollytelling: pinned text above, UI below; both step
+            through as the wrapper scrolls. Text stays near the top, UI sits
+            in the middle/bottom of the screen. */}
+        <div ref={mobileWrap} className="relative mt-8 h-[360vh] lg:hidden">
+          <div className="sticky top-[84px]">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="mb-3 flex items-center gap-3">
                 <span className="h-px w-12 bg-emerald-400" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-300">
-                  Stage {String(i + 1).padStart(2, "0")}
+                  Stage {String(active + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="font-headline text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-5xl">
-                {s.title}
+              <h3 className="font-headline text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white">
+                {HIW_STEPS[active].title}
               </h3>
-              <p className="mt-4 text-lg font-medium leading-relaxed text-white/90">
-                {s.copy}
+              <p className="mt-3 text-[15px] font-medium leading-relaxed text-white/90">
+                {HIW_STEPS[active].copy}
               </p>
-              {/* UI mockup underneath — ~36px gap, full width, rounded */}
-              <div className="relative mt-9">
-                <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-2xl" />
-                <HiwDashboard active={i} />
-              </div>
+            </motion.div>
+            {/* UI mockup underneath — full width, rounded */}
+            <div className="relative mt-8">
+              <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-2xl" />
+              <HiwDashboard active={active} />
             </div>
-          ))}
+          </div>
         </div>
 
         {/* DESKTOP — text waterfall + sticky morphing dashboard (unchanged) */}

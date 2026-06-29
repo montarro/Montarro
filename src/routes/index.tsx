@@ -2660,7 +2660,7 @@ function HowItWorks() {
             through as the wrapper scrolls. Text stays near the top, UI sits
             in the middle/bottom of the screen. */}
         <div ref={mobileWrap} className="relative mt-8 h-[360vh] lg:hidden">
-          <div className="sticky top-[84px]">
+          <div className="sticky top-0 flex h-[100svh] flex-col justify-center pt-[15vh] pb-7">
             <motion.div
               key={active}
               initial={{ opacity: 0, y: 8 }}

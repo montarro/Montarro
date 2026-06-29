@@ -2545,28 +2545,17 @@ function HowItWorks() {
   return (
     <section
       id="results"
-      className="relative overflow-clip"
-      style={{
-        background:
-          "radial-gradient(ellipse 48% 38% at 82% 14%, rgba(16,185,129,0.12), transparent 60%), radial-gradient(ellipse 42% 42% at 8% 78%, rgba(16,185,129,0.08), transparent 62%), linear-gradient(180deg,#070a09 0%,#0a0d0b 50%,#070a09 100%)",
-      }}
+      className="relative overflow-clip bg-[#081510]"
     >
-      {/* fine grid + soft trails */}
+      {/* fine grid — kept, just quieter so the depth reads as space, not pattern */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]"
+        className="pointer-events-none absolute inset-0 opacity-[0.03] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]"
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
           backgroundSize: "64px 64px",
         }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
-        animate={{ opacity: [0.5, 0.85, 0.5] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="relative mx-auto max-w-7xl px-6 py-24 lg:py-32">
@@ -2590,7 +2579,7 @@ function HowItWorks() {
           {/* mobile sticky dashboard (direct child of the tall container) */}
           <div className="sticky top-[76px] z-10 mb-6 lg:hidden">
             <div className="relative">
-              <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-[36px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] blur-2xl" />
+              <div aria-hidden className="pointer-events-none absolute -inset-8 -z-10 rounded-[40px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-2xl" />
               <HiwDashboard active={active} />
             </div>
           </div>
@@ -2614,7 +2603,7 @@ function HowItWorks() {
           <div className="hidden lg:block">
             <div className="sticky top-0 flex h-screen items-center">
               <div className="relative w-full">
-                <div aria-hidden className="pointer-events-none absolute -inset-10 -z-10 rounded-[44px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.20),transparent_70%)] blur-3xl" />
+                <div aria-hidden className="pointer-events-none absolute -inset-16 -z-10 rounded-[60px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-3xl" />
                 <HiwDashboard active={active} />
               </div>
             </div>

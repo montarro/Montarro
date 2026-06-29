@@ -37,7 +37,7 @@ const MINT_GRID =
 
 const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const QUESTIONS: { key: keyof FormState; q: string; options: string[] }[] = [
+const QUESTIONS: { key: keyof FormState; q: string; options: string[]; multiple?: boolean }[] = [
   {
     key: "revenue",
     q: "What's your average monthly revenue?",
@@ -52,6 +52,7 @@ const QUESTIONS: { key: keyof FormState; q: string; options: string[] }[] = [
     key: "platforms",
     q: "What social platforms are you currently using?",
     options: ["Facebook", "Instagram", "TikTok", "Google", "LinkedIn", "Not active yet"],
+    multiple: true,
   },
   {
     key: "goals",
@@ -372,6 +373,7 @@ function ContactFormSection() {
                       value={form[qq.key]}
                       onChange={(v) => update(qq.key, v)}
                       error={errors[qq.key]}
+                      multiple={qq.multiple}
                     />
                   ))}
 
@@ -505,6 +507,7 @@ function OptionGroup({
   value,
   onChange,
   error,
+  multiple = false,
 }: {
   index: number;
   question: string;
@@ -512,7 +515,22 @@ function OptionGroup({
   value: string;
   onChange: (v: string) => void;
   error?: string;
+  multiple?: boolean;
 }) {
+  // Multi-select stores its choices as a comma-separated string so the payload
+  // shape and validation (empty string = unanswered) stay identical.
+  const selectedValues = multiple ? value.split(", ").filter(Boolean) : [];
+  function toggle(opt: string) {
+    if (!multiple) {
+      onChange(opt);
+      return;
+    }
+    const next = selectedValues.includes(opt)
+      ? selectedValues.filter((v) => v !== opt)
+      : [...selectedValues, opt];
+    // Preserve the original option order for a stable, readable submitted value.
+    onChange(options.filter((o) => next.includes(o)).join(", "));
+  }
   return (
     <div>
       <div className="flex items-baseline gap-2.5">
@@ -521,19 +539,20 @@ function OptionGroup({
       </div>
       <div className="mt-4 flex flex-wrap gap-2.5">
         {options.map((opt) => {
-          const selected = value === opt;
+          const selected = multiple ? selectedValues.includes(opt) : value === opt;
           return (
             <button
               key={opt}
               type="button"
-              onClick={() => onChange(opt)}
+              onClick={() => toggle(opt)}
               aria-pressed={selected}
-              className={`rounded-xl border px-4 py-2.5 text-[13.5px] font-medium transition-all duration-200 ease-out ${
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-[13.5px] font-medium transition-all duration-200 ease-out ${
                 selected
                   ? "border-emerald-600 bg-emerald-600 text-white shadow-[0_10px_24px_-12px_rgba(5,150,105,0.6)]"
                   : "border-black/[0.1] bg-white text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.05] hover:text-foreground"
               }`}
             >
+              {multiple && selected && <Check className="h-3.5 w-3.5" strokeWidth={2.6} />}
               {opt}
             </button>
           );

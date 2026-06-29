@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
+import { StrategyCallForm } from "@/components/StrategyCallForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -3084,46 +3085,27 @@ function CTA() {
           }}
         />
 
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <Reveal delay={0.05}>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
-              <LiveDot /> Begin Deployment
-            </div>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <h2 className="font-display text-gradient-white-grey text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.92] tracking-[-0.04em]">
-              Put the whole system to work.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
-              Book a free consultation and we&rsquo;ll map your growth system in 30 minutes — no obligation.
-            </p>
-          </Reveal>
-          <Reveal delay={0.36}>
-            <div className="relative mt-8 inline-flex flex-wrap items-center justify-center gap-3">
-              {/* ambient emerald halo behind button */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-3xl"
-                style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
-              />
-              <Link
-                to="/contact"
-                className={`${primaryCta} inline-flex px-8 py-4 text-sm`}
-              >
-                Book a Free Consultation
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <Link
-                to="/demo"
-                className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-4 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
-              >
-                Try the Live Demo
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            </div>
-          </Reveal>
+        <div className="relative mx-auto max-w-2xl px-6">
+          <div className="text-center">
+            <Reveal delay={0.05}>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+                <LiveDot /> Begin Deployment
+              </div>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <h2 className="font-display text-gradient-white-grey text-[clamp(2.25rem,6.5vw,4.25rem)] leading-[0.92] tracking-[-0.04em]">
+                Put the whole system to work.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.24}>
+              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-white/50">
+                Tell us about your business and book your strategy call — no obligation.
+              </p>
+            </Reveal>
+          </div>
+
+          {/* the exact same Strategy Call form as the /contact page (shared component) */}
+          <StrategyCallForm className="mt-10" />
         </div>
       </section>
     </div>

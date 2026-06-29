@@ -1927,9 +1927,10 @@ function ModuleCard({
   );
 }
 
-/* ---------------- REVENUE INFRASTRUCTURE · typical agency vs Montarro ---------------- */
-/* Premium editorial positioning. Sits below Packages as the "Revenue
-   Infrastructure" section (id="revenue-infrastructure"). */
+/* ---------------- WHY MONTARRO · typical agency vs Montarro ---------------- */
+/* Premium editorial positioning — the "Why Montarro" section
+   ("This isn't an agency. It's revenue infrastructure."), above the AI
+   Receptionist (id="revenue-infrastructure"). */
 
 function WhyMontarro() {
   const rows: { agency: string; montarro: string }[] = [
@@ -3477,13 +3478,11 @@ function Landing() {
         <ProblemReframe />
         <CostOfStandingStill />
         <LifeAfter />
-        {/* System area */}
-        <ExperienceInfra />
-        <HowItWorks />
-        <CaseStudy />
-        {/* Packages → Revenue Infrastructure → About */}
-        <Pricing />
-        <WhyMontarro />
+        <WhyMontarro />     {/* Why Montarro — "This isn't an agency. It's revenue infrastructure." */}
+        <ExperienceInfra /> {/* AI Receptionist */}
+        <HowItWorks />      {/* The System — "See the system in motion" */}
+        <Pricing />         {/* Packages / Infrastructure Systems */}
+        <CaseStudy />       {/* Revenue Infrastructure / Results */}
         <About />
         <Faq />
         <CTA />

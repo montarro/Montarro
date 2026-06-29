@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView, useMotionValueEvent, animate } from "motion/react";
+import { motion, useScroll, useTransform, useInView, animate } from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -2472,6 +2472,13 @@ function HiwDashboard({ active }: { active: number }) {
         {/* connected modules — real tools wired together, current one highlighted */}
         <div className="relative flex flex-col gap-1.5 border-r border-white/[0.07] p-2.5">
           <span aria-hidden className="absolute left-1/2 top-4 bottom-4 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-400/25 to-transparent" />
+          {/* a live data pulse travelling through the connected modules */}
+          <motion.span
+            aria-hidden
+            className="absolute left-1/2 h-6 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-300/70 to-transparent"
+            animate={{ top: ["6%", "90%"], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+          />
           {HIW_STEPS.map((s, i) => (
             <RailIcon key={s.title} active={active} i={i} Icon={s.icon} />
           ))}
@@ -2485,7 +2492,7 @@ function HiwDashboard({ active }: { active: number }) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 p-4 sm:p-5"
+            className="absolute inset-0 flex flex-col justify-center p-4 sm:p-5"
           >
             <StageVisual step={active} />
           </motion.div>
@@ -2507,21 +2514,16 @@ function WaterfallBlock({
   stage,
   index,
   active,
-  setActive,
+  innerRef,
 }: {
   stage: { title: string; copy: string };
   index: number;
   active: boolean;
-  setActive: (i: number) => void;
+  innerRef: (el: HTMLDivElement | null) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-50% 0px -50% 0px" });
-  useEffect(() => {
-    if (inView) setActive(index);
-  }, [inView, index, setActive]);
   return (
-    <div ref={ref} className="flex min-h-[58vh] items-center">
-      <div className={`transition-all duration-500 ${active ? "opacity-100" : "opacity-35"}`}>
+    <div ref={innerRef} className="flex min-h-[46vh] items-center lg:min-h-[58vh]">
+      <div className={`transition-all duration-500 ${active ? "opacity-100" : "opacity-30"}`}>
         <div className="mb-4 flex items-center gap-3">
           <span className={`h-px transition-all duration-500 ${active ? "w-12 bg-emerald-400" : "w-8 bg-white/20"}`} />
           <span className={`text-[11px] font-semibold uppercase tracking-[0.3em] transition-colors duration-500 ${active ? "text-emerald-300" : "text-white/35"}`}>
@@ -2540,7 +2542,41 @@ function WaterfallBlock({
 }
 
 function HowItWorks() {
+  const blocks = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
+  // active = the waterfall block whose centre is nearest the viewport centre.
+  // Measured directly on scroll so it is exact and layout-independent (grid/sticky).
+  useEffect(() => {
+    let raf = 0;
+    const compute = () => {
+      raf = 0;
+      const mid = window.innerHeight / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      for (let i = 0; i < blocks.current.length; i++) {
+        const el = blocks.current[i];
+        if (!el) continue;
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      }
+      setActive((p) => (p === best ? p : best));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(compute);
+    };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
   return (
     <section
       id="results"
@@ -2597,7 +2633,15 @@ function HowItWorks() {
           {/* LEFT — text waterfall */}
           <div>
             {HIW_STEPS.map((s, i) => (
-              <WaterfallBlock key={s.title} stage={s} index={i} active={active === i} setActive={setActive} />
+              <WaterfallBlock
+                key={s.title}
+                stage={s}
+                index={i}
+                active={active === i}
+                innerRef={(el) => {
+                  blocks.current[i] = el;
+                }}
+              />
             ))}
           </div>
 

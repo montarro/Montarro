@@ -1027,7 +1027,7 @@ function CaptureCard() {
         </div>
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Capture Every Call</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-sm leading-relaxed text-foreground/80">
         <span className="font-semibold text-foreground">AI answers after-hours</span>, during busy periods, and when staff are unavailable.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
@@ -1077,7 +1077,7 @@ function BookingCard() {
         </div>
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Book More Jobs</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-sm leading-relaxed text-foreground/80">
         <span className="font-semibold text-foreground">Qualified leads</span> are routed into bookings, reminders, and follow-up flows.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
@@ -1121,7 +1121,7 @@ function ScaleCard() {
         </div>
       </div>
       <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight text-foreground">Scale Without Hiring</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-sm leading-relaxed text-foreground/80">
         <span className="font-semibold text-foreground">Increase response speed and capacity</span> without adding receptionist overhead.
       </p>
       <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground/70">
@@ -1162,7 +1162,7 @@ function ProblemReframe() {
                 Every enquiry already costs you money to generate.
               </p>
 
-              <div className="mt-7 space-y-1.5 text-lg leading-relaxed text-muted-foreground">
+              <div className="mt-7 space-y-1.5 text-lg leading-relaxed text-foreground/80">
                 <p>But if nobody answers it&hellip;</p>
                 <p>If nobody follows it up&hellip;</p>
                 <p>If nobody books it&hellip;</p>
@@ -1309,7 +1309,7 @@ function CostOfStandingStill() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-5 max-w-md text-[15px] md:text-base leading-relaxed text-white/70">
+              <p className="mx-auto mt-5 max-w-md text-[15px] md:text-base leading-relaxed text-white/85">
                 <span className="font-semibold text-white">Put in your own numbers.</span> This is what those gaps quietly cost you
                 every single year.
               </p>
@@ -1344,7 +1344,7 @@ function CostOfStandingStill() {
 
           {/* the turn toward the solution */}
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-12 max-w-xl text-center text-[15px] md:text-base leading-relaxed text-white/60">
+            <p className="mx-auto mt-12 max-w-xl text-center text-[15px] md:text-base leading-relaxed text-white/85">
               Every month you wait, that number repeats.{" "}
               <span className="text-white">Now imagine it working for you instead.</span>
             </p>
@@ -1503,7 +1503,7 @@ function LifeAfter() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-foreground/80">
               You&rsquo;re not missing skill. You&rsquo;re missing structure. One
               connected system answers, captures, follows up and books
               automatically &mdash; so your business finally runs with you, not
@@ -1601,7 +1601,7 @@ function MissedRevenue() {
               <p className="mt-6 max-w-xl text-base md:text-lg font-medium text-foreground">
                 Every missed call costs you money.
               </p>
-              <p className="mt-4 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
+              <p className="mt-4 max-w-xl text-base md:text-lg leading-relaxed text-foreground/80">
                 Most businesses don&rsquo;t lose work because they&rsquo;re bad at what
                 they do&mdash;they lose it because no one answers the phone. While
                 you&rsquo;re on-site, with another customer or after hours, new
@@ -1638,7 +1638,7 @@ function MissedRevenue() {
                   </span>
                   <div className="min-w-0">
                     <div className="text-[15px] font-semibold text-foreground">{s.t}</div>
-                    <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{s.d}</p>
+                    <p className="mt-1 text-[13.5px] leading-relaxed text-foreground/80">{s.d}</p>
                   </div>
                 </li>
               ))}
@@ -1892,7 +1892,7 @@ function ModuleCard({
           <h3 className={`font-display tracking-tight ${isLg ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} ${dark ? "text-white" : "text-foreground"}`}>
             {title}
           </h3>
-          <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/55" : "text-muted-foreground"}`}>{desc}</p>
+          <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/85" : "text-foreground/80"}`}>{desc}</p>
         </div>
         <span className={`mb-0.5 inline-flex shrink-0 -translate-x-0.5 items-center gap-1 whitespace-nowrap text-[11px] font-medium opacity-45 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 ${dark ? "text-emerald-300" : "text-emerald-600"}`}>
           View System
@@ -1963,7 +1963,7 @@ function WhyMontarro() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-7 max-w-md text-[16px] leading-relaxed text-muted-foreground">
+              <p className="mt-7 max-w-md text-[16px] leading-relaxed text-foreground/80">
                 You can already see the problem, the cost, and what changes. The only
                 question left is who builds it. Most companies sell you services and
                 disappear. <span className="font-semibold text-foreground">We engineer one system that runs your growth</span> — and stay to
@@ -2173,7 +2173,7 @@ function ExperienceInfra() {
                   Hear the AI receptionist answer.
                 </span>
               </h2>
-              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/70">
+              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/85">
                 <span className="font-semibold text-white">The core of the Montarro System</span> — it answers, qualifies and books
                 every call in real time, 24/7.
               </p>
@@ -2568,7 +2568,7 @@ function HowItWorks() {
           <h2 className="font-headline text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-6xl lg:text-7xl">
             See the system in motion.
           </h2>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
             <span className="font-semibold text-white">One enquiry</span> moves through the entire revenue engine — from first contact
             to booked job, follow-up and reporting.
           </p>
@@ -2701,7 +2701,7 @@ function Pricing() {
             <h2 className="mt-5 font-headline text-5xl md:text-7xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
               Choose the infrastructure<br className="hidden sm:block" /> that fits your business.
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base leading-relaxed text-foreground/80">
               <span className="font-semibold text-foreground">Start with the system that matches your current stage</span> — then scale
               up as your business grows, without rebuilding from scratch.
             </p>
@@ -2740,7 +2740,7 @@ function Pricing() {
                       </span>
                     )}
                   </div>
-                  <p className="mt-2.5 min-h-[40px] text-[13px] leading-relaxed text-muted-foreground">
+                  <p className="mt-2.5 min-h-[40px] text-[13px] leading-relaxed text-foreground/80">
                     <span className="font-semibold text-foreground">{t.taglineLead}</span> {t.tagline}
                   </p>
 
@@ -2777,7 +2777,7 @@ function Pricing() {
                         {t.commitment.unit}
                       </span>
                     </div>
-                    <p className="mt-2.5 text-[12px] leading-snug text-foreground/55">
+                    <p className="mt-2.5 text-[12px] leading-snug text-foreground/75">
                       {t.commitment.note}
                     </p>
                   </div>
@@ -2907,7 +2907,7 @@ function CaseStudy() {
                 </span>
                 <span className="text-emerald-400">instrumented.</span>
               </h2>
-              <p className="mt-6 max-w-md text-[15px] leading-relaxed text-white/70">
+              <p className="mt-6 max-w-md text-[15px] leading-relaxed text-white/85">
                 <span className="font-semibold text-white">A live system orchestrating inbound demand</span> — AI qualification,
                 booking, follow-up, and CRM sync — so every lead is captured,
                 qualified, and accounted for. Not a dashboard. Infrastructure.
@@ -3265,7 +3265,7 @@ function FaqRow({ q, lead, a }: { q: string; lead: string; a: string }) {
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="max-w-[52ch] pb-7 pl-1 pr-10 text-[14.5px] leading-relaxed text-muted-foreground">
+            <p className="max-w-[52ch] pb-7 pl-1 pr-10 text-[14.5px] leading-relaxed text-foreground/80">
               <span className="font-semibold text-foreground">{lead}</span> {a}
             </p>
           </motion.div>

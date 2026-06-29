@@ -3020,33 +3020,23 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <section id="cta" className="relative bg-[#E9F7EE] py-24 lg:py-32">
-      <div className="relative mx-auto max-w-2xl px-6">
+    <section id="cta" className="relative bg-[#E9F7EE] py-24 lg:py-36">
+      <div className="relative mx-auto max-w-xl px-6">
         <div className="text-center">
           <Reveal delay={0.05}>
-            <h2 className="font-display text-gradient-chrome text-[clamp(2.25rem,6.5vw,4.25rem)] font-semibold leading-[0.92] tracking-[-0.04em]">
+            <h2 className="font-display text-[clamp(2.75rem,7.5vw,5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-[#0a0b0b]">
               Put the whole system to work.
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
-            <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-md text-[16px] leading-relaxed text-foreground/80">
               <span className="font-semibold text-foreground">Tell us about your business</span> and we'll map the right infrastructure for you.
             </p>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-emerald-900/65">
-              {["Melbourne-based", "Typical setup in 7–14 days", "No-obligation strategy call"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5">
-                  <span className="h-1 w-1 rounded-full bg-emerald-600/70" />
-                  {t}
-                </span>
-              ))}
-            </div>
           </Reveal>
         </div>
 
         {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
-        <QuickEnquiryForm className="mt-9" />
+        <QuickEnquiryForm className="mt-12" />
       </div>
     </section>
   );

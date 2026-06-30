@@ -63,6 +63,7 @@ const QUESTIONS: { key: keyof FormState; q: string; options: string[]; multiple?
       "More booked jobs without chasing people",
       "A clearer system for leads, follow-up and growth",
     ],
+    multiple: true,
   },
 ];
 

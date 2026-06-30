@@ -1,14 +1,71 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Check, Mail, Phone, Instagram, Loader2 } from "lucide-react";
-import { MobileMenu } from "@/components/MobileMenu";
-import { primaryCta } from "@/lib/cta";
+import {
+  ArrowRight,
+  CalendarCheck,
+  Check,
+  CheckCircle2,
+  Database,
+  Loader2,
+  PhoneCall,
+} from "lucide-react";
+import { SiteNav, SiteFooter } from "@/components/SiteChrome";
 
-// Generic lead webhook (public — handled by Make/Zapier/GHL automation
-// separately). The Montarro form POSTs its payload straight here.
-// Referenced as import.meta.env.VITE_* so Vite statically inlines it at build.
+export const Route = createFileRoute("/contact")({
+  head: () => ({
+    meta: [
+      { title: "Book a Strategy Call — Montarro" },
+      {
+        name: "description",
+        content:
+          "Book a strategy call with Montarro. Tell us where your business is at and we'll show you the clearest revenue-infrastructure path forward.",
+      },
+      { property: "og:title", content: "Book a Strategy Call — Montarro" },
+      {
+        property: "og:description",
+        content:
+          "A tailored strategy session for service businesses ready to stop missing leads and run one connected system.",
+      },
+    ],
+  }),
+  component: ContactPage,
+});
+
+const MINT_GRID =
+  "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)";
+
 const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const QUESTIONS: { key: keyof FormState; q: string; options: string[]; multiple?: boolean }[] = [
+  {
+    key: "revenue",
+    q: "What's your average monthly revenue?",
+    options: ["Under $30k", "$30k to $60k", "$60k to $150k", "$150k+"],
+  },
+  {
+    key: "headcount",
+    q: "How many people work in the business, including you?",
+    options: ["Just me", "2 to 4", "5 to 10", "10+"],
+  },
+  {
+    key: "platforms",
+    q: "What social platforms are you currently using?",
+    options: ["Facebook", "Instagram", "TikTok", "Google", "LinkedIn", "Not active yet"],
+    multiple: true,
+  },
+  {
+    key: "goals",
+    q: "What does the next 60 days need to look like?",
+    options: [
+      "More qualified enquiries coming through",
+      "Fewer missed calls and lost opportunities",
+      "More booked jobs without chasing people",
+      "A clearer system for leads, follow-up and growth",
+    ],
+    multiple: true,
+  },
+];
 
 function splitName(full: string): { first: string; last: string } {
   const parts = full.trim().split(/\s+/).filter(Boolean);
@@ -16,205 +73,221 @@ function splitName(full: string): { first: string; last: string } {
   return { first: parts[0], last: parts.slice(1).join(" ") };
 }
 
-export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Apply to Work With Montarro" },
-      {
-        name: "description",
-        content:
-          "Apply to work with Montarro. Designed for modern companies ready to scale through AI, automation, and acquisition systems.",
-      },
-      { property: "og:title", content: "Apply to Work With Montarro" },
-      {
-        property: "og:description",
-        content:
-          "A private strategy application for modern companies scaling through AI and automation.",
-      },
-    ],
-  }),
-  component: ContactPage,
-});
-
-type FormState = {
-  company: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  industry: string;
-  stage: string;
-  goal: string;
-  budget: string;
-  notes: string;
-};
-
-type FormErrors = Partial<Record<keyof FormState, string>>;
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const INDUSTRIES = [
-  "Construction",
-  "Healthcare",
-  "Legal",
-  "Automotive",
-  "Hospitality",
-  "Real Estate",
-  "E-Commerce",
-  "Service-Based",
-  "Multi-Location",
-  "Other",
-];
-
-const STAGES = [
-  "Pre-Revenue",
-  "Early Growth",
-  "Scaling Operations",
-  "Established Brand",
-  "Multi-Location / Enterprise",
-];
-
-const GOALS = [
-  "Lead Generation",
-  "AI Reception Systems",
-  "Content Creation",
-  "Paid Advertising",
-  "Automation",
-  "Complete Revenue System",
-];
-
-const BUDGETS = ["$2k–5k", "$5k–10k", "$10k–25k", "$25k+", "Need Guidance"];
-
-const TOTAL_STEPS = 6;
-
-function ContactNav() {
+function ContactPage() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-black/[0.05]">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <img src="/montarro-logo.png" alt="Montarro" className="h-12 w-auto" />
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium text-muted-foreground">
-          {[
-            ["Services", "/#services"],
-            ["AI Receptionist", "/services/ai-receptionists"],
-            ["Live Demo", "/demo"],
-            ["Pricing", "/#pricing"],
-          ].map(([l, h]) => (
-            <a
-              key={l}
-              href={h}
-              className="tracking-tight transition-colors duration-300 hover:text-foreground"
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <Link
-          to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px]`}
-        >
-          Book a Free Consultation
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-        <MobileMenu />
-      </div>
-    </header>
+    <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
+      <SiteNav />
+      <main>
+        <ContactHero />
+        <ContactFormSection />
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
 
-const STEP_TITLES: Record<number, { eyebrow: string; heading: string }> = {
-  1: { eyebrow: "Company", heading: "Tell us about your company." },
-  2: { eyebrow: "Industry", heading: "What best describes your business?" },
-  3: { eyebrow: "Stage", heading: "What stage is your company currently at?" },
-  4: { eyebrow: "Focus", heading: "What are you looking to solve?" },
-  5: { eyebrow: "Budget", heading: "What growth investment range are you currently comfortable with?" },
-  6: { eyebrow: "Goals", heading: "What's currently limiting growth?" },
-};
+/* ------------------------------- HERO ------------------------------- */
 
-function ContactPage() {
+function ContactHero() {
+  const pills = ["60-second enquiry", "No pressure", "Tailored strategy"];
+  return (
+    <section className="relative isolate overflow-hidden bg-[#E9F7EE] pt-36 pb-20 lg:pt-44 lg:pb-24">
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
+        style={{ backgroundImage: MINT_GRID, backgroundSize: "18px 18px" }}
+      />
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
+          {/* LEFT — copy */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-700/80">
+              Private Strategy Session
+            </p>
+            <h1 className="mt-6 font-headline text-[clamp(2.75rem,5.4vw,4.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
+              Book a strategy call.
+            </h1>
+            <p className="mt-7 max-w-xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
+              Montarro is built for service businesses ready to stop missing
+              leads, chasing follow-ups and running disconnected systems. Tell us
+              where your business is at and we&rsquo;ll show you the clearest
+              infrastructure path forward.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              {pills.map((t) => (
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-white/70 px-3.5 py-1.5 text-[12.5px] font-semibold text-emerald-800"
+                >
+                  <Check className="h-3.5 w-3.5 text-emerald-600" strokeWidth={2.6} />
+                  {t}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* RIGHT — dark results / system card */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ResultsCard />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ResultsCard() {
+  const stats: [string, string, string][] = [
+    ["Qualified Leads", "142", "+18%"],
+    ["Calls Answered", "318", "100%"],
+    ["Appointments", "96", "+11"],
+  ];
+  const feed: { icon: typeof PhoneCall; label: string; meta: string; tag: string }[] = [
+    { icon: PhoneCall, label: "Incoming call", meta: "+61 4•• ••• 218", tag: "Qualifying" },
+    { icon: CheckCircle2, label: "Lead qualified", meta: "High intent · roofing", tag: "92%" },
+    { icon: CalendarCheck, label: "Appointment booked", meta: "Thu · 3:00 PM", tag: "Confirmed" },
+    { icon: Database, label: "CRM synced", meta: "GoHighLevel", tag: "Synced" },
+  ];
+  return (
+    <div className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-8 -z-10 rounded-[44px] bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.16),transparent_72%)] blur-3xl"
+      />
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#111315] p-5 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)] sm:p-6">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }}
+        />
+        {/* header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white/55">
+            <span className="flex gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+              <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+              <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+            </span>
+            Revenue Infrastructure
+          </div>
+          <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            </span>
+            Live
+          </span>
+        </div>
+
+        {/* stat tiles */}
+        <div className="mt-5 grid grid-cols-3 gap-2.5">
+          {stats.map(([label, value, delta]) => (
+            <div key={label} className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+              <div className="text-[9.5px] uppercase tracking-[0.14em] text-white/45">{label}</div>
+              <div className="mt-1.5 font-display text-2xl font-semibold tabular-nums text-white">{value}</div>
+              <div className="mt-0.5 text-[10px] font-semibold text-emerald-400">{delta}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* live enquiry feed */}
+        <div className="mt-5">
+          <div className="mb-2.5 text-[10px] uppercase tracking-[0.2em] text-white/40">Live enquiry feed</div>
+          <div className="space-y-2">
+            {feed.map((e) => (
+              <div
+                key={e.label}
+                className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
+              >
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/[0.08] text-emerald-400">
+                  <e.icon className="h-3.5 w-3.5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[12.5px] font-medium text-white">{e.label}</div>
+                  <div className="truncate text-[11px] text-white/45">{e.meta}</div>
+                </div>
+                <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+                  {e.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------- FORM ------------------------------- */
+
+type FormState = {
+  revenue: string;
+  headcount: string;
+  platforms: string;
+  goals: string;
+  fullName: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  notes: string;
+};
+type FormErrors = Partial<Record<keyof FormState, string>>;
+
+const TOTAL_STEPS = 5;
+
+function ContactFormSection() {
   const [form, setForm] = useState<FormState>({
-    company: "",
+    revenue: "",
+    headcount: "",
+    platforms: "",
+    goals: "",
     fullName: "",
+    businessName: "",
     email: "",
     phone: "",
-    industry: "",
-    stage: "",
-    goal: "",
-    budget: "",
     notes: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
-  const [finalStepReady, setFinalStepReady] = useState(false);
-
-  useEffect(() => {
-    if (step !== TOTAL_STEPS) {
-      setFinalStepReady(false);
-      return;
-    }
-
-    setFinalStepReady(false);
-    const readyTimer = window.setTimeout(() => setFinalStepReady(true), 650);
-    return () => window.clearTimeout(readyTimer);
-  }, [step]);
 
   function update<K extends keyof FormState>(key: K, value: string) {
     setForm((p) => ({ ...p, [key]: value }));
     if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }));
   }
 
-  function validateStep(s: number): FormErrors {
+  function validate(): FormErrors {
     const e: FormErrors = {};
-    if (s === 1) {
-      if (!form.company.trim()) e.company = "Required.";
-      if (!form.fullName.trim()) e.fullName = "Required.";
-      if (!form.email.trim()) e.email = "Required.";
-      else if (!EMAIL_RE.test(form.email.trim())) e.email = "Enter a valid email.";
-      if (!form.phone.trim()) e.phone = "Required.";
-    }
-    if (s === 2 && !form.industry) e.industry = "Please select an option.";
-    if (s === 3 && !form.stage) e.stage = "Please select an option.";
-    if (s === 4 && !form.goal) e.goal = "Please select an option.";
-    if (s === 5 && !form.budget) e.budget = "Please select an option.";
+    QUESTIONS.forEach((qq) => {
+      if (!form[qq.key]) e[qq.key] = "Please choose an option.";
+    });
+    if (!form.fullName.trim()) e.fullName = "Required.";
+    if (!form.businessName.trim()) e.businessName = "Required.";
+    if (!form.email.trim()) e.email = "Required.";
+    else if (!EMAIL_RE.test(form.email.trim())) e.email = "Enter a valid email.";
+    if (!form.phone.trim()) e.phone = "Required.";
     return e;
   }
 
-  function handleNext(e?: React.MouseEvent<HTMLButtonElement>) {
-    e?.preventDefault();
-    e?.stopPropagation();
-    const v = validateStep(step);
-    setErrors(v);
-    if (Object.keys(v).length) return;
-    setStep((s) => Math.min(TOTAL_STEPS, s + 1));
-  }
-
-  function handleBack() {
-    setErrors({});
-    setStep((s) => Math.max(1, s - 1));
-  }
-
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-  }
-
-  async function handleFinalSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (step !== TOTAL_STEPS || !finalStepReady) return;
-    // Prevent duplicate submissions (in-flight or already submitted).
     if (submitting || submitted) return;
-    const v = validateStep(step);
+    const v = validate();
     setErrors(v);
     if (Object.keys(v).length) return;
     setSubmitting(true);
     setSubmitError(false);
     try {
-      if (!LEAD_WEBHOOK_URL) {
-        throw new Error("VITE_MONTARRO_LEAD_WEBHOOK_URL is not configured");
-      }
+      if (!LEAD_WEBHOOK_URL) throw new Error("VITE_MONTARRO_LEAD_WEBHOOK_URL is not configured");
       const { first, last } = splitName(form.fullName);
       const payload = {
         full_name: form.fullName,
@@ -222,708 +295,272 @@ function ContactPage() {
         last_name: last,
         email: form.email,
         phone: form.phone,
-        company_name: form.company,
+        company_name: form.businessName,
+        budget_monthly_revenue: form.revenue,
+        team_size: form.headcount,
+        social_platforms: form.platforms,
+        goal: form.goals,
         goals_notes: form.notes,
-        budget_monthly_revenue: form.budget,
-        interested_service: form.goal,
-        industry: form.industry,
-        stage: form.stage,
-        operational_bottleneck: form.notes,
         source: "Montarro Website",
+        form_type: "Strategy Call Page",
       };
       const res = await fetch(LEAD_WEBHOOK_URL, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) {
-        throw new Error(`Lead webhook responded ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`Lead webhook responded ${res.status}`);
       setSubmitted(true);
     } catch (err) {
-      console.error("[Montarro] Lead webhook submission failed:", err);
+      console.error("[Montarro] Strategy-call submission failed:", err);
       setSubmitError(true);
     } finally {
       setSubmitting(false);
     }
   }
 
-  const progress = (step / TOTAL_STEPS) * 100;
+  // Progress reflects how many sections are complete (whole form shown at once).
+  const contactComplete = !!(
+    form.fullName.trim() &&
+    form.businessName.trim() &&
+    form.email.trim() &&
+    form.phone.trim()
+  );
+  const completed =
+    QUESTIONS.filter((q) => !!form[q.key]).length + (contactComplete ? 1 : 0);
+  const currentStep = Math.min(TOTAL_STEPS, completed + 1);
+  const progress = (currentStep / TOTAL_STEPS) * 100;
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-      <ContactNav />
-      <main>
-        <section className="relative isolate min-h-screen overflow-hidden pt-24 pb-16">
-          {/* backdrop */}
-          <div className="absolute inset-0 -z-10 bg-grid opacity-[0.12] [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_75%)]" />
-          <div className="absolute inset-0 -z-10 bg-radial-glow" />
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[16%] -z-10 h-[560px] w-[860px] -translate-x-1/2 rounded-full blur-3xl"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, rgba(16,185,129,0.08), transparent 70%)",
-            }}
-            animate={{ opacity: [0.65, 1, 0.65], scale: [1, 1.06, 1] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          <div className="mx-auto max-w-2xl px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="text-center"
-            >
-              <div className="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground backdrop-blur">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                </span>
-                Private Infrastructure Audit
-              </div>
-              <h1 className="font-display text-balance mx-auto max-w-[16ch] text-[clamp(2.25rem,6.2vw,4.75rem)] leading-[0.98] tracking-[-0.045em] text-gradient-chrome">
-                Scale With Montarro.
-              </h1>
-              <p className="mx-auto mt-6 max-w-xl text-pretty text-[15px] md:text-base text-muted-foreground leading-relaxed">
-                Infrastructure engineered to capture, qualify, and compound revenue.
-              </p>
-              <p className="mx-auto mt-4 max-w-md text-[12px] tracking-wide text-muted-foreground/55">
-                We partner with a limited number of operators each quarter.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mt-6 sm:mt-10"
-            >
-              {/* radial lighting behind the form card */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-x-10 -top-10 bottom-0 -z-10 rounded-[40px] blur-3xl"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.10), transparent 70%)",
-                }}
-              />
-              {/* ultra-light gradient texture behind the card */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-x-8 -top-8 bottom-0 -z-10 bg-grid opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
-              />
-              <div className="relative overflow-hidden rounded-3xl border border-black/[0.07] bg-gradient-to-b from-white/90 via-white/80 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_-26px_55px_-44px_rgba(0,0,0,0.10)_inset,0_36px_90px_-45px_rgba(0,0,0,0.22)]">
-                {/* soft emerald lighting */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
-                />
-
-                {submitted ? (
-                  <BookingScreen lead={form} />
-                ) : (
-                  <div className="relative">
-                    {/* Progress bar */}
-                    <div className="relative h-[2px] w-full overflow-hidden bg-black/[0.05]">
-                      <motion.div
-                        initial={false}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ type: "spring", stiffness: 110, damping: 20, mass: 0.6 }}
-                        className="absolute inset-y-0 left-0 overflow-hidden bg-gradient-to-r from-emerald-500/70 via-emerald-500 to-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.6)]"
-                      >
-                        <motion.span
-                          aria-hidden
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                          animate={{ x: ["-120%", "120%"] }}
-                          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                      </motion.div>
-                    </div>
-
-                    <form onSubmit={onSubmit} noValidate className="px-7 py-10 md:px-12 md:py-12">
-                      {/* Step meta */}
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10.5px] uppercase tracking-[0.32em] text-muted-foreground/80">
-                          {STEP_TITLES[step].eyebrow}
-                        </span>
-                        <span className="text-[10.5px] uppercase tracking-[0.32em] text-muted-foreground/80 tabular-nums">
-                          {String(step).padStart(2, "0")} / {String(TOTAL_STEPS).padStart(2, "0")}
-                        </span>
-                      </div>
-
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={step}
-                          initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-                          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                          exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
-                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                          className="mt-6"
-                        >
-                          <h2 className="font-display text-3xl md:text-[2.4rem] leading-[1.05] tracking-[-0.035em] text-gradient-chrome max-w-[20ch]">
-                            {STEP_TITLES[step].heading}
-                          </h2>
-
-                          <div className="mt-10">
-                            {step === 1 && (
-                              <div className="grid gap-5 sm:grid-cols-2">
-                                <Field
-                                  id="company"
-                                  label="Company / Brand"
-                                  value={form.company}
-                                  onChange={(v) => update("company", v)}
-                                  error={errors.company}
-                                  autoComplete="organization"
-                                />
-                                <Field
-                                  id="fullName"
-                                  label="Contact Name"
-                                  value={form.fullName}
-                                  onChange={(v) => update("fullName", v)}
-                                  error={errors.fullName}
-                                  autoComplete="name"
-                                />
-                                <Field
-                                  id="email"
-                                  label="Work Email"
-                                  type="email"
-                                  value={form.email}
-                                  onChange={(v) => update("email", v)}
-                                  error={errors.email}
-                                  autoComplete="email"
-                                  inputMode="email"
-                                />
-                                <Field
-                                  id="phone"
-                                  label="Phone Number"
-                                  type="tel"
-                                  value={form.phone}
-                                  onChange={(v) => update("phone", v)}
-                                  error={errors.phone}
-                                  autoComplete="tel"
-                                  inputMode="tel"
-                                />
-                              </div>
-                            )}
-
-                            {step === 2 && (
-                              <ChoiceGrid
-                                options={INDUSTRIES}
-                                value={form.industry}
-                                onChange={(v) => update("industry", v)}
-                                error={errors.industry}
-                                columns={2}
-                              />
-                            )}
-                            {step === 3 && (
-                              <ChoiceGrid
-                                options={STAGES}
-                                value={form.stage}
-                                onChange={(v) => update("stage", v)}
-                                error={errors.stage}
-                                columns={1}
-                              />
-                            )}
-                            {step === 4 && (
-                              <ChoiceGrid
-                                options={GOALS}
-                                value={form.goal}
-                                onChange={(v) => update("goal", v)}
-                                error={errors.goal}
-                                columns={2}
-                              />
-                            )}
-                            {step === 5 && (
-                              <ChoiceGrid
-                                options={BUDGETS}
-                                value={form.budget}
-                                onChange={(v) => update("budget", v)}
-                                error={errors.budget}
-                                columns={1}
-                              />
-                            )}
-                            {step === 6 && (
-                              <div className="space-y-6">
-                                <p className="text-[14.5px] leading-relaxed text-muted-foreground">
-                                  Share anything relevant about your company, current challenges, or what you're looking to achieve.
-                                </p>
-                                <textarea
-                                  id="notes"
-                                  name="notes"
-                                  value={form.notes}
-                                  onChange={(e) => update("notes", e.target.value)}
-                                  rows={6}
-                                  placeholder="Missed calls, inconsistent lead flow, poor follow-up systems, low conversion rates, operational bottlenecks, scaling limitations…"
-                                  className="w-full resize-none rounded-2xl border border-black/[0.06] bg-card/40 p-6 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/50 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] transition-all duration-500 hover:border-black/[0.12] hover:shadow-[0_4px_20px_-6px_rgba(0,0,0,0.08)] focus:border-emerald-500/40 focus:bg-card/60 focus:shadow-[0_0_30px_-8px_rgba(16,185,129,0.28),0_4px_20px_-6px_rgba(0,0,0,0.08)] focus:outline-none"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </motion.div>
-                      </AnimatePresence>
-
-                      {step === TOTAL_STEPS && submitError && (
-                        <p
-                          role="alert"
-                          className="mt-6 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600"
-                        >
-                          Something went wrong submitting your application. Please try again — if it keeps happening, email us at montarromedia@outlook.com.
-                        </p>
-                      )}
-
-                      {/* Footer controls */}
-                      <div className="mt-10 flex items-center justify-between gap-4 border-t border-black/[0.05] pt-6">
-                        <button
-                          type="button"
-                          onClick={handleBack}
-                          disabled={step === 1}
-                          className="text-[12px] uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-300 hover:text-foreground disabled:opacity-30 disabled:hover:text-muted-foreground"
-                        >
-                          Back
-                        </button>
-
-                        {step < TOTAL_STEPS ? (
-                          <button
-                            key="continue-step"
-                            type="button"
-                            onClick={handleNext}
-                            className={`${primaryCta} inline-flex overflow-hidden px-7 py-3.5 text-[12px] uppercase tracking-[0.22em]`}
-                          >
-                            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                            Continue
-                            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          </button>
-                        ) : (
-                          <button
-                            key="submit-application"
-                            type="submit"
-                            data-final-submit="true"
-                            onClick={handleFinalSubmit}
-                            disabled={submitting || !finalStepReady}
-                            className={`${primaryCta} inline-flex overflow-hidden px-7 py-3.5 text-[12px] uppercase tracking-[0.22em] disabled:opacity-70 disabled:hover:translate-y-0`}
-                          >
-                            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                            {submitting ? (
-                              <>
-                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                Submitting
-                              </>
-                            ) : (
-                              <>
-                                Submit Application
-                                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </div>
-                    </form>
+    <section className="bg-white py-20 lg:py-28">
+      <div className="mx-auto max-w-2xl px-6">
+        <div className="rounded-3xl border border-[#D8F2E8] bg-white p-7 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-10 lg:p-12">
+          <AnimatePresence mode="wait">
+            {submitted ? (
+              <SuccessState key="done" firstName={splitName(form.fullName).first || "there"} />
+            ) : (
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                noValidate
+                exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+                transition={{ duration: 0.35 }}
+              >
+                {/* progress bar */}
+                <div className="mb-9">
+                  <div className="mb-2.5">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                      Step {currentStep} of {TOTAL_STEPS}
+                    </span>
                   </div>
-                )}
-              </div>
-
-              {/* contact alternates — only on the form step; the booking and
-                  confirmation states carry their own minimal contact line */}
-              {!submitted && (
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13px] text-muted-foreground">
-                  <a href="mailto:Team@montarro.com" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                    <Mail className="h-4 w-4" /> Team@montarro.com
-                  </a>
-                  <a href="tel:0450731109" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                    <Phone className="h-4 w-4" /> 0450 731 109
-                  </a>
-                  <a href="https://instagram.com/montarroaii" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
-                    <Instagram className="h-4 w-4" /> @montarroaii
-                  </a>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+                    <motion.div
+                      className="h-full rounded-full bg-emerald-600"
+                      initial={false}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                  </div>
                 </div>
-              )}
-            </motion.div>
-          </div>
-        </section>
-      </main>
+
+                <div className="space-y-8">
+                  {/* qualification questions (1–4) — all visible at once */}
+                  {QUESTIONS.map((qq, i) => (
+                    <OptionGroup
+                      key={qq.key}
+                      index={i + 1}
+                      question={qq.q}
+                      options={qq.options}
+                      value={form[qq.key]}
+                      onChange={(v) => update(qq.key, v)}
+                      error={errors[qq.key]}
+                      multiple={qq.multiple}
+                    />
+                  ))}
+
+                  {/* contact details */}
+                  <div>
+                    <NumberedHeader index={5} title="Your contact details" />
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-5">
+                      <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
+                      <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
+                      <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
+                      <Field id="phone" label="Best Mobile" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
+                    </div>
+                    <textarea
+                      id="notes"
+                      name="notes"
+                      aria-label="Tell us anything else about your business"
+                      value={form.notes}
+                      onChange={(e) => update("notes", e.target.value)}
+                      rows={4}
+                      placeholder="Tell us anything else about your business…"
+                      className="mt-4 w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
+                    />
+                  </div>
+
+                  {submitError && (
+                    <p role="alert" className="rounded-2xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] leading-relaxed text-red-600">
+                      Something went wrong sending your enquiry. Please try again — or
+                      email us at montarromedia@outlook.com.
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="group inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-emerald-600 to-emerald-700 px-7 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_14px_34px_-14px_rgba(5,150,105,0.6)] transition-all duration-300 ease-out hover:-translate-y-[2px] hover:from-emerald-500 hover:to-emerald-600 hover:shadow-[0_22px_48px_-16px_rgba(5,150,105,0.7)] disabled:opacity-70 disabled:hover:translate-y-0"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending
+                      </>
+                    ) : (
+                      <>
+                        Book My Strategy Call
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center">
+                    <p className="text-[13px] font-medium leading-relaxed text-foreground">
+                      No pressure. No generic sales pitch. Just a tailored strategy
+                      showing how Montarro would fit your business.
+                    </p>
+                    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+                      Not ready yet?{" "}
+                      <Link to="/" hash="system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                        Explore the System →
+                      </Link>{" "}
+                      <span className="px-1 text-foreground/30">·</span>{" "}
+                      or call{" "}
+                      <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                        0450 731 109
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function NumberedHeader({ index, title }: { index: number; title: string }) {
+  return (
+    <div className="flex items-baseline gap-2.5">
+      <span className="font-display text-[17px] font-bold tabular-nums text-emerald-600">{index}.</span>
+      <h3 className="text-[15.5px] font-semibold text-foreground">{title}</h3>
     </div>
   );
 }
 
-// Public calendar embed URL (no secret — embeds are public). Set
-// VITE_GHL_CALENDAR_URL may hold EITHER a bare booking URL OR a full GHL embed
-// snippet (<iframe …></iframe><script …>). We extract the booking src either
-// way, so whatever is pasted into the env var works. Referenced as
-// import.meta.env.VITE_* so Vite statically inlines it at build.
-function extractCalendarSrc(raw?: string): string | undefined {
-  const value = raw?.trim();
-  if (!value) return undefined;
-  // Full embed snippet → pull the booking iframe's src (ignore the
-  // form_embed.js <script> src, which we load ourselves below).
-  const srcs = [...value.matchAll(/src\s*=\s*["']([^"']+)["']/gi)]
-    .map((m) => m[1])
-    .filter((u) => !/form_embed\.js/i.test(u));
-  if (srcs.length) {
-    return srcs.find((u) => /\/(widget\/)?booking\//i.test(u)) ?? srcs[0];
-  }
-  // Bare URL.
-  if (/^https?:\/\//i.test(value)) return value;
-  return undefined;
-}
-
-const GHL_CALENDAR_URL = extractCalendarSrc(import.meta.env.VITE_GHL_CALENDAR_URL);
-
-const GHL_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
-
-/**
- * Final stage of the consultation flow. After the form submits to GoHighLevel
- * the user smoothly transitions here to book a time on the GHL calendar —
- * without leaving the page. Booking completion (detected via the calendar's
- * postMessage) reveals a premium confirmation state.
- */
-function BookingScreen({ lead }: { lead: FormState }) {
-  const [outcome, setOutcome] = useState<"booked" | "callback" | null>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  // Pre-fill the GHL booking widget with the details already captured by the
-  // Montarro form (name, email, phone) via query params, so the visitor only
-  // picks a date and time — no duplicate data entry. GHL still shows its
-  // (now pre-filled) contact step; it offers no official param to hide it.
-  const calendarSrc = useMemo(() => {
-    if (!GHL_CALENDAR_URL) return undefined;
-    try {
-      const u = new URL(GHL_CALENDAR_URL);
-      const { first, last } = splitName(lead.fullName);
-      if (first) u.searchParams.set("first_name", first);
-      if (last) u.searchParams.set("last_name", last);
-      if (lead.fullName) u.searchParams.set("name", lead.fullName);
-      if (lead.email) u.searchParams.set("email", lead.email);
-      if (lead.phone) u.searchParams.set("phone", lead.phone);
-      return u.toString();
-    } catch {
-      return GHL_CALENDAR_URL;
-    }
-  }, [lead]);
-
-  // Cinematic entrance: bring the booking stage into view smoothly.
-  useEffect(() => {
-    const t = window.setTimeout(() => {
-      rootRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 120);
-    return () => window.clearTimeout(t);
-  }, []);
-
-  // Diagnostic: make a missing calendar URL obvious in the console.
-  useEffect(() => {
-    if (!GHL_CALENDAR_URL) {
-      console.warn(
-        "[Montarro] VITE_GHL_CALENDAR_URL is not set in this build — showing the booking fallback. Add it in Vercel → Environment Variables and redeploy (it is a build-time VITE_ var).",
-      );
-    }
-  }, []);
-
-  // Load the GHL embed helper once (responsive iframe auto-resize).
-  useEffect(() => {
-    if (!GHL_CALENDAR_URL) return;
-    if (document.querySelector(`script[src="${GHL_EMBED_SCRIPT}"]`)) return;
-    const s = document.createElement("script");
-    s.src = GHL_EMBED_SCRIPT;
-    s.async = true;
-    document.body.appendChild(s);
-  }, []);
-
-  // Detect a completed booking from the GHL calendar iframe (best-effort).
-  // Conservative matching avoids resize/height chatter triggering it early.
-  useEffect(() => {
-    function onMessage(e: MessageEvent) {
-      if (!/leadconnectorhq\.com|msgsndr\.com|gohighlevel\.com/.test(e.origin || "")) {
-        return;
-      }
-      let text = "";
-      try {
-        text = typeof e.data === "string" ? e.data : JSON.stringify(e.data ?? "");
-      } catch {
-        return;
-      }
-      if (/height|resize|scroll|form_embed|hsform/i.test(text)) return;
-      if (/appointment|booking|booked|scheduled/i.test(text)) setOutcome("booked");
-    }
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, []);
-
-  // Send the visitor's choice (book vs. callback) to the Make webhook. The
-  // initial lead is captured on form submit (before this screen); the chosen
-  // consultation_preference is only known here, so it is sent as a follow-up.
-  const prefSent = useRef(false);
-  useEffect(() => {
-    if (!outcome || prefSent.current || !LEAD_WEBHOOK_URL) return;
-    prefSent.current = true;
-    const { first, last } = splitName(lead.fullName);
-    void fetch(LEAD_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        event: "consultation_preference",
-        consultation_preference: outcome === "booked" ? "book_consultation" : "prefer_a_call",
-        full_name: lead.fullName,
-        first_name: first,
-        last_name: last,
-        email: lead.email,
-        phone: lead.phone,
-        company_name: lead.company,
-        source: "Montarro Website",
-      }),
-    }).catch((err) => console.error("[Montarro] preference webhook failed:", err));
-  }, [outcome, lead]);
-
-  if (outcome === "booked") return <BookingConfirmation />;
-  if (outcome === "callback") return <CallbackConfirmation />;
-
+function SuccessState({ firstName }: { firstName: string }) {
   return (
     <motion.div
-      ref={rootRef}
-      initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
-      className="relative px-7 py-7 text-center md:px-12 md:py-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center py-10 text-center"
     >
-      {/* subtle emerald accent lighting behind the header */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-20 left-1/2 h-52 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.10),transparent_70%)] blur-2xl"
-      />
-
-      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.24em] text-emerald-700/90">
-        <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
-        Details Received
-      </div>
-
-      <p className="text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
-        One Final Step
-      </p>
-      <h2 className="mx-auto mt-2 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        Book Your Free Consultation
-      </h2>
-      <p className="mx-auto mt-2.5 text-[14.5px] text-muted-foreground leading-relaxed">
-        Choose a time that suits you.
-      </p>
-
-      {/* glass panel around the calendar */}
-      <div className="relative mx-auto mt-6 max-w-xl">
-        <div
+      <motion.div
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.05 }}
+        className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.08]"
+      >
+        <motion.span
           aria-hidden
-          className="pointer-events-none absolute -inset-x-6 -top-6 bottom-0 -z-10 rounded-[32px] blur-3xl"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.08), transparent 70%)",
-          }}
+          className="absolute inset-0 rounded-full border border-emerald-500/40"
+          initial={{ scale: 1, opacity: 0.7 }}
+          animate={{ scale: 1.7, opacity: 0 }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 0.25 }}
         />
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-white/90 to-[#f3f4f6]/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.85)_inset,0_36px_90px_-50px_rgba(0,0,0,0.22)]">
-          {/* emerald top hairline */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px"
-            style={{
-              background:
-                "linear-gradient(to right, transparent, rgba(16,185,129,0.55), transparent)",
-            }}
-          />
-          {calendarSrc ? (
-            <iframe
-              title="Book your Montarro consultation"
-              src={calendarSrc}
-              id="ghl-consultation-calendar"
-              scrolling="no"
-              className="block min-h-[600px] w-full md:min-h-[640px]"
-              style={{ width: "100%", minHeight: 600, border: "none", overflow: "hidden" }}
-            />
-          ) : (
-            <div className="flex min-h-[260px] flex-col items-center justify-center px-7 py-12 text-center">
-              <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
-                <Check className="relative h-5 w-5 text-emerald-500" strokeWidth={2.2} />
-              </div>
-              <p className="mt-5 max-w-sm text-[14.5px] text-muted-foreground leading-relaxed">
-                Your details are in. A Montarro strategist will reach out shortly.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* reassurance — clean horizontal row beneath the calendar */}
-        <ul className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12.5px] text-muted-foreground">
-          {["15 Minute Setup Call", "No Obligation", "Tailored To Your Business"].map((t) => (
-            <li key={t} className="inline-flex items-center gap-1.5">
-              <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.4} />
-              {t}
-            </li>
-          ))}
-        </ul>
-
-        {/* divider before the secondary conversion path */}
-        <div aria-hidden className="mx-auto mt-6 h-px w-full max-w-xs bg-black/[0.07]" />
-
-        {/* secondary conversion path — request a callback (black CTA) */}
-        <div className="mt-6 flex flex-col items-center gap-2.5">
-          <h3 className="font-display text-xl tracking-tight text-foreground">
-            Prefer We Call You?
-          </h3>
-          <p className="max-w-sm text-[13.5px] text-muted-foreground leading-relaxed">
-            Skip the booking process and speak directly with our team.
-          </p>
-          <button
-            type="button"
-            onClick={() => setOutcome("callback")}
-            className="group mt-2 inline-flex items-center gap-2 rounded-xl bg-[#0b0b0c] px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white ring-1 ring-emerald-500/20 shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)] transition-all duration-300 ease-out hover:-translate-y-[1px] hover:bg-black hover:ring-emerald-500/40 hover:shadow-[0_22px_50px_-16px_rgba(0,0,0,0.6)]"
-          >
-            Request A Callback
-            <ArrowUpRight className="h-4 w-4 text-emerald-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
-          <p className="mt-1 max-w-md text-[13px] text-muted-foreground leading-relaxed">
-            A member of our team will contact you directly to discuss your
-            business, answer any questions and determine the best next step.
-          </p>
-        </div>
-      </div>
+        <motion.span
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.18 }}
+        >
+          <Check className="h-6 w-6 text-emerald-600" strokeWidth={2.4} />
+        </motion.span>
+      </motion.div>
+      <h2 className="mt-7 font-display text-3xl font-bold leading-tight tracking-[-0.03em] text-[#0a0b0b]">
+        Thanks, {firstName}.
+      </h2>
+      <p className="mt-4 max-w-md text-[15px] font-medium leading-relaxed text-foreground">
+        You&rsquo;re all set. Our team will give you a call shortly to schedule
+        your strategy session and map out a tailored revenue infrastructure for
+        your business.
+      </p>
     </motion.div>
   );
 }
 
-function BookingConfirmation() {
-  const steps = [
-    ["Business Review", "We analyse your current systems and lead flow."],
-    [
-      "Strategy Session",
-      "We identify bottlenecks, missed revenue opportunities and automation potential.",
-    ],
-    ["Implementation Roadmap", "We outline the fastest path to measurable growth."],
-  ];
+function OptionGroup({
+  index,
+  question,
+  options,
+  value,
+  onChange,
+  error,
+  multiple = false,
+}: {
+  index: number;
+  question: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+  multiple?: boolean;
+}) {
+  // Multi-select stores its choices as a comma-separated string so the payload
+  // shape and validation (empty string = unanswered) stay identical.
+  const selectedValues = multiple ? value.split(", ").filter(Boolean) : [];
+  function toggle(opt: string) {
+    if (!multiple) {
+      onChange(opt);
+      return;
+    }
+    const next = selectedValues.includes(opt)
+      ? selectedValues.filter((v) => v !== opt)
+      : [...selectedValues, opt];
+    // Preserve the original option order for a stable, readable submitted value.
+    onChange(options.filter((o) => next.includes(o)).join(", "));
+  }
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex flex-col items-center px-7 py-16 text-center md:px-14 md:py-20"
-    >
-      {/* thin emerald accent line at the top of the card */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, rgba(16,185,129,0.6), transparent)",
-        }}
-      />
-      {/* stronger emerald glow behind the success icon */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-16 left-1/2 h-64 w-[620px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.28),transparent_70%)] blur-3xl"
-      />
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/[0.07] shadow-[0_18px_50px_-18px_rgba(16,185,129,0.55)]">
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.4),transparent_70%)] blur-md" />
-        <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
+    <div>
+      <div className="flex items-baseline gap-2.5">
+        <span className="font-display text-[17px] font-bold tabular-nums text-emerald-600">{index}.</span>
+        <h3 className="text-[15.5px] font-semibold text-foreground">{question}</h3>
       </div>
-
-      <p className="mt-8 text-[11px] uppercase tracking-[0.32em] text-emerald-700/80">
-        Free Consultation Booked
-      </p>
-      <h2 className="mt-3 font-display text-gradient-chrome leading-[1.05] tracking-[-0.035em]">
-        <span className="block text-2xl md:text-3xl font-medium">Your</span>
-        <span className="block text-[2.4rem] md:text-[3.25rem] font-semibold tracking-[-0.04em] leading-[0.98]">
-          Free Consultation
-        </span>
-        <span className="block text-2xl md:text-3xl font-medium">Is Confirmed.</span>
-      </h2>
-      <p className="mt-6 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
-        Our team will review your current lead flow, missed opportunities, and
-        growth infrastructure before the call so we can provide tailored
-        recommendations specific to your business.
-      </p>
-
-      {/* What happens next */}
-      <div className="mt-12 w-full max-w-lg text-left">
-        <p className="text-center text-[11px] uppercase tracking-[0.3em] text-emerald-700/80">
-          What Happens Next?
-        </p>
-        <ol className="mt-6 space-y-4">
-          {steps.map(([title, body], i) => (
-            <li
-              key={title}
-              className="flex items-start gap-4 rounded-2xl border border-black/[0.06] bg-white/60 px-5 py-4 shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_18px_44px_-34px_rgba(0,0,0,0.25)] backdrop-blur"
+      <div className="mt-4 flex flex-wrap gap-2.5">
+        {options.map((opt) => {
+          const selected = multiple ? selectedValues.includes(opt) : value === opt;
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => toggle(opt)}
+              aria-pressed={selected}
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-[13.5px] font-medium transition-all duration-200 ease-out ${
+                selected
+                  ? "border-emerald-600 bg-emerald-600 text-white shadow-[0_10px_24px_-12px_rgba(5,150,105,0.6)]"
+                  : "border-black/[0.1] bg-white text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.05] hover:text-foreground"
+              }`}
             >
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] font-display text-[13px] tabular-nums text-emerald-700">
-                {i + 1}
-              </span>
-              <div>
-                <div className="text-[14px] font-medium text-foreground">{title}</div>
-                <div className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{body}</div>
-              </div>
-            </li>
-          ))}
-        </ol>
+              {multiple && selected && <Check className="h-3.5 w-3.5" strokeWidth={2.6} />}
+              {opt}
+            </button>
+          );
+        })}
       </div>
-
-      <div className="mt-12 flex flex-col items-center gap-5">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
-        >
-          Back to home
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </Link>
-        <p className="text-[12px] text-muted-foreground/70">
-          Need assistance?{" "}
-          <a
-            href="mailto:team@montarro.com"
-            className="text-emerald-700 transition-colors hover:text-emerald-600"
-          >
-            team@montarro.com
-          </a>
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-function CallbackConfirmation() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex flex-col items-center px-7 py-20 text-center md:px-12"
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.12),transparent_70%)] blur-2xl"
-      />
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/5">
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.25),transparent_70%)] blur-md" />
-        <Check className="relative h-6 w-6 text-emerald-500" strokeWidth={2.2} />
-      </div>
-      <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight tracking-[-0.035em] text-gradient-chrome max-w-[18ch]">
-        We'll Be In Touch.
-      </h2>
-      <p className="mt-5 max-w-md text-[14.5px] text-muted-foreground leading-relaxed">
-        Your details are in — a Montarro strategist will reach out shortly to set
-        up your consultation.
-      </p>
-      <div className="mt-10 flex flex-col items-center gap-5">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-card/40 px-6 py-3 text-[12px] uppercase tracking-[0.22em] backdrop-blur transition-all duration-500 hover:border-emerald-500/40 hover:shadow-[0_18px_50px_-25px_rgba(16,185,129,0.45)]"
-        >
-          Back to home
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </Link>
-        <p className="text-[12px] text-muted-foreground/70">
-          Need assistance?{" "}
-          <a
-            href="mailto:team@montarro.com"
-            className="text-emerald-700 transition-colors hover:text-emerald-600"
-          >
-            team@montarro.com
-          </a>
-        </p>
-      </div>
-    </motion.div>
+      {error && <p className="mt-2.5 text-[11px] text-red-600">{error}</p>}
+    </div>
   );
 }
 
@@ -947,99 +584,25 @@ function Field({
   inputMode?: "text" | "tel" | "email" | "numeric" | "search" | "url" | "none" | "decimal";
 }) {
   return (
-    <div className="group relative">
-      <label
-        htmlFor={id}
-        className="block text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground/80 transition-colors duration-300 group-focus-within:text-emerald-600/90"
-      >
-        {label}
-      </label>
-      <div className="relative mt-2.5">
-        <input
-          id={id}
-          name={id}
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          autoComplete={autoComplete}
-          inputMode={inputMode}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${id}-error` : undefined}
-          className={`peer block w-full border-0 border-b bg-transparent px-0 py-3 text-[15px] text-foreground caret-emerald-500 selection:bg-emerald-500/20 placeholder:text-muted-foreground/50 transition-colors duration-500 focus:outline-none focus:ring-0 ${
-            error ? "border-destructive/60" : "border-black/[0.10] focus:border-emerald-500/70"
-          }`}
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/80 to-emerald-500/0 shadow-[0_0_12px_rgba(16,185,129,0.45)] transition-transform duration-700 ease-out peer-focus:scale-x-100"
-        />
-      </div>
-      {error && (
-        <p id={`${id}-error`} className="mt-2 text-[11px] text-muted-foreground">
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function ChoiceGrid({
-  options,
-  value,
-  onChange,
-  error,
-  columns,
-}: {
-  options: string[];
-  value: string;
-  onChange: (v: string) => void;
-  error?: string;
-  columns: 1 | 2;
-}) {
-  return (
     <div>
-      <div
-        className={`grid gap-3 ${
-          columns === 2 ? "sm:grid-cols-2" : "sm:grid-cols-1"
+      <input
+        id={id}
+        name={id}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        placeholder={label}
+        aria-label={label}
+        aria-invalid={!!error}
+        className={`h-[58px] w-full rounded-2xl border bg-white px-5 text-[15px] text-foreground caret-emerald-500 placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:outline-none ${
+          error
+            ? "border-red-400/60"
+            : "border-black/[0.08] focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)]"
         }`}
-      >
-        {options.map((opt) => {
-          const selected = value === opt;
-          return (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => onChange(opt)}
-              aria-pressed={selected}
-              className={`group relative flex items-center justify-between overflow-hidden rounded-2xl border px-5 py-4 text-left text-[14px] backdrop-blur transition-all duration-500 ease-out hover:-translate-y-0.5 active:scale-[0.99] ${
-                selected
-                  ? "border-emerald-500/50 bg-emerald-500/[0.06] text-foreground shadow-[0_18px_50px_-25px_rgba(16,185,129,0.5)]"
-                  : "border-black/[0.07] bg-background/40 text-muted-foreground hover:text-foreground hover:border-emerald-500/30 hover:shadow-[0_16px_40px_-25px_rgba(16,185,129,0.4)]"
-              }`}
-            >
-              <span
-                aria-hidden
-                className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ${
-                  selected ? "opacity-100" : "group-hover:opacity-100"
-                } bg-[radial-gradient(ellipse_at_top_left,rgba(16,185,129,0.12),transparent_60%)]`}
-              />
-              <span className="relative">{opt}</span>
-              <span
-                className={`relative flex h-4 w-4 items-center justify-center rounded-full border transition-all duration-500 ${
-                  selected
-                    ? "border-emerald-500 bg-emerald-500"
-                    : "border-black/[0.15] group-hover:border-emerald-500/50"
-                }`}
-              >
-                {selected && <Check className="h-2.5 w-2.5 text-background" strokeWidth={3} />}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      {error && (
-        <p className="mt-4 text-[11px] text-muted-foreground">{error}</p>
-      )}
+      />
+      {error && <p className="mt-1.5 pl-1 text-[11px] text-red-600">{error}</p>}
     </div>
   );
 }

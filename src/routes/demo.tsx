@@ -111,58 +111,7 @@ function GridTexture({ dark = false }: { dark?: boolean }) {
   );
 }
 
-/* --------------------------- SECTION 1 — HERO --------------------------- */
-
-function DemoHero() {
-  return (
-    <section className="relative isolate overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24">
-      <GridTexture />
-      <div className="absolute inset-0 -z-10 bg-radial-glow" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[480px] max-w-4xl"
-        style={{ background: "radial-gradient(ellipse 55% 60% at 50% 0%, rgba(16,185,129,0.07), transparent 70%)" }}
-      />
-      <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 mx-auto h-[360px] max-w-3xl rounded-full bg-black/[0.04] blur-3xl" />
-
-      <div className="mx-auto max-w-4xl px-6 text-center">
-        <Reveal delay={0.05}>
-          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
-            <LiveDot /> Live Infrastructure
-          </div>
-        </Reveal>
-        <Reveal delay={0.15}>
-          <h1 className="font-display text-balance mx-auto max-w-[16ch] text-[clamp(2.5rem,7.5vw,5.5rem)] leading-[0.95] tracking-[-0.045em] text-gradient-chrome">
-            Experience The Infrastructure.
-          </h1>
-        </Reveal>
-        <Reveal delay={0.28}>
-          <p className="mx-auto mt-6 max-w-xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
-            AI voice infrastructure that captures, qualifies, and converts
-            inbound demand — automatically.
-          </p>
-        </Reveal>
-        <Reveal delay={0.4}>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a href="#test" className={`${primaryCta} inline-flex px-6 py-3 text-sm`}>
-              <Phone className="h-4 w-4" />
-              Test The AI Receptionist
-            </a>
-            <a
-              href="#how"
-              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3 text-sm font-medium backdrop-blur transition-all duration-300 hover:border-foreground/40 hover:bg-card"
-            >
-              See How It Works
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-/* ----------------- SECTION 2 + 3 — LIVE DEMO / TEST THE AI ----------------- */
+/* ----------------- SECTION 1 + 2 — TEST THE AI / LIVE DEMO ----------------- */
 
 function TranscriptPanel() {
   const msgs: { who: "ai" | "caller"; text: string; t: string }[] = [
@@ -277,39 +226,42 @@ function CrmFeedPanel() {
 
 function TestCallCard() {
   return (
-    <div className="relative mx-auto max-w-xl overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-8 text-center backdrop-blur-xl shadow-[0_44px_110px_-55px_rgba(0,0,0,0.85)]">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }} />
-      <div className="relative mx-auto flex h-20 w-20 items-center justify-center">
+    <div className="relative mx-auto max-w-2xl overflow-hidden rounded-[26px] border border-emerald-500/20 bg-gradient-to-b from-white/[0.07] to-white/[0.015] p-9 text-center backdrop-blur-xl shadow-[0_70px_150px_-50px_rgba(0,0,0,0.9),0_0_60px_-30px_rgba(16,185,129,0.4)] ring-1 ring-emerald-500/10 sm:p-11">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.7), transparent)" }} />
+      <div className="relative mx-auto flex h-24 w-24 items-center justify-center">
         <motion.span
           aria-hidden
-          className="absolute inset-0 rounded-full border border-emerald-500/30"
-          animate={{ scale: [1, 1.45], opacity: [0.5, 0] }}
+          className="absolute inset-0 rounded-full border border-emerald-500/40"
+          animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
         />
         <motion.span
           aria-hidden
-          className="absolute inset-0 rounded-full border border-emerald-500/30"
-          animate={{ scale: [1, 1.45], opacity: [0.5, 0] }}
+          className="absolute inset-0 rounded-full border border-emerald-500/40"
+          animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut", delay: 1.1 }}
         />
-        <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 shadow-[0_0_40px_-10px_rgba(16,185,129,0.6)]">
-          <Phone className="h-6 w-6" />
+        <span className="relative flex h-[72px] w-[72px] items-center justify-center rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 shadow-[0_0_55px_-8px_rgba(16,185,129,0.75)]">
+          <Phone className="h-7 w-7" />
         </span>
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/55">
+      <div className="mt-7 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/60">
         <LiveDot /> AI Receptionist · Available 24/7
       </div>
       <div className="mt-4 flex items-center justify-center">
         <Waveform count={9} />
       </div>
 
-      <a href={`tel:${RECEPTIONIST_TEL}`} className={`${primaryCta} mt-6 inline-flex px-7 py-3.5 text-sm`}>
-        <Phone className="h-4 w-4" />
+      <a
+        href={`tel:${RECEPTIONIST_TEL}`}
+        className={`${primaryCta} mt-7 inline-flex w-full justify-center px-8 py-4 text-base shadow-[0_24px_60px_-18px_rgba(5,150,105,0.7)] sm:w-auto`}
+      >
+        <Phone className="h-5 w-5" />
         Call The AI Receptionist
       </a>
 
-      <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.05]">
+      <div className="mt-7 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.05]">
         {[
           ["0.8s", "Avg response"],
           ["24/7", "Coverage"],
@@ -328,8 +280,7 @@ function TestCallCard() {
 function LiveDemoBlock() {
   return (
     <>
-      <div aria-hidden style={{ height: "90px", marginBottom: "-1px", background: "linear-gradient(180deg, #ffffff 0%, #d6d9d8 55%, #0a0c0b 100%)" }} />
-      <section id="live-demo" className="relative overflow-hidden py-20 lg:py-24" style={{ background: DARK_BG }}>
+      <section className="relative overflow-hidden pb-20 pt-32 lg:pb-24 lg:pt-36" style={{ background: DARK_BG }}>
         <GridTexture dark />
         <motion.div
           aria-hidden
@@ -339,44 +290,55 @@ function LiveDemoBlock() {
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
         />
         <div className="relative mx-auto max-w-7xl px-6">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
-                <LiveDot /> Live System
-              </div>
-              <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
-                <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
-                  Watch the infrastructure work.
-                </span>
-              </h2>
-              <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
-                A single inbound call, captured, qualified, booked, and synced —
-                in seconds.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-2">
-            <Reveal><TranscriptPanel /></Reveal>
-            <Reveal delay={0.1}><CrmFeedPanel /></Reveal>
-          </div>
-
-          {/* Section 3 — Test the AI */}
-          <div id="test" className="mt-16 scroll-mt-24 lg:mt-20">
+          {/* SECTION 1 — Test the AI Receptionist (landing / primary action) */}
+          <div id="test" className="scroll-mt-24">
             <Reveal>
-              <div className="mx-auto mb-8 max-w-2xl text-center">
-                <h3 className="font-display text-3xl md:text-4xl tracking-tight text-white">
-                  Test the AI receptionist.
-                </h3>
-                <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-white/55">
-                  Call the live line and experience the system handling a real
-                  conversation.
+              <div className="mx-auto max-w-2xl text-center">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+                  <LiveDot /> Live System
+                </div>
+                <h1 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
+                  <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
+                    Test the AI Receptionist
+                  </span>
+                </h1>
+                <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-white/55">
+                  Call the live AI receptionist and experience exactly how Montarro
+                  answers, qualifies and books enquiries in real time. No demo videos.
+                  No simulations. Just the live system.
                 </p>
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <TestCallCard />
+              <div className="mt-10">
+                <TestCallCard />
+              </div>
             </Reveal>
+          </div>
+
+          {/* SECTION 2 — Watch the infrastructure work */}
+          <div id="live-demo" className="mt-20 scroll-mt-24 lg:mt-28">
+            <Reveal>
+              <div className="mx-auto max-w-2xl text-center">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55 backdrop-blur">
+                  <LiveDot /> Live System
+                </div>
+                <h2 className="font-display text-4xl md:text-6xl leading-[1.04] tracking-[-0.02em]">
+                  <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
+                    Watch the infrastructure work.
+                  </span>
+                </h2>
+                <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/55">
+                  A single inbound call, captured, qualified, booked, and synced —
+                  in seconds.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-12 grid gap-5 lg:grid-cols-2">
+              <Reveal><TranscriptPanel /></Reveal>
+              <Reveal delay={0.1}><CrmFeedPanel /></Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -621,7 +583,6 @@ function DemoPage() {
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
       <SiteNav />
       <main>
-        <DemoHero />
         <LiveDemoBlock />
         <Benefits />
         <HowItWorks />

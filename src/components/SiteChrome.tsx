@@ -1,73 +1,61 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
 
+// Solid white, fully opaque navbar — identical on every page, no scroll/colour change.
 export function SiteNav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out ${
-        scrolled
-          ? "border-b border-white/10 bg-[#0a0b0b]/70 backdrop-blur-xl shadow-[0_12px_34px_-14px_rgba(0,0,0,0.55)]"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
-          scrolled ? "h-14" : "h-16"
-        }`}
-      >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.08] bg-white shadow-[0_1px_2px_-1px_rgba(0,0,0,0.06)]">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center">
-          <img
-            src="/montarro-logo.png"
-            alt="Montarro"
-            className={`w-auto transition-all duration-500 ease-out ${
-              scrolled ? "h-9 invert" : "h-[52px]"
-            }`}
-          />
+          <img src="/montarro-logo.png" alt="Montarro" className="h-14 w-auto" />
         </Link>
-        <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium">
+        <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold">
           {(() => {
-            const cls = `tracking-tight transition-colors duration-300 ${
-              scrolled ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-            }`;
+            const cls = "tracking-tight text-foreground/75 transition-colors duration-300 hover:text-foreground";
             return (
               <>
-                <Link to="/" hash="services" className={cls}>Services</Link>
-                <Link to="/services/ai-receptionists" className={`group relative inline-flex items-center gap-1.5 ${cls}`}>
+                <Link to="/" hash="system" className={cls}>The System</Link>
+                <Link to="/" hash="experience" className={`group inline-flex items-center gap-1.5 ${cls}`}>
                   AI Receptionist
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   </span>
-                  <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#0b0b0c]/95 px-2.5 py-1 text-[10px] font-normal tracking-tight text-white/80 opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:opacity-100">
-                    Test the infrastructure live
-                  </span>
                 </Link>
                 <Link to="/demo" className={cls}>Live Demo</Link>
-                <Link to="/" hash="pricing" className={cls}>Pricing</Link>
+                <Link to="/" hash="about" className={cls}>About</Link>
+                <Link to="/" hash="faq" className={cls}>FAQ</Link>
+                <Link to="/" hash="cta" className={cls}>Contact</Link>
               </>
             );
           })()}
         </nav>
-        <Link
-          to="/contact"
-          className={`${primaryCta} hidden md:inline-flex px-5 py-2.5 text-[13px] ${
-            scrolled ? "ring-1 ring-emerald-400/25" : ""
-          }`}
-        >
-          Book a Free Consultation
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-        <MobileMenu scrolled={scrolled} />
+        <div className="flex items-center gap-3 lg:gap-4">
+          {/* persistent bare call icon — all pages, mobile + desktop */}
+          <a
+            href="tel:0450731109"
+            aria-label="Call Montarro"
+            className="inline-flex items-center justify-center text-foreground/70 transition-colors duration-300 hover:text-foreground"
+          >
+            <Phone className="h-[18px] w-[18px]" />
+          </a>
+          <Link
+            to="/contact"
+            className={`${primaryCta} hidden lg:inline-flex px-5 py-2.5 text-[13px]`}
+          >
+            Book a Strategy Call
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+          {/* mobile actions — qualify CTA beside the hamburger */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
+              Do I Qualify?
+            </Link>
+            <MobileMenu />
+          </div>
+        </div>
       </div>
     </header>
   );
@@ -97,20 +85,21 @@ export function SiteFooter() {
                 Infrastructure
               </h4>
               <ul className="mt-4 space-y-2">
-                <li><Link to="/services/ai-receptionists" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">AI Receptionists</Link></li>
-                <li><Link to="/services/content-creation" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Content Creation</Link></li>
-                <li><Link to="/services/automation-systems" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Automation Systems</Link></li>
-                <li><Link to="/services/paid-advertising" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Paid Advertising</Link></li>
+                <li><Link to="/services/ai-receptionists" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">AI Receptionist</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">CRM &amp; Automation</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Lead Generation</Link></li>
+                <li><Link to="/demo" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Live Demo</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/35">
-                Packages
+                Explore
               </h4>
               <ul className="mt-4 space-y-2">
-                <li><Link to="/packages/starter" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Starter</Link></li>
-                <li><Link to="/packages/growth" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Growth</Link></li>
-                <li><Link to="/packages/scale" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Scale</Link></li>
+                <li><Link to="/" hash="system" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">The System</Link></li>
+                <li><Link to="/" hash="about" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">About</Link></li>
+                <li><Link to="/" hash="packages" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">Packages</Link></li>
+                <li><Link to="/" hash="faq" className="text-[13px] text-black/45 transition-colors duration-300 hover:text-black/80">FAQ</Link></li>
               </ul>
             </div>
             <div>
@@ -128,8 +117,8 @@ export function SiteFooter() {
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/[0.06] pt-6 text-[12px] text-black/25 md:flex-row md:items-center">
           <div>© 2025 Montarro. All rights reserved.</div>
           <div className="flex gap-6">
-            <a href="#" className="transition-colors duration-300 hover:text-black/60">Privacy</a>
-            <a href="#" className="transition-colors duration-300 hover:text-black/60">Terms</a>
+            <Link to="/privacy" className="transition-colors duration-300 hover:text-black/60">Privacy</Link>
+            <Link to="/terms" className="transition-colors duration-300 hover:text-black/60">Terms</Link>
           </div>
         </div>
       </div>

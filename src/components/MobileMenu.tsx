@@ -7,32 +7,21 @@ import { primaryCta } from "@/lib/cta";
 
 type SubItem = { label: string; to: string; hash?: string };
 type NavItem =
-  | { kind: "link"; label: string; to: string; hash?: string; live?: boolean }
+  | { kind: "link"; label: string; to: string; hash?: string; live?: boolean; desc?: string }
   | { kind: "group"; label: string; items: SubItem[] };
 
 /**
- * Global mobile navigation. Direct links route straight there; the Services
- * group expands. Page items route directly; homepage-section items use a hash
- * so the root ScrollToTop navigates home (if needed) and smooth-scrolls,
- * resetting scroll cleanly.
+ * Global mobile navigation. Each row shows a label and a short description.
+ * Page items route directly; homepage-section items use a hash so the root
+ * ScrollToTop navigates home (if needed) and smooth-scrolls.
  */
 const NAV: NavItem[] = [
-  { kind: "link", label: "Homepage", to: "/", hash: "top" },
-  {
-    kind: "group",
-    label: "Services",
-    items: [
-      { label: "AI Receptionists", to: "/services/ai-receptionists" },
-      { label: "CRM Automation", to: "/services/automation-systems" },
-      { label: "Paid Acquisition", to: "/services/paid-advertising" },
-      { label: "Content Infrastructure", to: "/services/content-creation" },
-      { label: "Web Systems", to: "/", hash: "services" },
-    ],
-  },
-  { kind: "link", label: "AI Receptionist", to: "/services/ai-receptionists", live: true },
-  { kind: "link", label: "Live Demo", to: "/demo" },
-  { kind: "link", label: "Pricing", to: "/", hash: "pricing" },
-  { kind: "link", label: "Book a Free Consultation", to: "/contact" },
+  { kind: "link", label: "The System", to: "/", hash: "system", desc: "See the Infrastructure" },
+  { kind: "link", label: "AI Receptionist", to: "/", hash: "experience", live: true, desc: "Hear It in Action" },
+  { kind: "link", label: "Live Demo", to: "/demo", desc: "See It in Action" },
+  { kind: "link", label: "About", to: "/", hash: "about", desc: "Who We Are" },
+  { kind: "link", label: "FAQ", to: "/", hash: "faq", desc: "Common Questions" },
+  { kind: "link", label: "Contact", to: "/", hash: "cta", desc: "Let's Talk" },
 ];
 
 export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
@@ -62,20 +51,20 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
-        className={`inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur transition-colors duration-300 ${
+        className={`-mr-1 inline-flex items-center justify-center p-1 transition-colors duration-300 ${
           scrolled
-            ? "border-white/15 bg-white/[0.06] text-white/90 hover:border-white/35"
-            : "border-black/[0.08] bg-card/50 text-foreground hover:border-foreground/30"
+            ? "text-white/90 hover:text-white"
+            : "text-foreground hover:text-foreground/60"
         }`}
       >
-        <Menu className="h-[18px] w-[18px]" />
+        <Menu className="h-7 w-7" strokeWidth={2} />
       </button>
 
       {mounted &&
@@ -138,18 +127,23 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                             to={item.to}
                             hash={item.hash}
                             onClick={() => setOpen(false)}
-                            className="group/row flex items-center justify-between border-b border-white/[0.07] px-1 py-4 text-[15px] font-medium text-white/85 transition-colors duration-200 hover:text-white active:text-white"
+                            className="group/row flex items-center justify-between border-b border-white/[0.05] px-1 py-4 transition-colors duration-200"
                           >
-                            <span className="flex items-center gap-2">
-                              {item.label}
-                              {item.live && (
-                                <span className="relative flex h-1.5 w-1.5">
-                                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                </span>
+                            <span className="flex flex-col">
+                              <span className="flex items-center gap-2 text-[16px] font-semibold text-white/90 transition-colors duration-200 group-hover/row:text-white">
+                                {item.label}
+                                {item.live && (
+                                  <span className="relative flex h-1.5 w-1.5">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
+                                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                  </span>
+                                )}
+                              </span>
+                              {item.desc && (
+                                <span className="mt-1 text-[11px] font-normal text-white/35">{item.desc}</span>
                               )}
                             </span>
-                            <ArrowUpRight className="h-4 w-4 text-white/25 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />
+                            <ArrowUpRight className="h-4 w-4 text-white/20 transition-all duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-emerald-400" />
                           </Link>
                         );
                       }
@@ -200,13 +194,13 @@ export function MobileMenu({ scrolled = false }: { scrolled?: boolean }) {
                     })}
                   </nav>
 
-                  <div className="px-6 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+                  <div className="px-6 pt-9 pb-[max(1.75rem,env(safe-area-inset-bottom))]">
                     <Link
                       to="/contact"
                       onClick={() => setOpen(false)}
                       className={`${primaryCta} flex w-full px-6 py-3.5 text-sm`}
                     >
-                      Book a Free Consultation
+                      Book a Strategy Call
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                   </div>

@@ -17,14 +17,7 @@ export function SiteNav() {
             return (
               <>
                 <Link to="/" hash="system" className={cls}>The System</Link>
-                <Link to="/" hash="experience" className={`group inline-flex items-center gap-1.5 ${cls}`}>
-                  AI Receptionist
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </span>
-                </Link>
-                <Link to="/demo" className={cls}>Live Demo</Link>
+                <Link to="/demo" className={cls}>Live AI Demo</Link>
                 <Link to="/" hash="about" className={cls}>About</Link>
                 <Link to="/" hash="faq" className={cls}>FAQ</Link>
                 <Link to="/" hash="cta" className={cls}>Contact</Link>

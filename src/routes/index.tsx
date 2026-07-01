@@ -103,14 +103,7 @@ function Nav() {
             return (
               <>
                 <a href="#system" className={cls}>The System</a>
-                <a href="#experience" className={`group inline-flex items-center gap-1.5 ${cls}`}>
-                  AI Receptionist
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/60 animate-pulse-dot" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </span>
-                </a>
-                <Link to="/demo" className={cls}>Live Demo</Link>
+                <Link to="/demo" className={cls}>Live AI Demo</Link>
                 <a href="#about" className={cls}>About</a>
                 <a href="#faq" className={cls}>FAQ</a>
                 <a href="#cta" className={cls}>Contact</a>

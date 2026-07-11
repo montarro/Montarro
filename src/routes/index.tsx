@@ -2019,57 +2019,140 @@ function WhyMontarro() {
 /* ------------------------------- ABOUT ------------------------------- */
 
 function About() {
-  const points: { lead: string; body: string }[] = [
+  const dontSell = ["AI.", "Websites.", "Ads."];
+  const gaps: { icon: typeof PhoneMissed; label: string; copy: string }[] = [
     {
-      lead: "Montarro builds AI revenue infrastructure — not one-off agency services.",
-      body: "We don't run a campaign and hand you a report. We build the connected system your growth runs on, then operate it with you.",
+      icon: PhoneMissed,
+      label: "Missed calls",
+      copy: "Every call that goes to voicemail is a customer choosing whoever answers next.",
     },
     {
-      lead: "The AI Receptionist is the entry point.",
-      body: "It answers every call, qualifies the lead and books the appointment — but it's the front door to something much bigger than a single tool.",
+      icon: RefreshCw,
+      label: "Inconsistent follow-up",
+      copy: "A lead that's warm today is cold by the time someone gets around to it.",
     },
     {
-      lead: "The goal is one connected system.",
-      body: "Capture, qualify, follow up and book more leads automatically — every part talking to the next, so no opportunity falls through the cracks.",
-    },
-    {
-      lead: "And we partner for the long term.",
-      body: "We implement the infrastructure, manage it and keep improving it as you grow — not deliver a project and disappear.",
+      icon: Workflow,
+      label: "Disconnected systems",
+      copy: "Ads, website, calendar, CRM — if they don't talk to each other, someone has to. Manually. Forever.",
     },
   ];
-  return (
-    <section id="about" className="border-t border-black/[0.06] bg-white py-24 lg:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
-          {/* LEFT — heading */}
-          <div className="lg:col-span-5">
-            <Reveal>
-              <div className="mb-6 flex items-center gap-3">
-                <span className="h-px w-10 bg-emerald-500/70" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-600">
-                  About Montarro
-                </span>
-              </div>
-              <h2 className="font-headline text-[clamp(2.25rem,4vw,3.25rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-[#0a0b0b]">
-                Infrastructure, not agency services.
-              </h2>
-            </Reveal>
-          </div>
 
-          {/* RIGHT — narrative */}
-          <div className="lg:col-span-7">
-            <div className="space-y-7">
-              {points.map((p) => (
-                <Reveal key={p.lead}>
-                  <p className="max-w-2xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
-                    <span className="font-semibold text-foreground">{p.lead}</span>{" "}
-                    {p.body}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
+  return (
+    <section
+      id="about"
+      className="relative overflow-hidden py-28 lg:py-40"
+      style={{
+        background:
+          "radial-gradient(ellipse 70% 45% at 50% 0%, rgba(16,185,129,0.07), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
+      }}
+    >
+      {/* faint structural grid, consistent with the site's other dark passages */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(ellipse, rgba(16,185,129,0.10), transparent 70%)" }}
+        animate={{ opacity: [0.5, 0.85, 0.5] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* headline */}
+      <div className="relative mx-auto max-w-3xl px-6 text-center">
+        <Reveal>
+          <div className="mb-7 flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-emerald-500/60" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-400">
+              The Philosophy
+            </span>
+            <span className="h-px w-10 bg-emerald-500/60" />
           </div>
+          <h2 className="font-headline text-[clamp(2.75rem,6vw,5rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-white">
+            Built differently.
+          </h2>
+        </Reveal>
+
+        {/* what we don't sell / what we build */}
+        <div className="mx-auto mt-14">
+          {dontSell.map((t, i) => (
+            <Reveal key={t} delay={0.05 + i * 0.09}>
+              <p className="text-[19px] font-medium leading-tight text-white/30 line-through decoration-white/15 decoration-1 md:text-[22px]">
+                We don&rsquo;t sell {t}
+              </p>
+            </Reveal>
+          ))}
+          <motion.p
+            initial={{ opacity: 0, y: 14, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 font-headline text-[28px] font-extrabold uppercase tracking-[-0.01em] text-emerald-400 md:text-[34px]"
+          >
+            We build revenue systems.
+          </motion.p>
         </div>
+      </div>
+
+      {/* the problem */}
+      <div className="relative mx-auto mt-20 max-w-2xl px-6 lg:mt-28">
+        <Reveal>
+          <p className="text-center text-[17px] font-medium leading-relaxed text-white/65 md:text-[19px]">
+            Most businesses don&rsquo;t lose revenue because they&rsquo;re missing
+            another subscription. They lose it in the gaps — the call that
+            rings out, the enquiry that sits overnight, the follow-up that
+            quietly never happens.
+          </p>
+        </Reveal>
+      </div>
+
+      {/* where it breaks */}
+      <div className="relative mx-auto mt-14 max-w-5xl px-6 lg:mt-16">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.06] sm:grid-cols-3">
+          {gaps.map((g, i) => (
+            <Reveal key={g.label} delay={i * 0.1}>
+              <div className="h-full bg-[#111315] p-7">
+                <g.icon className="h-4 w-4 text-emerald-400" strokeWidth={2.2} />
+                <h3 className="mt-4 text-[14px] font-semibold text-white">{g.label}</h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-white/45">{g.copy}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      {/* the resolution */}
+      <div className="relative mx-auto mt-14 max-w-2xl px-6 lg:mt-16">
+        <Reveal>
+          <p className="text-center text-[17px] font-medium leading-relaxed text-white/65 md:text-[19px]">
+            Montarro exists to close those gaps. We design the complete
+            system a business runs its growth on — capturing, qualifying,
+            following up and booking automatically, so nothing depends on
+            someone remembering. AI answers the phone. The infrastructure is
+            everything that happens next.
+          </p>
+        </Reveal>
+      </div>
+
+      {/* closing statement */}
+      <div className="relative mx-auto mt-20 max-w-2xl px-6 text-center lg:mt-28">
+        <Reveal y={16}>
+          <p className="font-headline text-[26px] font-extrabold uppercase leading-[1.15] tracking-[-0.01em] text-white md:text-[34px]">
+            We&rsquo;re not here to sell you technology.
+            <br />
+            <span className="text-emerald-400">
+              We&rsquo;re here to build the system your business should have
+              had from the start.
+            </span>
+          </p>
+        </Reveal>
       </div>
     </section>
   );

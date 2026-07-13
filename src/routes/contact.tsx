@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
@@ -73,7 +73,21 @@ function splitName(full: string): { first: string; last: string } {
   return { first: parts[0], last: parts.slice(1).join(" ") };
 }
 
-function ContactPage() {
+// Package interest, carried in via ?package=<slug> on the incoming link
+// (e.g. from a Packages-section CTA) and stored with the form submission.
+const PACKAGE_LABELS: Record<string, string> = {
+  "ai-receptionist": "AI Receptionist",
+  "crm-automation": "CRM & Automation",
+  website: "Website",
+  "paid-ads": "Paid Advertising",
+  "full-infrastructure": "Full Revenue Infrastructure",
+  "general-enquiry": "General Enquiry",
+};
+
+// Exported so /strategy-call (see src/routes/strategy-call.tsx) can render the
+// exact same page — package-CTA destinations point there while reusing this
+// single, already-approved form implementation rather than a duplicate copy.
+export function ContactPage() {
   return (
     <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
       <SiteNav />
@@ -259,6 +273,17 @@ function ContactFormSection() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("general-enquiry");
+  const [hasPackageParam, setHasPackageParam] = useState(false);
+
+  // Read once on mount (client-only, avoids an SSR/CSR hydration mismatch —
+  // same pattern as ScrollToTop/MobileMenu elsewhere in this app). Re-runs on
+  // every mount, so it's preserved across refresh and re-navigation to the page.
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("package");
+    setHasPackageParam(!!raw);
+    setSelectedPackage(raw && PACKAGE_LABELS[raw] ? raw : "general-enquiry");
+  }, []);
 
   function update<K extends keyof FormState>(key: K, value: string) {
     setForm((p) => ({ ...p, [key]: value }));
@@ -301,6 +326,7 @@ function ContactFormSection() {
         social_platforms: form.platforms,
         goal: form.goals,
         goals_notes: form.notes,
+        selected_package: selectedPackage,
         source: "Montarro Website",
         form_type: "Strategy Call Page",
       };
@@ -346,6 +372,14 @@ function ContactFormSection() {
                 exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
                 transition={{ duration: 0.35 }}
               >
+                {hasPackageParam && (
+                  <div className="mb-6">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-500/[0.06] px-3.5 py-1.5 text-[12px] font-semibold text-emerald-700">
+                      Interested in: {PACKAGE_LABELS[selectedPackage]}
+                    </span>
+                  </div>
+                )}
+
                 {/* progress bar */}
                 <div className="mb-9">
                   <div className="mb-2.5">

@@ -2319,7 +2319,8 @@ function ExperienceInfra() {
                   Call the AI Receptionist
                 </a>
                 <Link
-                  to="/services/ai-receptionists"
+                  to="/strategy-call"
+                  search={{ package: "ai-receptionist" }}
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
                   Explore the AI Receptionist
@@ -2804,7 +2805,8 @@ const TIERS = [
     taglineLead: "Stop missing enquiries.",
     tagline: "For businesses that just want their phone answered, every time.",
     cta: "Book an AI Receptionist Call",
-    to: "/services/ai-receptionists",
+    to: "/strategy-call" as const,
+    search: { package: "ai-receptionist" },
     features: [
       "24/7 AI Receptionist",
       "Lead Qualification",
@@ -2897,6 +2899,7 @@ function Pricing() {
             <Reveal key={t.name} delay={i * 0.1}>
               <Link
                 to={t.to}
+                search={"search" in t ? t.search : undefined}
                 className={`group relative flex flex-col overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-500 ease-out will-change-transform hover:-translate-y-1.5 active:scale-[0.99] ${
                   t.featured
                     ? "border-emerald-600/40 bg-[#E9F7EE] p-7 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),0_36px_82px_-34px_rgba(16,185,129,0.45)] hover:border-emerald-600/55 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.85),0_52px_112px_-34px_rgba(16,185,129,0.6)]"

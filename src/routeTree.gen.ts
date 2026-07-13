@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StrategyCallRouteImport } from './routes/strategy-call'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -20,6 +21,11 @@ import { Route as ServicesAiReceptionistsRouteImport } from './routes/services.a
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StrategyCallRoute = StrategyCallRouteImport.update({
+  id: '/strategy-call',
+  path: '/strategy-call',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
+  '/strategy-call': typeof StrategyCallRoute
   '/terms': typeof TermsRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
+  '/strategy-call': typeof StrategyCallRoute
   '/terms': typeof TermsRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRoute
   '/privacy': typeof PrivacyRoute
+  '/strategy-call': typeof StrategyCallRoute
   '/terms': typeof TermsRoute
   '/services/ai-receptionists': typeof ServicesAiReceptionistsRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/demo'
     | '/privacy'
+    | '/strategy-call'
     | '/terms'
     | '/services/ai-receptionists'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/demo'
     | '/privacy'
+    | '/strategy-call'
     | '/terms'
     | '/services/ai-receptionists'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/demo'
     | '/privacy'
+    | '/strategy-call'
     | '/terms'
     | '/services/ai-receptionists'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRoute
   PrivacyRoute: typeof PrivacyRoute
+  StrategyCallRoute: typeof StrategyCallRoute
   TermsRoute: typeof TermsRoute
   ServicesAiReceptionistsRoute: typeof ServicesAiReceptionistsRoute
 }
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/strategy-call': {
+      id: '/strategy-call'
+      path: '/strategy-call'
+      fullPath: '/strategy-call'
+      preLoaderRoute: typeof StrategyCallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DemoRoute: DemoRoute,
   PrivacyRoute: PrivacyRoute,
+  StrategyCallRoute: StrategyCallRoute,
   TermsRoute: TermsRoute,
   ServicesAiReceptionistsRoute: ServicesAiReceptionistsRoute,
 }

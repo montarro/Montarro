@@ -213,6 +213,58 @@ function CrmFeedPanel() {
   );
 }
 
+function CrmPipelineTable() {
+  const rows: { name: string; service: string; status: string; time: string; tone: "emerald" | "neutral" | "amber" }[] = [
+    { name: "M. Hassan", service: "Roof repair", status: "Booked", time: "3m ago", tone: "emerald" },
+    { name: "S. Whitfield", service: "Inspection", status: "Qualified", time: "11m ago", tone: "neutral" },
+    { name: "D. Okafor", service: "Quote", status: "Follow-up", time: "24m ago", tone: "amber" },
+    { name: "L. Romano", service: "Emergency", status: "Booked", time: "38m ago", tone: "emerald" },
+    { name: "A. Petrov", service: "Maintenance", status: "Qualified", time: "52m ago", tone: "neutral" },
+  ];
+  const toneClass: Record<string, string> = {
+    emerald: "border-emerald-500/25 bg-emerald-500/[0.10] text-emerald-300",
+    neutral: "border-white/15 bg-white/[0.06] text-white/70",
+    amber: "border-amber-400/25 bg-amber-400/[0.10] text-amber-200",
+  };
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04]">
+      <div className="grid grid-cols-[1.4fr_1.2fr_1fr_auto] items-center gap-3 border-b border-white/[0.08] px-4 py-3 text-[10px] uppercase tracking-[0.16em] text-white/40 sm:px-6">
+        <span>Lead</span>
+        <span className="hidden sm:block">Service</span>
+        <span>Status</span>
+        <span className="text-right">Updated</span>
+      </div>
+      {rows.map((r, i) => (
+        <motion.div
+          key={r.name}
+          initial={{ opacity: 0, y: 6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ delay: 0.1 + i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-[1.4fr_1.2fr_1fr_auto] items-center gap-3 border-b border-white/[0.05] px-4 py-3.5 transition-colors duration-300 last:border-0 hover:bg-white/[0.025] sm:px-6"
+        >
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-[10px] font-semibold text-white/70">
+              {r.name.split(" ").map((p) => p[0]).join("")}
+            </span>
+            <span className="truncate text-[13px] text-white/85">{r.name}</span>
+          </div>
+          <span className="hidden truncate text-[13px] text-white/55 sm:block">{r.service}</span>
+          <span>
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-medium ${toneClass[r.tone]}`}>
+              {r.tone !== "neutral" && (
+                <span className={`h-1 w-1 rounded-full ${r.tone === "emerald" ? "bg-emerald-400" : "bg-amber-300"}`} />
+              )}
+              {r.status}
+            </span>
+          </span>
+          <span className="text-right text-[11px] tabular-nums text-white/35">{r.time}</span>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function TestCallCard() {
   return (
     <div className="relative mx-auto max-w-2xl overflow-hidden rounded-[26px] border border-emerald-500/20 bg-white/[0.05] p-9 text-center sm:p-11">
@@ -335,6 +387,26 @@ function DemoStory() {
             <br />
             <span className="text-emerald-400">before the caller&rsquo;s even hung up.</span>
           </p>
+        </Reveal>
+      </div>
+
+      {/* ---- the pipeline: every lead, tracked ---- */}
+      <div className="relative mx-auto mt-24 max-w-2xl px-6 text-center lg:mt-32">
+        <Reveal>
+          <Kicker>The Pipeline</Kicker>
+          <h2 className="font-headline text-[clamp(2.25rem,5vw,4rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em] text-white">
+            Every lead, in your CRM.
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-[17px] font-medium leading-relaxed text-white/65 md:text-[19px]">
+            Calls become qualified, structured records — synced and moving
+            through your pipeline in real time.
+          </p>
+        </Reveal>
+      </div>
+
+      <div className="relative mx-auto mt-14 max-w-4xl px-6 lg:mt-16">
+        <Reveal delay={0.1}>
+          <CrmPipelineTable />
         </Reveal>
       </div>
 

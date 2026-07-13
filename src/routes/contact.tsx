@@ -77,10 +77,8 @@ function splitName(full: string): { first: string; last: string } {
 // (e.g. from a Packages-section CTA) and stored with the form submission.
 const PACKAGE_LABELS: Record<string, string> = {
   "ai-receptionist": "AI Receptionist",
-  "crm-automation": "CRM & Automation",
-  website: "Website",
-  "paid-ads": "Paid Advertising",
-  "full-infrastructure": "Full Revenue Infrastructure",
+  "revenue-infrastructure": "Revenue Infrastructure",
+  enterprise: "Enterprise",
   "general-enquiry": "General Enquiry",
 };
 

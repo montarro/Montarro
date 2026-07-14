@@ -44,15 +44,21 @@ const QUESTIONS: { key: keyof FormState; q: string; options: string[]; multiple?
     options: ["Under $30k", "$30k to $60k", "$60k to $150k", "$150k+"],
   },
   {
-    key: "headcount",
-    q: "How many people work in the business, including you?",
-    options: ["Just me", "2 to 4", "5 to 10", "10+"],
+    key: "enquiryVolume",
+    q: "How many new enquiries do you receive each month?",
+    options: ["Under 20", "20 to 50", "50 to 100", "100+"],
   },
   {
-    key: "platforms",
-    q: "What social platforms are you currently using?",
-    options: ["Facebook", "Instagram", "TikTok", "Google", "LinkedIn", "Not active yet"],
-    multiple: true,
+    key: "blockers",
+    q: "What's currently holding your business back?",
+    options: [
+      "Not enough qualified enquiries",
+      "Too many missed calls",
+      "Leads aren't converting into customers",
+      "Too much manual admin",
+      "Our systems don't work together",
+      "Not sure yet",
+    ],
   },
   {
     key: "goals",
@@ -242,8 +248,8 @@ function ResultsCard() {
 
 type FormState = {
   revenue: string;
-  headcount: string;
-  platforms: string;
+  enquiryVolume: string;
+  blockers: string;
   goals: string;
   fullName: string;
   businessName: string;
@@ -258,8 +264,8 @@ const TOTAL_STEPS = 5;
 function ContactFormSection() {
   const [form, setForm] = useState<FormState>({
     revenue: "",
-    headcount: "",
-    platforms: "",
+    enquiryVolume: "",
+    blockers: "",
     goals: "",
     fullName: "",
     businessName: "",
@@ -320,10 +326,10 @@ function ContactFormSection() {
         phone: form.phone,
         company_name: form.businessName,
         budget_monthly_revenue: form.revenue,
-        team_size: form.headcount,
-        social_platforms: form.platforms,
+        monthly_enquiries: form.enquiryVolume,
+        business_blockers: form.blockers,
         goal: form.goals,
-        goals_notes: form.notes,
+        additional_notes: form.notes,
         selected_package: selectedPackage,
         source: "Montarro Website",
         form_type: "Strategy Call Page",
@@ -422,11 +428,11 @@ function ContactFormSection() {
                     <textarea
                       id="notes"
                       name="notes"
-                      aria-label="Tell us anything else about your business"
+                      aria-label="Anything else we should know before the call?"
                       value={form.notes}
                       onChange={(e) => update("notes", e.target.value)}
                       rows={4}
-                      placeholder="Tell us anything else about your business…"
+                      placeholder="Your current systems, specific goals, challenges or anything you'd like us to prepare for."
                       className="mt-4 w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
                     />
                   </div>

@@ -580,26 +580,6 @@ function HeroDashboard() {
   );
 }
 
-/** The CTA section's dark counterweight — same card/timeline, "what to expect" rows. */
-function NextStepsCard() {
-  const steps: TimelineRow[] = [
-    { icon: ClipboardList, label: "Form submitted", meta: "We receive your details" },
-    { icon: BarChart3, label: "Business reviewed", meta: "We map where revenue is leaking" },
-    { icon: CalendarCheck, label: "Strategy call booked", meta: "At a time that suits you" },
-    { icon: Workflow, label: "System designed", meta: "Tailored to how you actually operate" },
-  ];
-  return (
-    <DarkGlowCard>
-      <div className="border-b border-white/[0.07] px-5 py-4 sm:px-6">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
-          What Happens Next
-        </span>
-      </div>
-      <TimelineRows rows={steps} delayStart={0.1} />
-    </DarkGlowCard>
-  );
-}
-
 /* ------------------------------- HERO ------------------------------- */
 
 function Hero() {
@@ -3268,79 +3248,67 @@ function CTA() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          {/* LEFT — eyebrow, headline, subhead, form, Google rating badge */}
-          <div className="min-w-0 text-left lg:col-span-7">
-            <Reveal delay={0.05}>
-              <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-emerald-800/70">
-                Book your strategy call
-              </p>
-            </Reveal>
+      <div className="relative mx-auto max-w-6xl px-6">
+        <div className="text-center">
+          <Reveal delay={0.05}>
+            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-emerald-800/70">
+              Book your strategy call
+            </p>
+          </Reveal>
 
-            <Reveal delay={0.15}>
-              <h2 className="font-headline mt-5 text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
-                <span className="block sm:whitespace-nowrap">Put the whole</span>
-                <span className="block sm:whitespace-nowrap">
-                  System to <span className="text-emerald-500">work.</span>
-                </span>
-              </h2>
-            </Reveal>
+          <Reveal delay={0.15}>
+            <h2 className="font-headline mt-5 text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
+              <span className="block sm:whitespace-nowrap">Put the whole</span>
+              <span className="block sm:whitespace-nowrap">
+                System to <span className="text-emerald-500">work.</span>
+              </span>
+            </h2>
+          </Reveal>
 
-            <Reveal delay={0.24}>
-              <p className="mt-7 max-w-xl text-pretty text-base md:text-lg font-medium leading-relaxed text-foreground">
-                We'll walk you through your business, identify what's costing you
-                revenue, and map out the revenue infrastructure built to help you grow.
-              </p>
-            </Reveal>
-
-            {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
-            <Reveal delay={0.32} className="mt-9">
-              <QuickEnquiryForm />
-            </Reveal>
-
-            {/* conversion copy — beneath the form */}
-            <Reveal delay={0.4}>
-              <div className="mt-7 max-w-xl">
-                <p className="text-[13.5px] font-medium leading-relaxed text-foreground">
-                  No pressure. No generic sales pitch. Just a tailored strategy showing
-                  exactly how Montarro would be implemented in your business.
-                </p>
-                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-                  Not ready yet?{" "}
-                  <a href="#system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                    Explore the System →
-                  </a>{" "}
-                  <span className="px-1 text-foreground/30">·</span>{" "}
-                  Or call{" "}
-                  <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                    0450 731 109
-                  </a>{" "}
-                  to speak with our team.
-                </p>
-              </div>
-            </Reveal>
-
-            {/* Google review card + location — same component as the hero */}
-            <Reveal delay={0.48}>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <div className="inline-flex items-center gap-3 rounded-2xl border border-black/[0.06] bg-white px-5 py-3.5 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.32)]">
-                  <GoogleG className="h-5 w-5" />
-                  <span className="text-[16px] font-semibold tabular-nums text-foreground">4.8</span>
-                  <Stars />
-                </div>
-                <span className="text-[14px] font-medium text-foreground">Melbourne, VIC</span>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* RIGHT — dark "What Happens Next" card, the hero's dark card mirrored */}
-          <div className="min-w-0 lg:col-span-5">
-            <Reveal delay={0.2}>
-              <NextStepsCard />
-            </Reveal>
-          </div>
+          <Reveal delay={0.24}>
+            <p className="mx-auto mt-7 max-w-2xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
+              We'll walk you through your business, identify what's costing you
+              revenue, and map out the revenue infrastructure built to help you grow.
+            </p>
+          </Reveal>
         </div>
+
+        {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
+        <QuickEnquiryForm className="mt-12" />
+
+        {/* conversion copy — beneath the form */}
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-7 max-w-xl text-center">
+            <p className="text-[13.5px] font-medium leading-relaxed text-foreground">
+              No pressure. No generic sales pitch. Just a tailored strategy showing
+              exactly how Montarro would be implemented in your business.
+            </p>
+            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+              Not ready yet?{" "}
+              <a href="#system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                Explore the System →
+              </a>{" "}
+              <span className="px-1 text-foreground/30">·</span>{" "}
+              Or call{" "}
+              <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                0450 731 109
+              </a>{" "}
+              to speak with our team.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Google review card + location — same component as the hero */}
+        <Reveal delay={0.16}>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="inline-flex items-center gap-3 rounded-2xl border border-black/[0.06] bg-white px-5 py-3.5 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.32)]">
+              <GoogleG className="h-5 w-5" />
+              <span className="text-[16px] font-semibold tabular-nums text-foreground">4.8</span>
+              <Stars />
+            </div>
+            <span className="text-[14px] font-medium text-foreground">Melbourne, VIC</span>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

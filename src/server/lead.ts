@@ -13,6 +13,7 @@ import {
   GOAL_OPTIONS,
   normalizePackageValue,
 } from "@/lib/leadFormOptions";
+import { normalizeAuPhone } from "@/lib/phone";
 
 const GHL_LOCATION_ID = "axHpl4eNmUrDfQxnhf4v";
 const GHL_UPSERT_URL = "https://services.leadconnectorhq.com/contacts/upsert";
@@ -28,6 +29,11 @@ const GHL_FIELD = {
 } as const;
 
 type LeadPayload = {
+  // "quick" = the short homepage enquiry form (contact details + free text
+  // only); anything else = the full /contact strategy-call form with the
+  // four qualification enums. The server decides what's required from this,
+  // never from which fields happen to be present.
+  formType?: unknown;
   fullName?: unknown;
   businessName?: unknown;
   email?: unknown;
@@ -36,6 +42,7 @@ type LeadPayload = {
   enquiries?: unknown;
   blockers?: unknown;
   goals?: unknown;
+  industry?: unknown; // quick form only
   notes?: unknown;
   selectedPackage?: unknown;
   hpRefCode?: unknown; // honeypot
@@ -85,32 +92,21 @@ function splitFullName(full: string): { firstName: string; lastName: string } {
   return { firstName: trimmed.slice(0, spaceIndex), lastName: trimmed.slice(spaceIndex + 1) };
 }
 
-/** Normalises AU numbers to E.164 (0412 345 678 -> +61412345678). Returns null if it can't. */
-function normalizeAuPhone(raw: string): string | null {
-  const digits = raw.trim();
-  const hasPlus = digits.startsWith("+");
-  const stripped = digits.replace(/[^\d]/g, "");
-  if (hasPlus && stripped.startsWith("61") && stripped.length === 11) {
-    return `+${stripped}`;
-  }
-  if (stripped.startsWith("61") && stripped.length === 11) {
-    return `+${stripped}`;
-  }
-  if (stripped.startsWith("0") && stripped.length === 10) {
-    return `+61${stripped.slice(1)}`;
-  }
-  if (stripped.length === 9) {
-    return `+61${stripped}`;
-  }
-  return null;
-}
-
 function isNonEmptyString(v: unknown): v is string {
   return typeof v === "string" && v.trim().length > 0;
 }
 
+/**
+ * Per-field validation errors, keyed by the client form's field names so the
+ * UI can render them inline on the exact field — never as a generic
+ * "something went wrong" (that message is reserved for genuine
+ * server/upstream failures).
+ */
+export type FieldErrors = Record<string, string>;
+
 type ValidationResult =
   | { ok: true; value: {
+      isQuick: boolean;
       fullName: string;
       businessName: string;
       email: string;
@@ -119,58 +115,62 @@ type ValidationResult =
       enquiries: string;
       blockers: string[];
       goals: string;
+      industry: string;
       notes: string;
       selectedPackage: ReturnType<typeof normalizePackageValue>;
     } }
-  | { ok: false; details: string[] };
+  | { ok: false; fields: FieldErrors };
 
-// Server never trusts the client: every enum value is re-checked against the
-// same shared constants the UI is built from, independent of what the UI
-// actually sent.
-function validate(body: LeadPayload): ValidationResult {
-  const details: string[] = [];
+// Server never trusts the client: required fields, formats and every enum
+// value are re-checked here against the same shared constants/normaliser the
+// UI is built from, independent of what the UI actually sent.
+export function validate(body: LeadPayload): ValidationResult {
+  const fields: FieldErrors = {};
+  const isQuick = body.formType === "quick";
 
   const fullName = isNonEmptyString(body.fullName) ? body.fullName.trim() : "";
-  if (!fullName) details.push("fullName is required");
+  if (!fullName) fields.fullName = "Enter your full name.";
+  else if (fullName.length < 2) fields.fullName = "Name must be at least 2 characters.";
 
+  // Required on the strategy-call form; optional on the quick homepage form.
   const businessName = isNonEmptyString(body.businessName) ? body.businessName.trim() : "";
-  if (!businessName) details.push("businessName is required");
+  if (!isQuick && !businessName) fields.businessName = "Enter your business name.";
 
   const email = isNonEmptyString(body.email) ? body.email.trim() : "";
-  if (!email) details.push("email is required");
-  else if (!EMAIL_RE.test(email)) details.push("email is invalid");
+  if (!email) fields.email = "Enter your email.";
+  else if (!EMAIL_RE.test(email)) fields.email = "Enter a valid email address.";
 
   const phoneRaw = isNonEmptyString(body.phone) ? body.phone.trim() : "";
   const phone = phoneRaw ? normalizeAuPhone(phoneRaw) : null;
-  if (!phoneRaw) details.push("phone is required");
-  else if (!phone) details.push("phone could not be normalised to E.164");
+  if (!phoneRaw) fields.phone = "Enter your phone number.";
+  else if (!phone) fields.phone = "Enter a valid Australian phone number.";
 
+  // Qualification enums exist only on the strategy-call form.
   const revenue = isNonEmptyString(body.revenue) ? body.revenue : "";
-  if (!(REVENUE_OPTIONS as readonly string[]).includes(revenue)) details.push("revenue is not a recognised option");
-
   const enquiries = isNonEmptyString(body.enquiries) ? body.enquiries : "";
-  if (!(ENQUIRY_OPTIONS as readonly string[]).includes(enquiries)) details.push("enquiries is not a recognised option");
-
   const blockersRaw = Array.isArray(body.blockers) ? body.blockers : [];
   const blockers = blockersRaw.filter((b): b is string => typeof b === "string");
-  if (blockers.length === 0) details.push("blockers requires at least one selection");
-  else if (blockers.some((b) => !(BLOCKER_OPTIONS as readonly string[]).includes(b))) {
-    details.push("blockers contains an unrecognised option");
+  const goals = isNonEmptyString(body.goals) ? body.goals : "";
+  if (!isQuick) {
+    if (!(REVENUE_OPTIONS as readonly string[]).includes(revenue)) fields.revenue = "Please choose an option.";
+    if (!(ENQUIRY_OPTIONS as readonly string[]).includes(enquiries)) fields.enquiries = "Please choose an option.";
+    if (blockers.length === 0 || blockers.some((b) => !(BLOCKER_OPTIONS as readonly string[]).includes(b))) {
+      fields.blockers = "Please choose an option.";
+    }
+    if (!(GOAL_OPTIONS as readonly string[]).includes(goals)) fields.goals = "Please choose an option.";
   }
 
-  const goals = isNonEmptyString(body.goals) ? body.goals : "";
-  if (!(GOAL_OPTIONS as readonly string[]).includes(goals)) details.push("goals is not a recognised option");
-
+  const industry = typeof body.industry === "string" ? body.industry.trim() : "";
   const notes = typeof body.notes === "string" ? body.notes.trim() : "";
 
   // selected_package explicitly defaults rather than rejects, per spec.
   const selectedPackage = normalizePackageValue(body.selectedPackage);
 
-  if (details.length > 0) return { ok: false, details };
+  if (Object.keys(fields).length > 0) return { ok: false, fields };
 
   return {
     ok: true,
-    value: { fullName, businessName, email, phone: phone!, revenue, enquiries, blockers, goals, notes, selectedPackage },
+    value: { isQuick, fullName, businessName, email, phone: phone!, revenue, enquiries, blockers, goals, industry, notes, selectedPackage },
   };
 }
 
@@ -205,11 +205,13 @@ export async function handleLeadRequest(request: Request): Promise<Response> {
 
   const result = validate(body);
   if (!result.ok) {
-    console.warn(`[lead-api] validation failed: ip=${ip}`, result.details, "raw payload:", JSON.stringify(body));
-    return jsonResponse(400, { ok: false, error: "validation", details: result.details });
+    // User-input problem, not a server failure: 400 with per-field messages
+    // the client renders inline. Raw payload still logged for recovery.
+    console.warn(`[lead-api] validation failed: ip=${ip}`, result.fields, "raw payload:", JSON.stringify(body));
+    return jsonResponse(400, { ok: false, error: "validation", fields: result.fields });
   }
 
-  const { fullName, businessName, email, phone, revenue, enquiries, blockers, goals, notes, selectedPackage } =
+  const { isQuick, fullName, businessName, email, phone, revenue, enquiries, blockers, goals, industry, notes, selectedPackage } =
     result.value;
   const { firstName, lastName } = splitFullName(fullName);
 
@@ -220,23 +222,32 @@ export async function handleLeadRequest(request: Request): Promise<Response> {
     return jsonResponse(502, { ok: false, error: "upstream_not_configured" });
   }
 
+  // The quick form has no dedicated GHL field for "industry", so it's folded
+  // into the notes custom field rather than dropped or mapped to a guessed id.
+  const quickNotes = [industry ? `Industry: ${industry}` : "", notes].filter(Boolean).join("\n\n");
+
   const ghlBody = {
     locationId: GHL_LOCATION_ID,
     firstName,
     lastName,
     email,
     phone,
-    companyName: businessName,
+    ...(businessName ? { companyName: businessName } : {}),
     source: "Montarro Website",
     tags: ["source: website", "lifecycle: lead"],
-    customFields: [
-      { id: GHL_FIELD.revenue, field_value: revenue },
-      { id: GHL_FIELD.enquiries, field_value: enquiries },
-      { id: GHL_FIELD.blockers, field_value: blockers },
-      { id: GHL_FIELD.goals, field_value: goals },
-      { id: GHL_FIELD.notes, field_value: notes },
-      { id: GHL_FIELD.selectedPackage, field_value: selectedPackage },
-    ],
+    customFields: isQuick
+      ? [
+          { id: GHL_FIELD.notes, field_value: quickNotes },
+          { id: GHL_FIELD.selectedPackage, field_value: selectedPackage },
+        ]
+      : [
+          { id: GHL_FIELD.revenue, field_value: revenue },
+          { id: GHL_FIELD.enquiries, field_value: enquiries },
+          { id: GHL_FIELD.blockers, field_value: blockers },
+          { id: GHL_FIELD.goals, field_value: goals },
+          { id: GHL_FIELD.notes, field_value: notes },
+          { id: GHL_FIELD.selectedPackage, field_value: selectedPackage },
+        ],
   };
 
   let ghlRes: Response;

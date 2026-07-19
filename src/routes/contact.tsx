@@ -20,6 +20,7 @@ import {
   normalizePackageValue,
   type PackageValue,
 } from "@/lib/leadFormOptions";
+import { normalizeAuPhone } from "@/lib/phone";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -111,7 +112,7 @@ function ContactHero() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-700/80">
-              Private Strategy Session
+              Free Business Audit
             </p>
             <h1 className="mt-6 font-headline text-[clamp(2.75rem,5.4vw,4.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0b0b]">
               Book a strategy call.
@@ -291,10 +292,12 @@ function ContactFormSection() {
       if (!form[qq.key]) e[qq.key] = "Please choose an option.";
     });
     if (!form.fullName.trim()) e.fullName = "Required.";
+    else if (form.fullName.trim().length < 2) e.fullName = "Name must be at least 2 characters.";
     if (!form.businessName.trim()) e.businessName = "Required.";
     if (!form.email.trim()) e.email = "Required.";
     else if (!EMAIL_RE.test(form.email.trim())) e.email = "Enter a valid email.";
     if (!form.phone.trim()) e.phone = "Required.";
+    else if (!normalizeAuPhone(form.phone)) e.phone = "Enter a valid Australian phone number.";
     return e;
   }
 
@@ -327,9 +330,26 @@ function ContactFormSection() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data: { ok?: boolean } = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) throw new Error(`Lead API responded ${res.status}`);
-      setSubmitted(true);
+      const data: { ok?: boolean; error?: string; fields?: Record<string, string> } = await res
+        .json()
+        .catch(() => ({}));
+      if (res.ok && data.ok) {
+        setSubmitted(true);
+        return;
+      }
+      if (res.status === 400 && data.error === "validation" && data.fields) {
+        // Server-side re-validation failed: show it inline on the field
+        // (server key "enquiries" maps to this form's "enquiryVolume"),
+        // keep the form filled, and skip the generic failure message.
+        const mapped: FormErrors = {};
+        for (const [key, msg] of Object.entries(data.fields)) {
+          const clientKey = key === "enquiries" ? "enquiryVolume" : key;
+          if (clientKey in form) mapped[clientKey as keyof FormState] = msg;
+        }
+        setErrors((p) => ({ ...p, ...mapped }));
+        return;
+      }
+      throw new Error(`Lead API responded ${res.status}`);
     } catch (err) {
       console.error("[Montarro] Strategy-call submission failed:", err);
       setSubmitError(true);

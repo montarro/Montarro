@@ -2,15 +2,20 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { primaryCta } from "@/lib/cta";
+import { normalizeAuPhone } from "@/lib/phone";
 
 /*
  * Quick homepage enquiry form (RockMelon-style). A short, single-screen capture
  * for visitors who have finished reading the homepage — NOT the multi-step
- * /contact application and with NO appointment booking. It posts straight into
- * the same GoHighLevel workflow as every other Montarro lead form.
+ * /contact application and with NO appointment booking. It posts to the same
+ * same-origin /api/lead route as the strategy-call form (formType "quick"),
+ * which upserts straight into GoHighLevel server-side.
+ *
+ * Required: Full Name, Email, Phone. Optional: Business Name, Industry, notes.
+ * Validation shows inline per field on blur and on submit (never mid-keystroke)
+ * — the global error message is reserved for genuine server/API failures.
  */
 
-const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function splitName(full: string): { first: string; last: string } {
@@ -30,6 +35,35 @@ type QuickFormState = {
 
 type QuickFormErrors = Partial<Record<keyof QuickFormState, string>>;
 
+// Only these three are required; validated per-field so blur and submit share
+// the exact same rules. Format errors never show mid-keystroke.
+function validateField(key: keyof QuickFormState, form: QuickFormState): string | undefined {
+  switch (key) {
+    case "fullName": {
+      const v = form.fullName.trim();
+      if (!v) return "Enter your full name.";
+      if (v.length < 2) return "Name must be at least 2 characters.";
+      return undefined;
+    }
+    case "email": {
+      const v = form.email.trim();
+      if (!v) return "Enter your email.";
+      if (!EMAIL_RE.test(v)) return "Enter a valid email address.";
+      return undefined;
+    }
+    case "phone": {
+      const v = form.phone.trim();
+      if (!v) return "Enter your phone number.";
+      if (!normalizeAuPhone(v)) return "Enter a valid Australian phone number.";
+      return undefined;
+    }
+    default:
+      return undefined;
+  }
+}
+
+const REQUIRED_KEYS = ["fullName", "email", "phone"] as const;
+
 export function QuickEnquiryForm({ className = "" }: { className?: string }) {
   const [form, setForm] = useState<QuickFormState>({
     fullName: "",
@@ -43,20 +77,26 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  // Honeypot — hidden from real visitors; a non-empty value tells the server
+  // to silently drop the submission as a bot.
+  const [hpField, setHpField] = useState("");
 
   function update<K extends keyof QuickFormState>(key: K, value: string) {
     setForm((p) => ({ ...p, [key]: value }));
+    // Clearing (never setting) an error while typing keeps feedback calm.
     if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }));
+  }
+
+  function handleBlur(key: keyof QuickFormState) {
+    setErrors((p) => ({ ...p, [key]: validateField(key, form) }));
   }
 
   function validate(): QuickFormErrors {
     const e: QuickFormErrors = {};
-    if (!form.fullName.trim()) e.fullName = "Required.";
-    if (!form.businessName.trim()) e.businessName = "Required.";
-    if (!form.phone.trim()) e.phone = "Required.";
-    if (!form.email.trim()) e.email = "Required.";
-    else if (!EMAIL_RE.test(form.email.trim())) e.email = "Enter a valid email.";
-    if (!form.industry.trim()) e.industry = "Required.";
+    for (const key of REQUIRED_KEYS) {
+      const msg = validateField(key, form);
+      if (msg) e[key] = msg;
+    }
     return e;
   }
 
@@ -69,31 +109,38 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
     setSubmitting(true);
     setSubmitError(false);
     try {
-      if (!LEAD_WEBHOOK_URL) {
-        throw new Error("VITE_MONTARRO_LEAD_WEBHOOK_URL is not configured");
-      }
-      const { first, last } = splitName(form.fullName);
       const payload = {
-        full_name: form.fullName,
-        first_name: first,
-        last_name: last,
+        formType: "quick",
+        fullName: form.fullName,
+        businessName: form.businessName,
         email: form.email,
-        phone: form.phone,
-        company_name: form.businessName,
+        phone: form.phone, // sent as typed — the server normalises to E.164
         industry: form.industry,
-        goals_notes: form.notes,
-        operational_bottleneck: form.notes,
-        source: "Montarro Website",
-        form_type: "Homepage Quick Enquiry",
+        notes: form.notes,
+        hpRefCode: hpField,
       };
-      const res = await fetch(LEAD_WEBHOOK_URL, {
+      const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error(`Lead webhook responded ${res.status}`);
-      setSubmitted(true);
+      const data: { ok?: boolean; error?: string; fields?: Record<string, string> } = await res
+        .json()
+        .catch(() => ({}));
+      if (res.ok && data.ok) {
+        setSubmitted(true);
+        return;
+      }
+      if (res.status === 400 && data.error === "validation" && data.fields) {
+        // Server-side re-validation caught something the client missed —
+        // surface it inline on the field, keep the form filled in, and do
+        // NOT show the generic failure message.
+        setErrors((p) => ({ ...p, ...(data.fields as QuickFormErrors) }));
+        return;
+      }
+      throw new Error(`Lead API responded ${res.status}`);
     } catch (err) {
+      // Genuine server/API failure only (network, 5xx, rate limit).
       console.error("[Montarro] Quick enquiry submission failed:", err);
       setSubmitError(true);
     } finally {
@@ -140,14 +187,31 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
               className="space-y-4 sm:space-y-5"
             >
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-                <Field id="fullName" label="Full Name" value={form.fullName} onChange={(v) => update("fullName", v)} error={errors.fullName} autoComplete="name" />
+                <Field id="fullName" label="Full Name" required value={form.fullName} onChange={(v) => update("fullName", v)} onBlur={() => handleBlur("fullName")} error={errors.fullName} autoComplete="name" />
                 <Field id="businessName" label="Business Name" value={form.businessName} onChange={(v) => update("businessName", v)} error={errors.businessName} autoComplete="organization" />
               </div>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-                <Field id="phone" label="Phone" type="tel" value={form.phone} onChange={(v) => update("phone", v)} error={errors.phone} autoComplete="tel" inputMode="tel" />
-                <Field id="email" label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} error={errors.email} autoComplete="email" inputMode="email" />
+                <Field id="phone" label="Phone" required type="tel" value={form.phone} onChange={(v) => update("phone", v)} onBlur={() => handleBlur("phone")} error={errors.phone} autoComplete="tel" inputMode="tel" />
+                <Field id="email" label="Email" required type="email" value={form.email} onChange={(v) => update("email", v)} onBlur={() => handleBlur("email")} error={errors.email} autoComplete="email" inputMode="email" />
               </div>
               <Field id="industry" label="Business / Industry" value={form.industry} onChange={(v) => update("industry", v)} error={errors.industry} />
+              {/* honeypot — visually unpaintable and unreachable by keyboard */}
+              <div
+                aria-hidden="true"
+                className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
+                style={{ clip: "rect(0,0,0,0)", clipPath: "inset(50%)", margin: "-1px" }}
+              >
+                <label htmlFor="quick-hp-ref">Reference code</label>
+                <input
+                  id="quick-hp-ref"
+                  name="quick-hp-ref"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={hpField}
+                  onChange={(e) => setHpField(e.target.value)}
+                />
+              </div>
               <textarea
                 id="notes"
                 name="notes"
@@ -196,7 +260,9 @@ function Field({
   label,
   value,
   onChange,
+  onBlur,
   error,
+  required = false,
   type = "text",
   autoComplete,
   inputMode,
@@ -205,7 +271,9 @@ function Field({
   label: string;
   value: string;
   onChange: (v: string) => void;
+  onBlur?: () => void;
   error?: string;
+  required?: boolean;
   type?: string;
   autoComplete?: string;
   inputMode?: "text" | "tel" | "email" | "numeric" | "search" | "url" | "none" | "decimal";
@@ -218,10 +286,12 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
         autoComplete={autoComplete}
         inputMode={inputMode}
-        placeholder={label}
+        placeholder={required ? `${label} *` : label}
         aria-label={label}
+        aria-required={required || undefined}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : undefined}
         className={`h-[58px] w-full rounded-2xl border bg-white px-5 text-[15px] text-foreground caret-emerald-500 selection:bg-emerald-500/20 placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:outline-none ${

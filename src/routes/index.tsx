@@ -464,16 +464,12 @@ function HeroStat({ to, format, label }: { to: number; format: (v: number) => st
   );
 }
 
-function HeroDashboard() {
-  const pill = "rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-emerald-300";
-  const events: { icon: typeof PhoneCall; label: string; meta: string; time: string; right: React.ReactNode }[] = [
-    { icon: PhoneCall, label: "Incoming Call", meta: "+61 04•• ••• 218", time: "0:00", right: <Waveform /> },
-    { icon: Bot, label: "AI Receptionist Answered", meta: "0.8s response time", time: "0:01", right: <span className={pill}>Live</span> },
-    { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing", time: "0:24", right: <span className={pill}>Qualified</span> },
-    { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM", time: "0:38", right: <span className={pill}>Confirmed</span> },
-    { icon: Database, label: "CRM Updated", meta: "GoHighLevel · synced", time: "0:39", right: <CheckCircle2 className="h-4 w-4 text-emerald-400" /> },
-    { icon: TrendingUp, label: "Revenue Captured", meta: "Job value added to pipeline", time: "0:40", right: <CountUp to={8650} format={(v) => `+$${Math.round(v).toLocaleString()}`} className="text-[12px] font-semibold tabular-nums text-emerald-400" /> },
-  ];
+/**
+ * Dark glass card + ambient halo — the hero's operating-system surface.
+ * Shared verbatim by HeroDashboard and the closing CTA's "What Happens Next"
+ * card so both dark panels are provably the same component, not a lookalike.
+ */
+function DarkGlowCard({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       {/* ambient halo — the dark UI against the bright hero is the centrepiece */}
@@ -484,70 +480,123 @@ function HeroDashboard() {
       />
       <div className="overflow-hidden rounded-[26px] border border-white/10 bg-gradient-to-b from-[#181818] to-[#141414] shadow-[0_40px_90px_-48px_rgba(0,0,0,0.6)]">
         <span aria-hidden className="block h-px w-full bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
-
-        {/* window chrome + integrated metrics */}
-        <div className="border-b border-white/[0.07] px-5 py-4 sm:px-6">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5" aria-hidden>
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/[0.12] px-2.5 py-1">
-              <LiveDot />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">Live</span>
-            </span>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-2.5">
-            <HeroStat to={178} format={(v) => `${Math.round(v)}`} label="Bookings This Month" />
-            <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}K`} label="EST. Monthly Revenue" />
-          </div>
-        </div>
-
-        {/* live activity feed — one interface, the whole story */}
-        <div className="relative px-5 py-5 sm:px-6">
-          <div aria-hidden className="absolute left-[33px] top-7 bottom-7 w-px bg-white/10 sm:left-[37px]" />
-          <motion.div
-            aria-hidden
-            className="absolute left-[33px] top-7 w-px origin-top bg-gradient-to-b from-emerald-500 via-emerald-500/60 to-transparent sm:left-[37px]"
-            style={{ bottom: 28 }}
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          />
-          <div className="space-y-2.5">
-            {events.map((e, i) => {
-              const Icon = e.icon;
-              return (
-                <motion.div
-                  key={e.label}
-                  className="relative flex items-center gap-3"
-                  initial={{ opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: 0.25 + i * 0.18, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-[#141414] shadow-[0_0_0_4px_rgba(20,20,20,1)]">
-                    <Icon className="h-4 w-4 text-emerald-400" />
-                  </span>
-                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2">
-                    <div className="min-w-0">
-                      <div className="truncate text-[13px] font-medium text-white">{e.label}</div>
-                      <div className="truncate text-[11px] text-white/45">{e.meta}</div>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                      {e.right}
-                      <span className="text-[10px] tabular-nums text-white/30">{e.time}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
+        {children}
       </div>
     </div>
+  );
+}
+
+type TimelineRow = {
+  icon: typeof PhoneCall;
+  label: string;
+  meta: string;
+  time?: string;
+  right?: React.ReactNode;
+};
+
+/** Vertical connector line (animated draw-in) + icon-badge rows — the hero's timeline. */
+function TimelineRows({ rows, delayStart = 0.25 }: { rows: TimelineRow[]; delayStart?: number }) {
+  return (
+    <div className="relative px-5 py-5 sm:px-6">
+      <div aria-hidden className="absolute left-[33px] top-7 bottom-7 w-px bg-white/10 sm:left-[37px]" />
+      <motion.div
+        aria-hidden
+        className="absolute left-[33px] top-7 w-px origin-top bg-gradient-to-b from-emerald-500 via-emerald-500/60 to-transparent sm:left-[37px]"
+        style={{ bottom: 28 }}
+        initial={{ scaleY: 0 }}
+        whileInView={{ scaleY: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+      />
+      <div className="space-y-2.5">
+        {rows.map((e, i) => {
+          const Icon = e.icon;
+          return (
+            <motion.div
+              key={e.label}
+              className="relative flex items-center gap-3"
+              initial={{ opacity: 0, x: -8 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: delayStart + i * 0.18, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-[#141414] shadow-[0_0_0_4px_rgba(20,20,20,1)]">
+                <Icon className="h-4 w-4 text-emerald-400" />
+              </span>
+              <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2">
+                <div className="min-w-0">
+                  <div className="truncate text-[13px] font-medium text-white">{e.label}</div>
+                  <div className="truncate text-[11px] text-white/45">{e.meta}</div>
+                </div>
+                {(e.right || e.time) && (
+                  <div className="flex shrink-0 items-center gap-2">
+                    {e.right}
+                    {e.time && <span className="text-[10px] tabular-nums text-white/30">{e.time}</span>}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function HeroDashboard() {
+  const pill = "rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium text-emerald-300";
+  const events: TimelineRow[] = [
+    { icon: PhoneCall, label: "Incoming Call", meta: "+61 04•• ••• 218", time: "0:00", right: <Waveform /> },
+    { icon: Bot, label: "AI Receptionist Answered", meta: "0.8s response time", time: "0:01", right: <span className={pill}>Live</span> },
+    { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing", time: "0:24", right: <span className={pill}>Qualified</span> },
+    { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM", time: "0:38", right: <span className={pill}>Confirmed</span> },
+    { icon: Database, label: "CRM Updated", meta: "GoHighLevel · synced", time: "0:39", right: <CheckCircle2 className="h-4 w-4 text-emerald-400" /> },
+    { icon: TrendingUp, label: "Revenue Captured", meta: "Job value added to pipeline", time: "0:40", right: <CountUp to={8650} format={(v) => `+$${Math.round(v).toLocaleString()}`} className="text-[12px] font-semibold tabular-nums text-emerald-400" /> },
+  ];
+  return (
+    <DarkGlowCard>
+      {/* window chrome + integrated metrics */}
+      <div className="border-b border-white/[0.07] px-5 py-4 sm:px-6">
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-1.5" aria-hidden>
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/[0.12] px-2.5 py-1">
+            <LiveDot />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">Live</span>
+          </span>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2.5">
+          <HeroStat to={178} format={(v) => `${Math.round(v)}`} label="Bookings This Month" />
+          <HeroStat to={96.2} format={(v) => `$${v.toFixed(1)}K`} label="EST. Monthly Revenue" />
+        </div>
+      </div>
+
+      {/* live activity feed — one interface, the whole story */}
+      <TimelineRows rows={events} />
+    </DarkGlowCard>
+  );
+}
+
+/** The CTA section's dark counterweight — same card/timeline, "what to expect" rows. */
+function NextStepsCard() {
+  const steps: TimelineRow[] = [
+    { icon: ClipboardList, label: "Form submitted", meta: "We receive your details" },
+    { icon: BarChart3, label: "Business reviewed", meta: "We map where revenue is leaking" },
+    { icon: CalendarCheck, label: "Strategy call booked", meta: "At a time that suits you" },
+    { icon: Workflow, label: "System designed", meta: "Tailored to how you actually operate" },
+  ];
+  return (
+    <DarkGlowCard>
+      <div className="border-b border-white/[0.07] px-5 py-4 sm:px-6">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
+          What Happens Next
+        </span>
+      </div>
+      <TimelineRows rows={steps} delayStart={0.1} />
+    </DarkGlowCard>
   );
 }
 
@@ -3207,47 +3256,91 @@ function CaseStudy() {
 
 function CTA() {
   return (
-    <section id="cta" className="relative bg-[#E9F7EE] py-24 lg:py-36">
-      <div className="relative mx-auto max-w-6xl px-6">
-        <div className="text-center">
-          <Reveal delay={0.05}>
-            <h2 className="font-headline text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
-              <span className="block whitespace-nowrap">Put the whole</span>
-              <span className="block whitespace-nowrap">System to work.</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="mx-auto mt-7 max-w-2xl text-[16px] md:text-[17px] font-medium leading-relaxed text-foreground">
-              We'll walk you through your business, identify what's costing you
-              revenue, and map out the revenue infrastructure built to help you grow.
-            </p>
-          </Reveal>
-        </div>
+    <section id="cta" className="relative isolate overflow-hidden bg-[#E9F7EE] py-24 lg:py-36">
+      {/* fine engineered grid — identical to the hero's, so the page bookends itself */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
+        }}
+      />
 
-        {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
-        <QuickEnquiryForm className="mt-12" />
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* LEFT — eyebrow, headline, subhead, form, Google rating badge */}
+          <div className="min-w-0 text-left lg:col-span-7">
+            <Reveal delay={0.05}>
+              <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-emerald-800/70">
+                Book your strategy call
+              </p>
+            </Reveal>
 
-        {/* conversion copy — beneath the button */}
-        <Reveal delay={0.1}>
-          <div className="mx-auto mt-7 max-w-xl text-center">
-            <p className="text-[13.5px] font-medium leading-relaxed text-foreground">
-              No pressure. No generic sales pitch. Just a tailored strategy showing
-              exactly how Montarro would be implemented in your business.
-            </p>
-            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-              Not ready yet?{" "}
-              <a href="#system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                Explore the System →
-              </a>{" "}
-              <span className="px-1 text-foreground/30">·</span>{" "}
-              Or call{" "}
-              <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
-                0450 731 109
-              </a>{" "}
-              to speak with our team.
-            </p>
+            <Reveal delay={0.15}>
+              <h2 className="font-headline mt-5 text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
+                <span className="block sm:whitespace-nowrap">Put the whole</span>
+                <span className="block sm:whitespace-nowrap">
+                  System to <span className="text-emerald-500">work.</span>
+                </span>
+              </h2>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <p className="mt-7 max-w-xl text-pretty text-base md:text-lg font-medium leading-relaxed text-foreground">
+                We'll walk you through your business, identify what's costing you
+                revenue, and map out the revenue infrastructure built to help you grow.
+              </p>
+            </Reveal>
+
+            {/* quick homepage enquiry — short capture, no booking, same GHL workflow */}
+            <Reveal delay={0.32} className="mt-9">
+              <QuickEnquiryForm />
+            </Reveal>
+
+            {/* conversion copy — beneath the form */}
+            <Reveal delay={0.4}>
+              <div className="mt-7 max-w-xl">
+                <p className="text-[13.5px] font-medium leading-relaxed text-foreground">
+                  No pressure. No generic sales pitch. Just a tailored strategy showing
+                  exactly how Montarro would be implemented in your business.
+                </p>
+                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+                  Not ready yet?{" "}
+                  <a href="#system" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                    Explore the System →
+                  </a>{" "}
+                  <span className="px-1 text-foreground/30">·</span>{" "}
+                  Or call{" "}
+                  <a href="tel:0450731109" className="font-semibold text-emerald-700 transition-colors duration-300 hover:text-emerald-600">
+                    0450 731 109
+                  </a>{" "}
+                  to speak with our team.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Google review card + location — same component as the hero */}
+            <Reveal delay={0.48}>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="inline-flex items-center gap-3 rounded-2xl border border-black/[0.06] bg-white px-5 py-3.5 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.32)]">
+                  <GoogleG className="h-5 w-5" />
+                  <span className="text-[16px] font-semibold tabular-nums text-foreground">4.8</span>
+                  <Stars />
+                </div>
+                <span className="text-[14px] font-medium text-foreground">Melbourne, VIC</span>
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+
+          {/* RIGHT — dark "What Happens Next" card, the hero's dark card mirrored */}
+          <div className="min-w-0 lg:col-span-5">
+            <Reveal delay={0.2}>
+              <NextStepsCard />
+            </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );

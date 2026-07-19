@@ -371,9 +371,9 @@ function ContactFormSection() {
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section className="bg-[#E9F7EE] py-20 lg:py-28">
       <div className="mx-auto max-w-2xl px-6">
-        <div className="rounded-3xl border border-[#D8F2E8] bg-white p-7 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-10 lg:p-12">
+        <div className="rounded-3xl border border-[#D8F2E8] bg-white p-8 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-12 lg:p-14">
           <AnimatePresence mode="wait">
             {submitted ? (
               <SuccessState key="done" firstName={splitName(form.fullName).first || "there"} />
@@ -408,9 +408,12 @@ function ContactFormSection() {
                       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
+                  <p className="mt-2.5 text-[12.5px] text-muted-foreground">
+                    Takes about 60 seconds.
+                  </p>
                 </div>
 
-                <div className="space-y-8">
+                <div className="space-y-12">
                   {/* qualification questions (1–4) — all visible at once */}
                   {QUESTIONS.map((qq, i) => (
                     <OptionGroup
@@ -521,9 +524,9 @@ function ContactFormSection() {
 
 function NumberedHeader({ index, title }: { index: number; title: string }) {
   return (
-    <div className="flex items-baseline gap-2.5">
-      <span className="font-display text-[17px] font-bold tabular-nums text-emerald-600">{index}.</span>
-      <h3 className="text-[15.5px] font-semibold text-foreground">{title}</h3>
+    <div className="flex items-baseline gap-3">
+      <span className="font-display text-[28px] font-extrabold leading-none tabular-nums text-emerald-600">{index}.</span>
+      <h3 className="text-[19px] font-bold leading-snug text-foreground">{title}</h3>
     </div>
   );
 }
@@ -602,11 +605,11 @@ function OptionGroup({
   }
   return (
     <div>
-      <div className="flex items-baseline gap-2.5">
-        <span className="font-display text-[17px] font-bold tabular-nums text-emerald-600">{index}.</span>
-        <h3 className="text-[15.5px] font-semibold text-foreground">{question}</h3>
+      <div className="flex items-baseline gap-3">
+        <span className="font-display text-[28px] font-extrabold leading-none tabular-nums text-emerald-600">{index}.</span>
+        <h3 className="text-[19px] font-bold leading-snug text-foreground">{question}</h3>
       </div>
-      <div className="mt-4 flex flex-wrap gap-2.5">
+      <div className="mt-5 flex flex-wrap gap-2.5">
         {options.map((opt) => {
           const selected = multiple ? selectedValues.includes(opt) : value === opt;
           return (
@@ -615,10 +618,10 @@ function OptionGroup({
               type="button"
               onClick={() => toggle(opt)}
               aria-pressed={selected}
-              className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-[13.5px] font-medium transition-all duration-200 ease-out ${
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-5 py-3 text-[14px] font-medium transition-all duration-200 ease-out ${
                 selected
                   ? "border-emerald-600 bg-emerald-600 text-white shadow-[0_10px_24px_-12px_rgba(5,150,105,0.6)]"
-                  : "border-black/[0.1] bg-white text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.05] hover:text-foreground"
+                  : "border-black/[0.14] bg-emerald-500/[0.05] text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.1] hover:text-foreground"
               }`}
             >
               {multiple && selected && <Check className="h-3.5 w-3.5" strokeWidth={2.6} />}

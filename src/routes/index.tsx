@@ -2320,7 +2320,7 @@ function ExperienceInfra() {
                 </a>
                 <Link
                   to="/contact"
-                  search={{ package: "ai-receptionist" }}
+                  search={{ selected_package: "ai-receptionist" }}
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
                   Explore the AI Receptionist
@@ -2806,7 +2806,7 @@ const TIERS = [
     tagline: "For businesses that just want their phone answered, every time.",
     cta: "Book an AI Receptionist Call",
     to: "/contact" as const,
-    search: { package: "ai-receptionist" },
+    search: { selected_package: "ai-receptionist" },
     features: [
       "24/7 AI Receptionist",
       "Lead Qualification",
@@ -2828,7 +2828,7 @@ const TIERS = [
     featured: true,
     cta: "Book an Infrastructure Call",
     to: "/contact" as const,
-    search: { package: "revenue-infrastructure" },
+    search: { selected_package: "revenue-infrastructure" },
     features: [
       "AI Receptionist",
       "CRM System",
@@ -2852,7 +2852,7 @@ const TIERS = [
     tagline: "that want Montarro embedded in their team.",
     cta: "Book an Enterprise Strategy Call",
     to: "/contact" as const,
-    search: { package: "enterprise" },
+    search: { selected_package: "enterprise" },
     features: [
       "Multi-Location Support",
       "High-Volume Lead Generation",

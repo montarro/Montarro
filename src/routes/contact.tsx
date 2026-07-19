@@ -11,6 +11,15 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { SiteNav, SiteFooter } from "@/components/SiteChrome";
+import {
+  REVENUE_OPTIONS,
+  ENQUIRY_OPTIONS,
+  BLOCKER_OPTIONS,
+  GOAL_OPTIONS,
+  PACKAGE_LABELS,
+  normalizePackageValue,
+  type PackageValue,
+} from "@/lib/leadFormOptions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -35,41 +44,28 @@ export const Route = createFileRoute("/contact")({
 const MINT_GRID =
   "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)";
 
-const LEAD_WEBHOOK_URL = import.meta.env.VITE_MONTARRO_LEAD_WEBHOOK_URL?.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const QUESTIONS: { key: keyof FormState; q: string; options: string[]; multiple?: boolean }[] = [
+const QUESTIONS: { key: keyof FormState; q: string; options: readonly string[]; multiple?: boolean }[] = [
   {
     key: "revenue",
     q: "What's your average monthly revenue?",
-    options: ["Under $30k", "$30k to $60k", "$60k to $150k", "$150k+"],
+    options: REVENUE_OPTIONS,
   },
   {
     key: "enquiryVolume",
     q: "How many new enquiries do you receive each month?",
-    options: ["Under 20", "20 to 50", "50 to 100", "100+"],
+    options: ENQUIRY_OPTIONS,
   },
   {
     key: "blockers",
     q: "What's currently holding your business back?",
-    options: [
-      "Not enough qualified enquiries",
-      "Too many missed calls",
-      "Leads aren't converting into customers",
-      "Too much manual admin",
-      "Our systems don't work together",
-      "Not sure yet",
-    ],
+    options: BLOCKER_OPTIONS,
+    multiple: true,
   },
   {
     key: "goals",
     q: "What does the next 60 days need to look like?",
-    options: [
-      "More qualified enquiries coming through",
-      "Fewer missed calls and lost opportunities",
-      "More booked jobs without chasing people",
-      "A clearer system for leads, follow-up and growth",
-    ],
-    multiple: true,
+    options: GOAL_OPTIONS,
   },
 ];
 
@@ -78,15 +74,6 @@ function splitName(full: string): { first: string; last: string } {
   if (parts.length <= 1) return { first: parts[0] ?? "", last: "" };
   return { first: parts[0], last: parts.slice(1).join(" ") };
 }
-
-// Package interest, carried in via ?package=<slug> on the incoming link
-// (e.g. from a Packages-section CTA) and stored with the form submission.
-const PACKAGE_LABELS: Record<string, string> = {
-  "ai-receptionist": "AI Receptionist",
-  "revenue-infrastructure": "Revenue Infrastructure",
-  enterprise: "Enterprise",
-  "general-enquiry": "General Enquiry",
-};
 
 // Exported so /strategy-call (see src/routes/strategy-call.tsx) can render the
 // exact same page — package-CTA destinations point there while reusing this
@@ -277,16 +264,20 @@ function ContactFormSection() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState("general-enquiry");
+  const [selectedPackage, setSelectedPackage] = useState<PackageValue>("general-enquiry");
   const [hasPackageParam, setHasPackageParam] = useState(false);
+  // Honeypot — real visitors never see or fill this field (visually hidden,
+  // unreachable by tab/keyboard). Any non-empty value marks the submission
+  // as a bot and the server drops it silently.
+  const [hpField, setHpField] = useState("");
 
   // Read once on mount (client-only, avoids an SSR/CSR hydration mismatch —
   // same pattern as ScrollToTop/MobileMenu elsewhere in this app). Re-runs on
   // every mount, so it's preserved across refresh and re-navigation to the page.
   useEffect(() => {
-    const raw = new URLSearchParams(window.location.search).get("package");
+    const raw = new URLSearchParams(window.location.search).get("selected_package");
     setHasPackageParam(!!raw);
-    setSelectedPackage(raw && PACKAGE_LABELS[raw] ? raw : "general-enquiry");
+    setSelectedPackage(normalizePackageValue(raw));
   }, []);
 
   function update<K extends keyof FormState>(key: K, value: string) {
@@ -316,30 +307,28 @@ function ContactFormSection() {
     setSubmitting(true);
     setSubmitError(false);
     try {
-      if (!LEAD_WEBHOOK_URL) throw new Error("VITE_MONTARRO_LEAD_WEBHOOK_URL is not configured");
-      const { first, last } = splitName(form.fullName);
       const payload = {
-        full_name: form.fullName,
-        first_name: first,
-        last_name: last,
+        fullName: form.fullName,
+        businessName: form.businessName,
         email: form.email,
         phone: form.phone,
-        company_name: form.businessName,
-        budget_monthly_revenue: form.revenue,
-        monthly_enquiries: form.enquiryVolume,
-        business_blockers: form.blockers,
-        goal: form.goals,
-        additional_notes: form.notes,
-        selected_package: selectedPackage,
-        source: "Montarro Website",
-        form_type: "Strategy Call Page",
+        revenue: form.revenue,
+        enquiries: form.enquiryVolume,
+        // Multi-select is stored as a ", "-joined string in form state
+        // (see OptionGroup) — split back into an array for the API.
+        blockers: form.blockers ? form.blockers.split(", ").filter(Boolean) : [],
+        goals: form.goals,
+        notes: form.notes,
+        selectedPackage,
+        hpRefCode: hpField, // honeypot — must stay empty
       };
-      const res = await fetch(LEAD_WEBHOOK_URL, {
+      const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error(`Lead webhook responded ${res.status}`);
+      const data: { ok?: boolean } = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(`Lead API responded ${res.status}`);
       setSubmitted(true);
     } catch (err) {
       console.error("[Montarro] Strategy-call submission failed:", err);
@@ -434,6 +423,27 @@ function ContactFormSection() {
                       rows={4}
                       placeholder="Your current systems, specific goals, challenges or anything you'd like us to prepare for."
                       className="mt-4 w-full resize-none rounded-2xl border border-black/[0.08] bg-white px-5 py-4 text-[15px] leading-relaxed text-foreground placeholder:text-foreground/45 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.12)] transition-all duration-300 focus:border-emerald-500/50 focus:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.22)] focus:outline-none"
+                    />
+                  </div>
+
+                  {/* honeypot — invisible to real visitors, never affects layout/UX.
+                      Deliberately NOT named/labelled like a common field (e.g. "website")
+                      so browser autofill can't accidentally fill it for a real visitor
+                      and cause their genuine submission to be silently dropped. */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
+                    style={{ clip: "rect(0,0,0,0)", clipPath: "inset(50%)", margin: "-1px" }}
+                  >
+                    <label htmlFor="hp-ref-code">Reference code</label>
+                    <input
+                      id="hp-ref-code"
+                      name="hp-ref-code"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={hpField}
+                      onChange={(e) => setHpField(e.target.value)}
                     />
                   </div>
 
@@ -550,7 +560,7 @@ function OptionGroup({
 }: {
   index: number;
   question: string;
-  options: string[];
+  options: readonly string[];
   value: string;
   onChange: (v: string) => void;
   error?: string;

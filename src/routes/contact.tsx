@@ -21,6 +21,8 @@ import {
   type PackageValue,
 } from "@/lib/leadFormOptions";
 import { normalizeAuPhone } from "@/lib/phone";
+import { writeBookingPrefill } from "@/lib/bookingPrefill";
+import { primaryCta } from "@/lib/cta";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -249,6 +251,19 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 
 const TOTAL_STEPS = 5;
 
+// Top-to-bottom field order, matched to each field's DOM id — used to scroll
+// to the first validation error after a failed submit (see handleSubmit).
+const FIELD_ORDER: (keyof FormState)[] = [
+  "revenue",
+  "enquiryVolume",
+  "blockers",
+  "goals",
+  "fullName",
+  "businessName",
+  "email",
+  "phone",
+];
+
 function ContactFormSection() {
   const [form, setForm] = useState<FormState>({
     revenue: "",
@@ -306,7 +321,16 @@ function ContactFormSection() {
     if (submitting || submitted) return;
     const v = validate();
     setErrors(v);
-    if (Object.keys(v).length) return;
+    if (Object.keys(v).length) {
+      // Validation errors render in place, but on this long single-page form
+      // they can land well above the submit button the visitor just clicked —
+      // scroll the first one into view so the failure is never invisible.
+      const firstErrorKey = FIELD_ORDER.find((key) => key in v);
+      if (firstErrorKey) {
+        document.getElementById(firstErrorKey)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
     setSubmitting(true);
     setSubmitError(false);
     try {
@@ -334,6 +358,8 @@ function ContactFormSection() {
         .json()
         .catch(() => ({}));
       if (res.ok && data.ok) {
+        const { first, last } = splitName(form.fullName);
+        writeBookingPrefill({ firstName: first, lastName: last, email: form.email, phone: form.phone });
         setSubmitted(true);
         return;
       }
@@ -418,6 +444,7 @@ function ContactFormSection() {
                   {QUESTIONS.map((qq, i) => (
                     <OptionGroup
                       key={qq.key}
+                      id={qq.key}
                       index={i + 1}
                       question={qq.q}
                       options={qq.options}
@@ -568,11 +595,23 @@ function SuccessState({ firstName }: { firstName: string }) {
         your strategy session and map out a tailored revenue infrastructure for
         your business.
       </p>
+      <p className="mt-3 max-w-md text-[15px] font-medium leading-relaxed text-foreground">
+        Pick a time that suits and we&rsquo;ll walk you through exactly how
+        Montarro would fit your business.
+      </p>
+      <Link
+        to="/book"
+        className={`${primaryCta} mt-7 inline-flex px-7 py-3.5 text-[14.5px]`}
+      >
+        Pick your time
+        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+      </Link>
     </motion.div>
   );
 }
 
 function OptionGroup({
+  id,
   index,
   question,
   options,
@@ -581,6 +620,7 @@ function OptionGroup({
   error,
   multiple = false,
 }: {
+  id: string;
   index: number;
   question: string;
   options: readonly string[];
@@ -604,7 +644,7 @@ function OptionGroup({
     onChange(options.filter((o) => next.includes(o)).join(", "));
   }
   return (
-    <div>
+    <div id={id}>
       <div className="flex items-baseline gap-3">
         <span className="font-display text-[28px] font-extrabold leading-none tabular-nums text-emerald-600">{index}.</span>
         <h3 className="text-[19px] font-bold leading-snug text-foreground">{question}</h3>

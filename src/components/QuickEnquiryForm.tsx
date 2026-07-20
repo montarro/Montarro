@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { primaryCta } from "@/lib/cta";
 import { normalizeAuPhone } from "@/lib/phone";
+import { writeBookingPrefill } from "@/lib/bookingPrefill";
 
 /*
  * Quick homepage enquiry form (RockMelon-style). A short, single-screen capture
@@ -63,6 +65,9 @@ function validateField(key: keyof QuickFormState, form: QuickFormState): string 
 }
 
 const REQUIRED_KEYS = ["fullName", "email", "phone"] as const;
+// Top-to-bottom order matching the rendered grid (fullName, then phone, then
+// email) — used to scroll to the first validation error on a failed submit.
+const FIELD_ORDER = ["fullName", "phone", "email"] as const;
 
 export function QuickEnquiryForm({ className = "" }: { className?: string }) {
   const [form, setForm] = useState<QuickFormState>({
@@ -105,7 +110,13 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
     if (submitting || submitted) return;
     const v = validate();
     setErrors(v);
-    if (Object.keys(v).length) return;
+    if (Object.keys(v).length) {
+      const firstErrorKey = FIELD_ORDER.find((key) => key in v);
+      if (firstErrorKey) {
+        document.getElementById(firstErrorKey)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
     setSubmitting(true);
     setSubmitError(false);
     try {
@@ -128,6 +139,8 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
         .json()
         .catch(() => ({}));
       if (res.ok && data.ok) {
+        const { first, last } = splitName(form.fullName);
+        writeBookingPrefill({ firstName: first, lastName: last, email: form.email, phone: form.phone });
         setSubmitted(true);
         return;
       }
@@ -163,7 +176,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
             initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-center py-6 text-center"
+            className="flex flex-col items-center rounded-3xl border border-[#D8F2E8] bg-white p-8 text-center shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-10"
           >
             <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-white shadow-[0_8px_24px_-12px_rgba(0,0,0,0.2)]">
               <Check className="h-6 w-6 text-emerald-600" strokeWidth={2.2} />
@@ -174,6 +187,17 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
             <p className="mt-4 max-w-sm text-[15px] font-medium leading-relaxed text-foreground">
               We'll review your business and contact you within one business day.
             </p>
+            <p className="mt-3 max-w-sm text-[15px] font-medium leading-relaxed text-foreground">
+              Pick a time that suits and we'll walk you through exactly how
+              Montarro would fit your business.
+            </p>
+            <Link
+              to="/book"
+              className={`${primaryCta} mt-7 inline-flex px-7 py-3.5 text-[14.5px]`}
+            >
+              Pick your time
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
           </motion.div>
         ) : (
           <motion.form

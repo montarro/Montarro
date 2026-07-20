@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { primaryCta } from "@/lib/cta";
 import { normalizeAuPhone } from "@/lib/phone";
 import { writeBookingPrefill } from "@/lib/bookingPrefill";
+import { BookingSuccessCard } from "@/components/BookingSuccessCard";
 
 /*
  * Quick homepage enquiry form (RockMelon-style). A short, single-screen capture
@@ -178,26 +178,7 @@ export function QuickEnquiryForm({ className = "" }: { className?: string }) {
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center rounded-3xl border border-[#D8F2E8] bg-white p-8 text-center shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)] sm:p-10"
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-white shadow-[0_8px_24px_-12px_rgba(0,0,0,0.2)]">
-              <Check className="h-6 w-6 text-emerald-600" strokeWidth={2.2} />
-            </div>
-            <h3 className="mt-7 font-display text-3xl font-bold leading-tight tracking-[-0.03em] text-[#0a0b0b]">
-              Thanks, {splitName(form.fullName).first || "there"}.
-            </h3>
-            <p className="mt-4 max-w-sm text-[15px] font-medium leading-relaxed text-foreground">
-              We'll review your business and contact you within one business day.
-            </p>
-            <p className="mt-3 max-w-sm text-[15px] font-medium leading-relaxed text-foreground">
-              Pick a time that suits and we'll walk you through exactly how
-              Montarro would fit your business.
-            </p>
-            <Link
-              to="/book"
-              className={`${primaryCta} mt-7 inline-flex px-7 py-3.5 text-[14.5px]`}
-            >
-              Pick your time
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
+            <BookingSuccessCard firstName={splitName(form.fullName).first || "there"} headingLevel="h3" />
           </motion.div>
         ) : (
           <motion.form

@@ -1,9 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { CalendarClock, Clock3, PhoneCall, Target } from "lucide-react";
+import { CalendarClock, Clock3, Loader2, PhoneCall, Target } from "lucide-react";
 import { SiteNav, SiteFooter } from "@/components/SiteChrome";
 import { readAndClearBookingPrefill, type BookingPrefill } from "@/lib/bookingPrefill";
+
+// This exact id must be preserved verbatim — GHL's embed script (loaded
+// below) finds this iframe by id to post height updates back to it. Change
+// or drop it and auto-resize silently stops working (the iframe loads fine,
+// it just never resizes).
+const GHL_IFRAME_ID = "crNP2jOt3ShPRPfwFpZa_1784519879372";
+const GHL_EMBED_SCRIPT_SRC = "https://link.msgsndr.com/js/form_embed.js";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -21,11 +28,12 @@ export const Route = createFileRoute("/book")({
 const MINT_GRID =
   "linear-gradient(to right, rgba(6,78,59,0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.09) 1px, transparent 1px)";
 
-// GoHighLevel Strategy Call calendar share link — paste the exact link from
-// GHL's calendar Share settings here verbatim. Do NOT construct this from a
-// calendar ID. Until this is set, the page shows a graceful fallback instead
-// of a broken/blank iframe.
-const GHL_BOOKING_URL: string = "";
+// GoHighLevel Strategy Call calendar share link, exact and verbatim (never
+// constructed from a calendar ID — that 404s). If this is ever cleared, the
+// page falls back to a graceful "calendar being finalised" card instead of a
+// broken/blank iframe.
+const GHL_BOOKING_URL: string =
+  "https://api.leadconnectorhq.com/widget/booking/F5NjI1eWXprzX1BP6WOc";
 
 function buildEmbedSrc(prefill: BookingPrefill | null): string {
   if (!GHL_BOOKING_URL) return "";
@@ -54,6 +62,32 @@ function BookPage() {
 
   const firstName = prefill?.firstName;
   const embedSrc = buildEmbedSrc(prefill);
+
+  // A JSX <script> tag never executes — React ignores it. GHL's widget
+  // script has to be appended imperatively. Gated on `ready` so the iframe
+  // (below) mounts exactly once with its final src already resolved,
+  // instead of mounting unprefilled and then reloading a second time once
+  // sessionStorage resolves a tick later.
+  useEffect(() => {
+    if (!ready || !embedSrc) return;
+    let scriptEl = document.querySelector<HTMLScriptElement>(
+      `script[src="${GHL_EMBED_SCRIPT_SRC}"]`
+    );
+    let createdHere = false;
+    if (!scriptEl) {
+      scriptEl = document.createElement("script");
+      scriptEl.src = GHL_EMBED_SCRIPT_SRC;
+      scriptEl.type = "text/javascript";
+      scriptEl.async = true;
+      document.body.appendChild(scriptEl);
+      createdHere = true;
+    }
+    return () => {
+      if (createdHere && scriptEl?.parentNode) {
+        scriptEl.parentNode.removeChild(scriptEl);
+      }
+    };
+  }, [ready, embedSrc]);
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
@@ -94,12 +128,16 @@ function BookPage() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="overflow-hidden rounded-3xl border border-[#D8F2E8] bg-white shadow-[0_30px_80px_-50px_rgba(0,0,0,0.22)]"
             >
-              {embedSrc ? (
+              {!ready ? (
+                <div className="flex items-center justify-center px-8 py-24" aria-hidden>
+                  <Loader2 className="h-6 w-6 animate-spin text-emerald-600/60" />
+                </div>
+              ) : embedSrc ? (
                 <iframe
                   src={embedSrc}
                   style={{ width: "100%", border: "none", overflow: "hidden" }}
                   scrolling="no"
-                  id="montarro-strategy-call-calendar"
+                  id={GHL_IFRAME_ID}
                   title="Book your Montarro strategy call"
                 />
               ) : (
@@ -125,10 +163,6 @@ function BookPage() {
                 </div>
               )}
             </motion.div>
-
-            {/* GHL's embed widget script — auto-resizes the iframe to its
-                content height once the real booking URL above is set. */}
-            {embedSrc && <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript" />}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

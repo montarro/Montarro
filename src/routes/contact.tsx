@@ -22,7 +22,7 @@ import {
 } from "@/lib/leadFormOptions";
 import { normalizeAuPhone } from "@/lib/phone";
 import { writeBookingPrefill } from "@/lib/bookingPrefill";
-import { primaryCta } from "@/lib/cta";
+import { BookingSuccessCard } from "@/components/BookingSuccessCard";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -564,48 +564,9 @@ function SuccessState({ firstName }: { firstName: string }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center py-10 text-center"
+      className="flex flex-col items-center text-center"
     >
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.05 }}
-        className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/[0.08]"
-      >
-        <motion.span
-          aria-hidden
-          className="absolute inset-0 rounded-full border border-emerald-500/40"
-          initial={{ scale: 1, opacity: 0.7 }}
-          animate={{ scale: 1.7, opacity: 0 }}
-          transition={{ duration: 1.1, ease: "easeOut", delay: 0.25 }}
-        />
-        <motion.span
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.18 }}
-        >
-          <Check className="h-6 w-6 text-emerald-600" strokeWidth={2.4} />
-        </motion.span>
-      </motion.div>
-      <h2 className="mt-7 font-display text-3xl font-bold leading-tight tracking-[-0.03em] text-[#0a0b0b]">
-        Thanks, {firstName}.
-      </h2>
-      <p className="mt-4 max-w-md text-[15px] font-medium leading-relaxed text-foreground">
-        You&rsquo;re all set. Our team will give you a call shortly to schedule
-        your strategy session and map out a tailored revenue infrastructure for
-        your business.
-      </p>
-      <p className="mt-3 max-w-md text-[15px] font-medium leading-relaxed text-foreground">
-        Pick a time that suits and we&rsquo;ll walk you through exactly how
-        Montarro would fit your business.
-      </p>
-      <Link
-        to="/book"
-        className={`${primaryCta} mt-7 inline-flex px-7 py-3.5 text-[14.5px]`}
-      >
-        Pick your time
-        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-      </Link>
+      <BookingSuccessCard firstName={firstName} headingLevel="h2" />
     </motion.div>
   );
 }

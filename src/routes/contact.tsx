@@ -624,7 +624,6 @@ function OptionGroup({
                   : "border-black/[0.14] bg-emerald-500/[0.05] text-foreground/80 hover:-translate-y-px hover:border-emerald-500/50 hover:bg-emerald-500/[0.1] hover:text-foreground"
               }`}
             >
-              {multiple && selected && <Check className="h-3.5 w-3.5" strokeWidth={2.6} />}
               {opt}
             </button>
           );

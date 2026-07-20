@@ -2348,8 +2348,7 @@ function ExperienceInfra() {
                   Call the AI Receptionist
                 </a>
                 <Link
-                  to="/contact"
-                  search={{ selected_package: "ai-receptionist" }}
+                  to="/demo"
                   className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition-all duration-300 hover:border-white/35 hover:text-white"
                 >
                   Explore the AI Receptionist
@@ -3259,9 +3258,7 @@ function CTA() {
           <Reveal delay={0.15}>
             <h2 className="font-headline mt-5 text-[clamp(2.75rem,6.4vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0b0b]">
               <span className="block sm:whitespace-nowrap">Put the whole</span>
-              <span className="block sm:whitespace-nowrap">
-                System to <span className="text-emerald-500">work.</span>
-              </span>
+              <span className="block sm:whitespace-nowrap">System to work.</span>
             </h2>
           </Reveal>
 

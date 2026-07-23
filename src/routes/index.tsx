@@ -3085,7 +3085,7 @@ function CaseStudy() {
         className="relative overflow-hidden py-24 lg:py-28"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), radial-gradient(ellipse 60% 60% at 92% 100%, rgba(16,185,129,0.05), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
+            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
         }}
       >
         {/* faint structural grid + slow ambient breathing */}
@@ -3098,12 +3098,11 @@ function CaseStudy() {
             backgroundSize: "64px 64px",
           }}
         />
-        <motion.div
+        {/* deliberate seam against the next (dark) section below, which
+            otherwise shares an almost-identical background and blends */}
+        <div
           aria-hidden
-          className="pointer-events-none absolute -left-40 top-1/4 h-[460px] w-[460px] rounded-full blur-3xl"
-          style={{ background: "radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%)" }}
-          animate={{ opacity: [0.55, 0.9, 0.55] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
         />
 
         <div className="relative mx-auto max-w-7xl px-6">
@@ -3132,7 +3131,7 @@ function CaseStudy() {
                 <div className="font-display text-7xl md:text-8xl text-gradient-white-grey tabular-nums">
                   +215%
                 </div>
-                <TrendingUp className="h-6 w-6 text-emerald-400" />
+                <TrendingUp className="h-6 w-6 text-white/40" />
               </div>
               <div className="mt-2 text-[12px] uppercase tracking-[0.24em] text-white/45">
                 Qualified-booking lift · illustrative
@@ -3149,7 +3148,7 @@ function CaseStudy() {
                   animate={{ opacity: [0.5, 0.85, 0.5] }}
                   transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] p-5 backdrop-blur-xl shadow-[0_50px_120px_-55px_rgba(0,0,0,0.85)] sm:p-6">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#111315] p-5 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)] sm:p-6">
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-0 top-0 h-px"

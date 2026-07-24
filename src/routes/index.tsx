@@ -3023,209 +3023,74 @@ function Pricing() {
 /* ----------------------------- CASE STUDY ----------------------------- */
 
 /* Thin, data-system precision line — sharp segments, subtle grid, faint edge glow */
-function PrecisionChart() {
-  const id = useId();
-  const line =
-    "M0,40 L24,38 L48,33 L72,35 L96,27 L120,29 L144,21 L168,23 L192,15 L216,17 L240,10 L264,12 L288,5";
-  return (
-    <svg viewBox="0 0 288 48" preserveAspectRatio="none" className="h-full w-full">
-      <defs>
-        <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {[12, 24, 36].map((y) => (
-        <line key={y} x1="0" x2="288" y1={y} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-      ))}
-      <motion.path
-        d={`${line} L288,48 L0,48 Z`}
-        fill={`url(#${id})`}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.3 }}
-      />
-      <motion.path
-        d={line}
-        fill="none"
-        stroke="rgb(16,185,129)"
-        strokeWidth="1.25"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        className="[filter:drop-shadow(0_0_3px_rgba(16,185,129,0.45))]"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-      />
-    </svg>
-  );
-}
-
 function CaseStudy() {
-  const events = [
-    { icon: PhoneCall, label: "Incoming Call", meta: "+61 4•• ••• 218", tag: "Qualifying", live: true },
-    { icon: CheckCircle2, label: "Lead Qualified", meta: "High intent · roofing", tag: "92%" },
-    { icon: CalendarCheck, label: "Appointment Booked", meta: "Thu · 3:00 PM", tag: "Confirmed" },
-    { icon: Workflow, label: "Follow-Up Triggered", meta: "Sequence 2 · SMS", tag: "Sent" },
-    { icon: Database, label: "CRM Synced", meta: "GoHighLevel", tag: "Synced" },
-    { icon: TrendingUp, label: "Revenue Captured", meta: "Job value", tag: "$1,200" },
-  ];
-  const secondary = [
-    ["CPL", "$4.20"],
-    ["ROAS", "6.4x"],
-    ["Avg Response", "0.8s"],
-    ["Qualified", "92%"],
+  const stats: [string, string][] = [
+    ["3.1x", "Qualified Leads"],
+    ["$4.20", "Cost / Lead"],
+    ["24/7", "System Coverage"],
   ];
 
   return (
-      <section
-        id="case"
-        className="relative overflow-hidden py-24 lg:py-28"
+    <section
+      id="case"
+      className="relative overflow-hidden py-28 lg:py-36"
+      style={{
+        background: "linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
+      }}
+    >
+      {/* faint structural grid, same treatment as the sections around it */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.04] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
         style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 12% 0%, rgba(16,185,129,0.07), transparent 55%), linear-gradient(180deg, #111315 0%, #0e1012 55%, #111315 100%)",
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
         }}
-      >
-        {/* faint structural grid + slow ambient breathing */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.05] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-          }}
-        />
-        {/* deliberate seam against the next (dark) section below, which
-            otherwise shares an almost-identical background and blends */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
-        />
+      />
+      {/* deliberate seam against the next (dark) section below, which
+          otherwise shares an almost-identical background and blends */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
+      />
 
-        <div className="relative mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-            {/* LEFT — infrastructure narrative */}
-            <Reveal className="lg:col-span-5">
-              <div className="mb-6 flex items-center gap-3">
-                <span className="h-px w-10 bg-emerald-500/70" />
-                <span className="text-[11px] uppercase tracking-[0.28em] text-white/45">
-                  Operational Intelligence
-                </span>
-              </div>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-[1.12] tracking-[-0.02em]">
-                <span className="bg-gradient-to-b from-white via-white to-white/65 bg-clip-text text-transparent">
-                  Revenue capture,{" "}
-                </span>
-                <span className="text-emerald-400">instrumented.</span>
-              </h2>
-              <p className="mt-6 max-w-md text-[15px] font-medium leading-relaxed text-white/90">
-                <span className="font-semibold text-white">A live system orchestrating inbound demand</span> — AI qualification,
-                booking, follow-up, and CRM sync — so every lead is captured,
-                qualified, and accounted for. Not a dashboard. Infrastructure.
-              </p>
+      <Reveal>
+        <div className="relative mx-auto max-w-2xl px-6 text-center">
+          <span aria-hidden className="font-serif text-6xl italic leading-none text-emerald-400/85">
+            &ldquo;
+          </span>
+          <p className="mx-auto mt-1 max-w-[32ch] text-balance font-display text-[28px] font-medium leading-[1.35] tracking-[-0.01em] text-white/95 sm:text-[32px]">
+            We didn&rsquo;t need another vendor. We needed{" "}
+            <span className="font-semibold text-white">one system</span> — the
+            website, the ad spend, the AI answering calls, the follow-up —{" "}
+            <span className="font-semibold text-white">all built to work together.</span>
+          </p>
+          <p className="mt-6 text-[13.5px] text-white/50">
+            What Montarro clients tell us — paraphrased, illustrative
+          </p>
 
-              <div className="mt-8 flex items-baseline gap-3">
-                <div className="font-display text-7xl md:text-8xl text-gradient-white-grey tabular-nums">
-                  +215%
+          <div className="mx-auto mt-14 grid max-w-lg grid-cols-3">
+            {stats.map(([value, label], i) => (
+              <div
+                key={label}
+                className={i > 0 ? "border-l border-white/[0.08] px-2 sm:px-4" : "px-2 sm:px-4"}
+              >
+                <div className="font-display text-[24px] font-semibold tracking-[-0.01em] tabular-nums text-gradient-white-grey sm:text-[34px]">
+                  {value}
                 </div>
-                <TrendingUp className="h-6 w-6 text-white/40" />
-              </div>
-              <div className="mt-2 text-[12px] uppercase tracking-[0.24em] text-white/45">
-                Qualified-booking lift · illustrative
-              </div>
-            </Reveal>
-
-            {/* RIGHT — live operational console */}
-            <Reveal delay={0.15} className="lg:col-span-7">
-              <div className="relative">
-                <motion.div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-8 -z-10 rounded-[40px] blur-3xl"
-                  style={{ background: "radial-gradient(ellipse at center, rgba(16,185,129,0.12), transparent 70%)" }}
-                  animate={{ opacity: [0.5, 0.85, 0.5] }}
-                  transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#111315] p-5 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.8)] sm:p-6">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 top-0 h-px"
-                    style={{ background: "linear-gradient(to right, transparent, rgba(16,185,129,0.45), transparent)" }}
-                  />
-
-                  {/* status bar — no browser chrome */}
-                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-3.5 text-[11px] uppercase tracking-[0.18em] text-white/50">
-                    <span className="flex items-center gap-2"><LiveDot /> Revenue Infrastructure</span>
-                    <span className="tabular-nums text-white/35">AU · 0.8s</span>
-                  </div>
-
-                  {/* dominant metric */}
-                  <div className="mt-5">
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">
-                      Qualified Bookings · 30d
-                    </div>
-                    <div className="mt-1 flex items-baseline gap-2.5">
-                      <span className="font-display text-4xl md:text-5xl tracking-tight text-white tabular-nums">
-                        1,482
-                      </span>
-                      <span className="flex items-center gap-1 text-[12px] font-medium text-emerald-400">
-                        <TrendingUp className="h-3.5 w-3.5" />
-                        +215%
-                      </span>
-                    </div>
-                    <div className="mt-3 h-14 w-full">
-                      <PrecisionChart />
-                    </div>
-                  </div>
-
-                  {/* live event feed */}
-                  <div className="mt-5 space-y-1.5">
-                    {events.map((e, i) => {
-                      const Icon = e.icon;
-                      return (
-                        <motion.div
-                          key={e.label}
-                          initial={{ opacity: 0, x: -6 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true, margin: "-40px" }}
-                          transition={{ delay: 0.15 + i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                          className="flex items-center gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] px-3 py-2 transition-colors duration-300 hover:border-emerald-500/20 hover:bg-white/[0.035]"
-                        >
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-emerald-400">
-                            <Icon className="h-3.5 w-3.5" />
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2 text-[12.5px] text-white/85">
-                              <span className="truncate">{e.label}</span>
-                              {e.live && <LiveDot />}
-                            </div>
-                            <div className="truncate text-[10.5px] text-white/40">{e.meta}</div>
-                          </div>
-                          <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-medium tabular-nums text-emerald-300">
-                            {e.tag}
-                          </span>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-
-                  {/* secondary metrics */}
-                  <div className="mt-5 grid grid-cols-4 gap-px overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.05]">
-                    {secondary.map(([l, v]) => (
-                      <div key={l} className="bg-[#111315]/85 px-3 py-2.5 text-center">
-                        <div className="text-[13px] font-semibold tabular-nums text-white">{v}</div>
-                        <div className="mt-0.5 text-[9px] uppercase tracking-[0.14em] text-white/40">{l}</div>
-                      </div>
-                    ))}
-                  </div>
+                <div className="mt-1.5 text-[10px] uppercase tracking-[0.1em] text-white/45 sm:text-[11px] sm:tracking-[0.14em]">
+                  {label}
                 </div>
               </div>
-            </Reveal>
+            ))}
           </div>
+          <p className="mt-8 text-[11.5px] italic text-white/30">
+            Composite result across current Montarro clients
+          </p>
         </div>
-      </section>
+      </Reveal>
+    </section>
   );
 }
 

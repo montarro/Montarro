@@ -3452,7 +3452,7 @@ function Landing() {
         <ExperienceInfra /> {/* AI Receptionist */}
         <HowItWorks />      {/* The System — "See the system in motion" */}
         <Pricing />         {/* Packages / Infrastructure Systems */}
-        <CaseStudy />       {/* Revenue Infrastructure / Results */}
+        {/* <CaseStudy /> hidden per request — component left in place, not deleted */}
         <About />
         <Faq />
         <CTA />

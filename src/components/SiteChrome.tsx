@@ -4,7 +4,7 @@ import { MobileMenu } from "@/components/MobileMenu";
 import { primaryCta } from "@/lib/cta";
 
 // Solid white, fully opaque navbar — identical on every page, no scroll/colour change.
-export function SiteNav() {
+export function SiteNav({ hideQualifyLink = false }: { hideQualifyLink?: boolean } = {}) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.08] bg-white shadow-[0_1px_2px_-1px_rgba(0,0,0,0.06)]">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
@@ -43,9 +43,11 @@ export function SiteNav() {
           </Link>
           {/* mobile actions — qualify CTA beside the hamburger */}
           <div className="flex items-center gap-3 lg:hidden">
-            <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
-              Do I Qualify?
-            </Link>
+            {!hideQualifyLink && (
+              <Link to="/contact" className={`${primaryCta} inline-flex px-4 py-2 text-[12px]`}>
+                Do I Qualify?
+              </Link>
+            )}
             <MobileMenu />
           </div>
         </div>

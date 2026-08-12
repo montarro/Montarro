@@ -91,7 +91,7 @@ function BookPage() {
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
-      <SiteNav />
+      <SiteNav hideQualifyLink />
       <main>
         <section className="relative isolate overflow-hidden bg-[#E9F7EE] pt-36 pb-16 lg:pt-44 lg:pb-20">
           <div
@@ -112,8 +112,8 @@ function BookPage() {
                 {ready && firstName ? `${firstName}, pick a time.` : "Pick a time that suits."}
               </h1>
               <p className="mt-6 max-w-lg text-[16px] font-medium leading-relaxed text-foreground mx-auto">
-                We&rsquo;ve got your details. Choose a time below and we&rsquo;ll walk
-                you through exactly how Montarro would fit your business.
+                Choose a time below and we&rsquo;ll walk you through exactly how
+                Montarro would fit your business.
               </p>
             </motion.div>
           </div>

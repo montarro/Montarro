@@ -180,7 +180,7 @@ function ScrollToTop() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     let raf = 0;
-    let timer = 0;
+    const timers: number[] = [];
     const go = () => {
       if (hash) {
         const el = document.getElementById(hash.replace(/^#/, ""));
@@ -190,17 +190,33 @@ function ScrollToTop() {
         }
         return false;
       }
-      window.scrollTo({ top: 0, left: 0 });
+      // The site sets a global CSS `scroll-behavior: smooth` (for in-page
+      // anchor links); scrollTo's default "auto" behavior inherits that,
+      // so without an explicit "instant" override this animates over a
+      // visible duration instead of resetting immediately. On a page the
+      // user navigated away from while scrolled far down, that meant the
+      // destination page — often shorter — rendered with the browser's
+      // scroll position still mid-animation, sometimes clamped near the
+      // bottom of the new, shorter page for the entire animation.
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       return true;
     };
     if (!go()) {
       raf = requestAnimationFrame(() => {
-        if (!go()) timer = window.setTimeout(go, 120);
+        if (!go()) timers.push(window.setTimeout(go, 120));
       });
+    } else if (!hash) {
+      // Re-assert shortly after mount: content that finishes loading after
+      // the initial paint (e.g. the /book calendar iframe resizing once
+      // GHL's embed script runs, images, webfonts) can shift page layout
+      // enough to drag the scroll position away from the top we just set —
+      // this landed some page loads scrolled to the bottom.
+      timers.push(window.setTimeout(go, 150));
+      timers.push(window.setTimeout(go, 500));
     }
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(timer);
+      timers.forEach(clearTimeout);
     };
   }, [pathname, hash]);
 

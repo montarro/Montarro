@@ -784,8 +784,8 @@ function Trust() {
   };
 
   return (
-    <section id="reviews" className="relative overflow-hidden bg-[#141414] py-12 lg:py-16">
-      <div className="mx-auto mb-7 flex max-w-7xl items-end justify-between gap-6 px-6">
+    <section id="reviews" className="relative overflow-hidden bg-[#141414] py-7 lg:py-9">
+      <div className="mx-auto mb-4 flex max-w-7xl items-end justify-between gap-6 px-6">
         <Reveal>
           <div>
             <div className="flex items-center gap-2">
@@ -832,12 +832,12 @@ function Trust() {
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerLeave={endDrag}
-        className="no-scrollbar flex gap-4 overflow-x-auto px-6 pb-2 select-none"
+        className="no-scrollbar flex gap-4 overflow-x-auto px-6 pb-1 select-none"
       >
         {loop.map((r, i) => (
           <figure
             key={`${r.name}-${i}`}
-            className="flex w-[280px] shrink-0 flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]"
+            className="flex w-[280px] shrink-0 flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]"
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">

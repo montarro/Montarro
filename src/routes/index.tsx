@@ -25,8 +25,6 @@ import {
   Instagram,
   Facebook,
   Star,
-  ChevronLeft,
-  ChevronRight,
   PhoneMissed,
   ClipboardList,
   RefreshCw,
@@ -743,18 +741,26 @@ function Trust() {
     if (!el) return;
     let raf = 0;
     let last = performance.now();
-    const speed = 95; // px per second — dynamic but still readable
+    const speed = 45; // px per second — a slow, easy-to-read drift
+    // sub-pixel position: at this speed a frame moves < 1px, which browsers that
+    // round scrollLeft to whole pixels (Safari) would drop, freezing the strip
+    let pos = el.scrollLeft;
     const tick = (now: number) => {
-      const dt = (now - last) / 1000;
+      const dt = Math.max(0, now - last) / 1000;
       last = now;
+      // pick up manual drags / swipes
+      if (Math.abs(el.scrollLeft - pos) >= 1) pos = el.scrollLeft;
       if (!paused.current && !drag.current.down) {
-        el.scrollLeft += speed * dt;
+        pos += speed * dt;
+        el.scrollLeft = pos;
       }
-      // one set + its trailing gap = exact seamless loop point (gap-4 = 16px)
-      const wrap = (el.scrollWidth + 16) / 2;
+      // one set + its trailing gap = exact seamless loop point: the distance
+      // from the first card to its twin in the duplicate set
+      const cards = el.children as HTMLCollectionOf<HTMLElement>;
+      const wrap = cards[TRUST_REVIEWS.length].offsetLeft - cards[0].offsetLeft;
       if (wrap > 0) {
-        if (el.scrollLeft >= wrap) el.scrollLeft -= wrap;
-        else if (el.scrollLeft < 0) el.scrollLeft += wrap;
+        if (pos >= wrap) el.scrollLeft = pos -= wrap;
+        else if (pos < 0) el.scrollLeft = pos += wrap;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -777,15 +783,10 @@ function Trust() {
   const endDrag = () => {
     drag.current.down = false;
   };
-  const nudge = (dir: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * 320, behavior: "smooth" });
-  };
 
   return (
     <section id="reviews" className="relative overflow-hidden bg-[#141414] py-7 lg:py-9">
-      <div className="mx-auto mb-4 flex max-w-7xl items-end justify-between gap-6 px-6">
+      <div className="mx-auto mb-4 max-w-7xl px-6">
         <Reveal>
           <div>
             <div className="flex items-center gap-2">
@@ -799,26 +800,6 @@ function Trust() {
             </p>
           </div>
         </Reveal>
-
-        {/* subtle arrows */}
-        <div className="hidden shrink-0 items-center gap-2 sm:flex">
-          <button
-            type="button"
-            aria-label="Previous reviews"
-            onClick={() => nudge(-1)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-300 hover:border-white/25 hover:text-white/90"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Next reviews"
-            onClick={() => nudge(1)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-300 hover:border-white/25 hover:text-white/90"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
       </div>
 
       {/* auto-scrolling trust strip — pauses on hover, swipe on mobile */}

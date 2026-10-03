@@ -1,92 +1,132 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SiteNav, SiteFooter } from "@/components/SiteChrome";
+import { LegalPage, type LegalSection } from "@/components/LegalPage";
+
+const DESCRIPTION = "How Montarro collects, uses, shares and protects personal information when you visit our website or work with us.";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       { title: "Privacy Policy — Montarro" },
-      { name: "description", content: "How Montarro collects, uses and protects your information." },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: "Privacy Policy — Montarro" },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: "https://montarro.com/privacy" },
+      { name: "twitter:title", content: "Privacy Policy — Montarro" },
+      { name: "twitter:description", content: DESCRIPTION },
     ],
+    links: [{ rel: "canonical", href: "https://montarro.com/privacy" }],
   }),
   component: PrivacyPage,
 });
 
-// Standard, editable boilerplate. Replace with your finalised legal copy.
-const SECTIONS: { h: string; p: string[] }[] = [
+// Draft wording. Review with an adviser before publishing.
+const SECTIONS: LegalSection[] = [
   {
-    h: "1. Introduction",
-    p: [
-      "This Privacy Policy explains how Montarro (“we”, “us”, “our”) collects, uses, discloses and safeguards your information when you visit our website or use our services. By using our site you agree to the practices described here.",
+    id: "who-we-are",
+    h: "Who we are",
+    body: [
+      "Montarro (“we”, “us”, “our”) is a Melbourne-based business providing paid advertising, web development, systems and automation, and social media services to Australian businesses.",
+      "This policy explains how we handle personal information when you visit montarro.com, contact us or work with us. We handle personal information in line with the Australian Privacy Principles under the Privacy Act 1988 (Cth).",
     ],
   },
   {
-    h: "2. Information We Collect",
-    p: [
-      "We collect information you provide directly — such as your name, business name, email, phone number and the details you submit through our consultation form — as well as limited technical data (such as device and usage information) collected automatically to operate and improve the site.",
+    id: "what-we-collect",
+    h: "What we collect",
+    body: [
+      "We collect information in three ways.",
+      [
+        "Details you give us: your name, business name, email, phone number, the services you are interested in and anything you type into an enquiry form or tell us on a call.",
+        "Details from working together: information about your business, customers and campaigns, access you grant to advertising accounts, websites or CRMs, and billing details.",
+        "Technical data: your device, browser, pages visited and the source that brought you to the site, collected through cookies and similar technologies described below.",
+      ],
+      "You can browse the site without giving us personal information. If you choose not to provide details we ask for, we may not be able to respond to your enquiry or deliver a service.",
     ],
   },
   {
-    h: "3. How We Use Your Information",
-    p: [
-      "We use your information to respond to enquiries, schedule and deliver consultations, provide and improve our services, communicate with you about your request, and meet our legal obligations. We do not sell your personal information.",
+    id: "how-we-use-it",
+    h: "How we use it",
+    body: [
+      "We use personal information to:",
+      [
+        "respond to your enquiry and arrange a strategy call;",
+        "scope, deliver, support and bill the services you engage us for;",
+        "send service communications about your enquiry or project;",
+        "measure and improve the website and our own advertising;",
+        "meet legal, accounting and record-keeping obligations.",
+      ],
+      "We do not sell personal information. We send marketing only where the law allows, and you can opt out at any time using the link in the message or by contacting us.",
     ],
   },
   {
-    h: "4. How We Share Information",
-    p: [
-      "We share information only with trusted service providers who help us operate (for example, CRM, scheduling, communications and automation platforms), and where required by law. These providers are bound to handle your information securely and only for the purposes we specify.",
+    id: "who-we-share-with",
+    h: "Who we share it with",
+    body: [
+      "We share personal information only with providers that help us operate, with professional advisers, and where the law requires it. Our main providers are:",
+      [
+        "GoHighLevel: our CRM, which stores enquiries and sends agreed email and SMS communications.",
+        "Meta: advertising measurement through the Meta Pixel.",
+        "Vercel: website hosting.",
+        "Google: web fonts loaded when the site displays.",
+      ],
+      "When we build or run systems for a client, we handle that client's customer information on the client's behalf and under the client's instructions. The client's own privacy policy applies to that information.",
     ],
   },
   {
-    h: "5. Data Retention",
-    p: [
-      "We retain personal information for as long as necessary to fulfil the purposes described in this policy, unless a longer retention period is required or permitted by law.",
+    id: "cookies-and-tracking",
+    h: "Cookies and tracking",
+    body: [
+      "The site uses cookies and similar technologies to operate, to attribute enquiries to their source and to measure advertising.",
+      [
+        "Meta Pixel records page views and enquiry events so we can measure our Meta advertising and reach people who have visited the site. You can manage this in your Meta ad preferences.",
+        "GoHighLevel tracking links an enquiry to the campaign or page that led to it.",
+      ],
+      "You can block or delete cookies in your browser settings. Some parts of the site may not work as intended without them.",
     ],
   },
   {
-    h: "6. Your Rights",
-    p: [
-      "Subject to applicable law, you may request access to, correction of, or deletion of your personal information, and you may opt out of marketing communications at any time. To make a request, contact us using the details below.",
+    id: "storage-and-security",
+    h: "Storage and security",
+    body: [
+      "Personal information is stored with the providers listed above. Some of them store information outside Australia, including in the United States.",
+      "We take reasonable steps to protect personal information from misuse, loss, unauthorised access and disclosure, including access controls and secure connections. No method of storage or transmission is completely secure.",
     ],
   },
   {
-    h: "7. Cookies",
-    p: [
-      "We may use cookies and similar technologies to operate the site, remember preferences and understand usage. You can control cookies through your browser settings.",
+    id: "retention",
+    h: "How long we keep it",
+    body: [
+      "We keep personal information for as long as it is needed for the purposes above, or for as long as the law requires. Enquiry details are kept while we consider working together and for a reasonable period afterwards. Project and billing records are kept for the period required for tax and accounting purposes.",
     ],
   },
   {
-    h: "8. Contact",
-    p: [
-      "If you have questions about this policy or your information, contact us at Team@montarro.com.",
+    id: "your-rights",
+    h: "Your choices and rights",
+    body: [
+      "You can ask us to access, correct or delete the personal information we hold about you, and you can opt out of marketing at any time. Contact us using the details below and we will respond within a reasonable time.",
+      "If you are not satisfied with how we handle a privacy concern, you can complain to the Office of the Australian Information Commissioner (OAIC).",
     ],
+  },
+  {
+    id: "changes",
+    h: "Changes to this policy",
+    body: [
+      "We may update this policy from time to time. The date at the top shows the current version, and the latest version always applies.",
+    ],
+  },
+  {
+    id: "contact",
+    h: "Contact",
+    body: ["Questions about this policy or your information can be sent to team@montarro.com or by calling 0450 731 109."],
   },
 ];
 
 function PrivacyPage() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-      <SiteNav />
-      <main className="mx-auto max-w-3xl px-6 pt-32 pb-20 lg:pt-40">
-        <p className="text-[11px] uppercase tracking-[0.24em] text-emerald-700/80">Legal</p>
-        <h1 className="mt-4 font-display text-4xl md:text-5xl tracking-[-0.03em] text-gradient-chrome">
-          Privacy Policy
-        </h1>
-        <p className="mt-4 text-[13px] text-muted-foreground/70">Last updated: 2026</p>
-        <div className="mt-12 space-y-10">
-          {SECTIONS.map((s) => (
-            <section key={s.h}>
-              <h2 className="font-display text-xl tracking-tight text-foreground">{s.h}</h2>
-              {s.p.map((para, i) => (
-                <p key={i} className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-                  {para}
-                </p>
-              ))}
-            </section>
-          ))}
-        </div>
-      </main>
-      <SiteFooter />
-    </div>
+    <LegalPage
+      titleLines={["Privacy", "policy."]}
+      intro="How we collect, use, share and protect personal information when you visit montarro.com, contact us or work with us."
+      updated="3 October 2026"
+      sections={SECTIONS}
+    />
   );
 }
